@@ -1,0 +1,74 @@
+Module(
+  Unparameterized("helloworld2"{ Def(
+                                   URI(
+                                     Language("TemplateLang")
+                                   , [ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))]
+                                   )
+                                 )
+                               })
+, []
+, [ SDFSection(ContextFreeStartSymbols([Sort("Start"{Use(Result(2955))}){(Type(), Result(2959))}]))
+  , SDFSection(
+      ContextFreeSyntax(
+        [ SdfProductionWithCons(
+            SortCons(SortDef("Start"{ Def(
+                                        URI(
+                                          Language("TemplateLang")
+                                        , [ID(NablNsSort(), "Start", NonUnique()), ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))]
+                                        )
+                                      )
+                                    }), Constructor("Program"{ Def(
+                                                                 URI(
+                                                                   Language("TemplateLang")
+                                                                 , [ ID(NablNsConstructor(), "Program", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                   , ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                   ]
+                                                                 )
+                                                               )
+                                                             }))
+          , Rhs([Sort("Word"{Use(Result(2961))}){(Type(), Result(2965))}, Sort("Word"{Use(Result(2961))}){(Type(), Result(2965))}])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(SortDef("Word"{ Def(
+                                       URI(
+                                         Language("TemplateLang")
+                                       , [ID(NablNsSort(), "Word", NonUnique()), ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))]
+                                       )
+                                     )
+                                   }), Constructor("Hello"{ Def(
+                                                              URI(
+                                                                Language("TemplateLang")
+                                                              , [ ID(NablNsConstructor(), "Hello", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                , ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                ]
+                                                              )
+                                                            )
+                                                          }))
+          , Rhs([Lit("\"hello\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(SortDef("Word"{ Def(
+                                       URI(
+                                         Language("TemplateLang")
+                                       , [ID(NablNsSort(), "Word", NonUnique()), ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))]
+                                       )
+                                     )
+                                   }), Constructor("World"{ Def(
+                                                              URI(
+                                                                Language("TemplateLang")
+                                                              , [ ID(NablNsConstructor(), "World", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                , ID(NablNsModule(), "helloworld2", Unique("eclipse:///helloworld/syntax/helloworld2.sdf3/0"))
+                                                                ]
+                                                              )
+                                                            )
+                                                          }))
+          , Rhs([Lit("\"world\"")])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  ]
+)
