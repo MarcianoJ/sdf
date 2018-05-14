@@ -19,6 +19,7 @@ import org.metaborg.sdf2table.grammar.IPriority;
 import org.metaborg.sdf2table.grammar.IProduction;
 import org.metaborg.sdf2table.grammar.NormGrammar;
 import org.metaborg.sdf2table.grammar.Priority;
+import org.metaborg.sdf2table.grammar.Production;
 import org.metaborg.sdf2table.grammar.Symbol;
 
 import com.google.common.collect.BiMap;
@@ -102,7 +103,11 @@ public class ParseTable implements IParseTable, Serializable {
         }
 
         createJSGLRParseTableProductions(productionLabels);
-
+        
+        // TEMP: set init prod
+        Production initProd = (Production) productionLabels.inverse().get(257);
+        grammar.setInitialProduction(initProd);
+        
         // create states if the table should not be generated dynamically
         initialProduction = grammar.getInitialProduction();
 
