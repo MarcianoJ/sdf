@@ -9,7 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.metaborg.characterclasses.CharacterClassFactory;
+import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.NormGrammar;
+import org.metaborg.sdf2table.grammar.Production;
 import org.metaborg.sdf2table.io.GrammarReader;
 import org.metaborg.sdf2table.io.ParseTableGenerator;
 import org.metaborg.sdf2table.parsetable.LabelFactory;
@@ -36,7 +39,7 @@ public class LRTableTest {
     public void LR0Test() throws Exception {
 		String resourcesPath = "src/test/resources/";
 		//String grammarName = "sum-nonambiguous";
-		String grammarName = "helloworld3";
+		String grammarName = "helloworld4";
 		
 		String tableFilePath = resourcesPath + "GreenMarl.tbl";
 		
@@ -52,8 +55,19 @@ public class LRTableTest {
 //		System.out.println(inputFile.isDirectory());
 		assert(inputFile.exists() && !inputFile.isDirectory());
 		
+//		CharacterClass range = new CharacterClass(new CharacterClassFactory(true, true).fromSingle(99));
+//		CharacterClass single = new CharacterClass(new CharacterClassFactory(true, true).fromRange(99, 102));
+//		
+//		CharacterClass res = range.difference(single);
+		
+		
 		ParseTableGenerator ptGen = new ParseTableGenerator(inputFile, outputFile,
 				outputNormGrammarFile, outputContextGrammarFile, new ArrayList<String>());
+		
+		ParseTable pt = ptGen.getParseTable();
+		
+		Production prod = (Production) pt.initialProduction();
+		
 		
 		ptGen.outputTable(false, true, true);
 		

@@ -137,20 +137,18 @@ public class State implements IState, Comparable<State>, Serializable {
     public void doReduces() {
         // for each item p_i : A = A0 ... AN .
         // add a reduce action reduce([0-256] / follow(A), p_i)
-    	// TEMP: added code for breakpoint;
-    	int abcdef = 0;
-    	if (abcdef == 1);
         for(LRItem item : items) {
 
             if(item.getDotPosition() == item.getProd().rightHand().size()) {
                 int prod_label = pt.productionLabels().get(item.getProd());
-
+                
                 if(item.getProd().leftHand().followRestriction() == null
                     || item.getProd().leftHand().followRestriction().isEmptyCC()) {
                     addReduceAction(item.getProd(), prod_label, CharacterClass.getFullCharacterClass(), null);
                 } else {
                     // Not based on first and follow sets thus, only considering the follow restrictions
-                    CharacterClass final_range = CharacterClass.getFullCharacterClass()
+                    //CharacterClass final_range = CharacterClass.getFullCharacterClass()
+                	CharacterClass final_range = pt.getFollowSet(null, null, this)
                         .difference(item.getProd().leftHand().followRestriction());
                     for(CharacterClass[] s : item.getProd().leftHand().followRestrictionLookahead()) {
                         final_range = final_range.difference(s[0]);
@@ -205,7 +203,8 @@ public class State implements IState, Comparable<State>, Serializable {
     }
 
     private void checkKernel(Set<LRItem> new_kernel, Set<GoTo> new_gotos, Set<Shift> new_shifts) {
-        if(pt.kernelMap().containsKey(new_kernel)) {
+        // TODO pt.kernelMap().containsKey(new_kernel) && 
+    	if(pt.kernelMap().containsKey(new_kernel)) {
             int stateNumber = pt.kernelMap().get(new_kernel).getLabel();
             // set recently added shift and goto actions to new state
             for(Shift shift : new_shifts) {

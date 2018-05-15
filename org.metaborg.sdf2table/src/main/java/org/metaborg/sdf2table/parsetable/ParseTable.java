@@ -6,14 +6,19 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.metaborg.characterclasses.CharacterClassFactory;
+import org.metaborg.characterclasses.CharacterClassSingle;
+import org.metaborg.characterclasses.ICharacterClassFactory;
 import org.metaborg.parsetable.IParseTable;
 import org.metaborg.parsetable.IState;
+import org.metaborg.parsetable.characterclasses.ICharacterClass;
 import org.metaborg.sdf2table.deepconflicts.Context;
 import org.metaborg.sdf2table.deepconflicts.ContextPosition;
 import org.metaborg.sdf2table.deepconflicts.ContextType;
 import org.metaborg.sdf2table.deepconflicts.ContextualProduction;
 import org.metaborg.sdf2table.deepconflicts.ContextualSymbol;
 import org.metaborg.sdf2table.deepconflicts.DeepConflictsAnalyzer;
+import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.GeneralAttribute;
 import org.metaborg.sdf2table.grammar.IPriority;
 import org.metaborg.sdf2table.grammar.IProduction;
@@ -76,7 +81,18 @@ public class ParseTable implements IParseTable, Serializable {
 
     private List<org.metaborg.parsetable.IProduction> productions = Lists.newArrayList();
     Map<IProduction, ParseTableProduction> productionsMapping = Maps.newLinkedHashMap();
-
+    
+    // Parse table generation type and k (lookahead)
+    private int parseTableGenType;
+	private int kLookahead;
+    
+    // Constructor, with support for adapting parse table generation type
+    public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts, int parseType, int k) {
+    	this(grammar, dynamic, dataDependent, solveDeepConflicts);
+    	parseTableGenType = parseType;
+    	kLookahead = k;
+    }
+    
     public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) {
         this.grammar = grammar;
         this.dataDependent = dataDependent;
@@ -103,10 +119,6 @@ public class ParseTable implements IParseTable, Serializable {
         }
 
         createJSGLRParseTableProductions(productionLabels);
-        
-        // TEMP: set init prod
-        Production initProd = (Production) productionLabels.inverse().get(257);
-        grammar.setInitialProduction(initProd);
         
         // create states if the table should not be generated dynamically
         initialProduction = grammar.getInitialProduction();
@@ -600,15 +612,6 @@ public class ParseTable implements IParseTable, Serializable {
         }
     }
 
-    private void processStateQueue() {
-        while(!stateQueue.isEmpty()) {
-            State state = stateQueue.poll();
-            if(state.status() != StateStatus.PROCESSED) {
-                processState(state);
-            }
-        }
-    }
-
     private void processState(State state) {
         state.closure();
         state.doShift();
@@ -669,6 +672,43 @@ public class ParseTable implements IParseTable, Serializable {
             setProcessedStates(getProcessedStates() + 1);
         }
         return s;
+    }
+    
+    public void calculateFirstSets() {
+    	
+    }
+    
+    public void calculateFirstSet(Symbol s) {
+    	
+    }
+    
+    //public void calculateInitialFirstSets()
+    //public void calculateInitialFirstSet(Symbol s)
+    
+    public void calculateFollowSets(State state) {
+    	// if (SLR) calcSLRFollowSet, ignore label; else calcLRFollowSets
+    }
+    
+    public void calculateFollowSet(Symbol s, Set<LRItem> items, State state) {
+    	
+    }
+    
+    public CharacterClass getFollowSet(Symbol s, Set<LRItem> items, State state) {
+    	// if (memory present) use memory, else calcFollowSet
+    	ICharacterClassFactory ccFactory = new CharacterClassFactory(true, true);
+    	return new CharacterClass(ccFactory.fromSingle(97));
+    }
+    
+    //public void calculateInitialFollowSets()
+    //public void calculateInitialFollowSet(Symbol s)
+
+    private void processStateQueue() {
+        while(!stateQueue.isEmpty()) {
+            State state = stateQueue.poll();
+            if(state.status() != StateStatus.PROCESSED) {
+                processState(state);
+            }
+        }
     }
 
     public int totalStates() {
@@ -762,6 +802,23 @@ public class ParseTable implements IParseTable, Serializable {
     @Override public IState getStartState() {
         return startState();
     }
+    
+    public int getParseTableGenType() {
+		return parseTableGenType;
+	}
+
+	public void setParseTableGenType(int parseTableGenType) {
+		this.parseTableGenType = parseTableGenType;
+	}
+
+	public int getK() {
+		return kLookahead;
+	}
+
+	public void setK(int k) {
+		this.kLookahead = k;
+	}
+
 
 
 }
