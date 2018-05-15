@@ -195,7 +195,7 @@ public class GrammarReader {
 
         if(term instanceof IStrategoAppl) {
             StrategoAppl app = (StrategoAppl) term;
-            boolean with_cons = true;
+            boolean with_cons = false;
             if(app.getName().equals("SdfProduction")
                 || (with_cons = true && app.getName().equals("SdfProductionWithCons"))) {
                 Symbol symbol;
