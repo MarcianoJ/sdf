@@ -65,7 +65,6 @@ public class LRTableTest {
 		ParseTableGenerator ptGen = new ParseTableGenerator(inputFile, outputFile,
 				outputNormGrammarFile, outputContextGrammarFile, new ArrayList<String>(), ParseTableGenType.SLR, 1);
 		
-		
 		ptGen.outputTable(false, true, true);
 		
 //		ParseTable pt = ptGen.getParseTable();
