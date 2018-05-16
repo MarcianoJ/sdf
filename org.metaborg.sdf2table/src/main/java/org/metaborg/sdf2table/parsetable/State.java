@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.metaborg.characterclasses.CharacterClassFactory;
+import org.metaborg.characterclasses.ICharacterClassFactory;
 import org.metaborg.parsetable.IParseInput;
 import org.metaborg.parsetable.IState;
 import org.metaborg.parsetable.actions.IAction;
@@ -144,11 +145,11 @@ public class State implements IState, Comparable<State>, Serializable {
                 
                 if(item.getProd().leftHand().followRestriction() == null
                     || item.getProd().leftHand().followRestriction().isEmptyCC()) {
-                    addReduceAction(item.getProd(), prod_label, pt.getFollowSet(null, null, this), null);
+                    addReduceAction(item.getProd(), prod_label, pt.getFollowSet(item.getProd().leftHand(), this), null);
                 } else {
                     // Not based on first and follow sets thus, only considering the follow restrictions
                     //CharacterClass final_range = CharacterClass.getFullCharacterClass()
-                	CharacterClass final_range = pt.getFollowSet(null, null, this)
+                	CharacterClass final_range = pt.getFollowSet(item.getProd().leftHand(), this)
                         .difference(item.getProd().leftHand().followRestriction());
                     for(CharacterClass[] s : item.getProd().leftHand().followRestrictionLookahead()) {
                         final_range = final_range.difference(s[0]);
@@ -232,6 +233,11 @@ public class State implements IState, Comparable<State>, Serializable {
             }
             pt.stateQueue().add(new_state);
         }
+    }
+    
+    public CharacterClass getFollowSet(Symbol s) {
+    	ICharacterClassFactory ccFactory = new CharacterClassFactory(true, true);
+    	return new CharacterClass(ccFactory.fromSingle(97));
     }
 
     @Override public String toString() {
