@@ -144,7 +144,7 @@ public class State implements IState, Comparable<State>, Serializable {
                 
                 if(item.getProd().leftHand().followRestriction() == null
                     || item.getProd().leftHand().followRestriction().isEmptyCC()) {
-                    addReduceAction(item.getProd(), prod_label, CharacterClass.getFullCharacterClass(), null);
+                    addReduceAction(item.getProd(), prod_label, pt.getFollowSet(null, null, this), null);
                 } else {
                     // Not based on first and follow sets thus, only considering the follow restrictions
                     //CharacterClass final_range = CharacterClass.getFullCharacterClass()

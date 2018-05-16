@@ -19,6 +19,8 @@ public abstract class Symbol implements Serializable {
     protected List<CharacterClass[]> followRestrictionsLookahead;
 
     private boolean nullable = false;
+    private boolean visitedFirst = false;
+    private boolean visitedFollow = false;
 
     public abstract String name();
 
@@ -29,6 +31,22 @@ public abstract class Symbol implements Serializable {
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
+    
+    public boolean isVisitedFirst() {
+		return visitedFirst;
+	}
+
+	public void setVisitedFirst(boolean visitedFirst) {
+		this.visitedFirst = visitedFirst;
+	}
+
+	public boolean isVisitedFollow() {
+		return visitedFollow;
+	}
+
+	public void setVisitedFollow(boolean visitedFollow) {
+		this.visitedFollow = visitedFollow;
+	}
 
     @Override public String toString() {
         return name();
@@ -98,7 +116,7 @@ public abstract class Symbol implements Serializable {
         followRestrictionsLookahead.removeAll(redundantFRLookahead);
     }
 
-    public abstract int hashCode();
+	public abstract int hashCode();
 
     public abstract boolean equals(Object s);
 

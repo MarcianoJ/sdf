@@ -1,8 +1,11 @@
 package org.metaborg.sdf2table.parsetable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import org.metaborg.parsetable.characterclasses.ICharacterClass;
 import org.metaborg.sdf2table.deepconflicts.ContextualProduction;
 import org.metaborg.sdf2table.deepconflicts.ContextualSymbol;
 import org.metaborg.sdf2table.grammar.IPriority;
@@ -21,7 +24,8 @@ public class LRItem implements Serializable {
     private IProduction prod;
     private int dotPosition;
     private int prod_label;
-
+    private List<ICharacterClass> lookahead;
+    
     public LRItem(IProduction prod, int dotPosition, ParseTable pt) {
         if(!(prod instanceof ContextualProduction) && pt.normalizedGrammar().getProdContextualProdMapping().containsKey(prod)) {
             this.prod = pt.normalizedGrammar().getProdContextualProdMapping().get(prod);
@@ -31,6 +35,7 @@ public class LRItem implements Serializable {
         this.pt = pt;
         this.dotPosition = dotPosition;
         this.prod_label = pt.productionLabels().get(prod);
+        this.lookahead = new ArrayList<ICharacterClass>();
     }
 
     public void process(Set<LRItem> items, SetMultimap<Symbol, LRItem> symbol_items, State originalState) {
@@ -139,6 +144,10 @@ public class LRItem implements Serializable {
         if(dotPosition != other.dotPosition)
             return false;
         if(prod_label != other.prod_label)
+            return false;
+        if(lookahead.size() != other.lookahead.size())
+            return false;
+        if(!lookahead.equals(other.lookahead))
             return false;
         return true;
     }
