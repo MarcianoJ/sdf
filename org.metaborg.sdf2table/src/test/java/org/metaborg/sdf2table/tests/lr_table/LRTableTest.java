@@ -17,6 +17,7 @@ import org.metaborg.sdf2table.io.GrammarReader;
 import org.metaborg.sdf2table.io.ParseTableGenerator;
 import org.metaborg.sdf2table.parsetable.LabelFactory;
 import org.metaborg.sdf2table.parsetable.ParseTable;
+import org.metaborg.sdf2table.parsetable.ParseTableGenType;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
@@ -62,14 +63,14 @@ public class LRTableTest {
 		
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(inputFile, outputFile,
-				outputNormGrammarFile, outputContextGrammarFile, new ArrayList<String>());
-		
-		ParseTable pt = ptGen.getParseTable();
-		
-		Production prod = (Production) pt.initialProduction();
+				outputNormGrammarFile, outputContextGrammarFile, new ArrayList<String>(), ParseTableGenType.SLR, 1);
 		
 		
 		ptGen.outputTable(false, true, true);
+		
+//		ParseTable pt = ptGen.getParseTable();
+//		
+//		Production prod = (Production) pt.initialProduction();
 		
 //		System.out.println(tableFile.toURI());
 //		

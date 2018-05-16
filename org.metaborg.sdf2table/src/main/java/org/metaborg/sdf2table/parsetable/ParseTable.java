@@ -22,9 +22,11 @@ import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.GeneralAttribute;
 import org.metaborg.sdf2table.grammar.IPriority;
 import org.metaborg.sdf2table.grammar.IProduction;
+import org.metaborg.sdf2table.grammar.LiteralType;
 import org.metaborg.sdf2table.grammar.NormGrammar;
 import org.metaborg.sdf2table.grammar.Priority;
 import org.metaborg.sdf2table.grammar.Production;
+import org.metaborg.sdf2table.grammar.Sort;
 import org.metaborg.sdf2table.grammar.Symbol;
 
 import com.google.common.collect.BiMap;
@@ -83,11 +85,13 @@ public class ParseTable implements IParseTable, Serializable {
     Map<IProduction, ParseTableProduction> productionsMapping = Maps.newLinkedHashMap();
     
     // Parse table generation type and k (lookahead)
-    private int parseTableGenType;
+    private ParseTableGenType parseTableGenType;
 	private int kLookahead;
     
     // Constructor, with support for adapting parse table generation type
-    public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts, int parseType, int k) {
+    public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts,
+    		ParseTableGenType parseType, int k) {
+    	
     	this(grammar, dynamic, dataDependent, solveDeepConflicts);
     	parseTableGenType = parseType;
     	kLookahead = k;
@@ -96,6 +100,8 @@ public class ParseTable implements IParseTable, Serializable {
     public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) {
         this.grammar = grammar;
         this.dataDependent = dataDependent;
+        this.parseTableGenType = ParseTableGenType.LR;
+    	this.kLookahead = 0;
 
         // calculate nullable symbols
         calculateNullable();
@@ -119,6 +125,10 @@ public class ParseTable implements IParseTable, Serializable {
         }
 
         createJSGLRParseTableProductions(productionLabels);
+        
+        if(parseTableGenType == ParseTableGenType.SLR) {
+        	calculateSLRFirstSets();
+        }
         
         // create states if the table should not be generated dynamically
         initialProduction = grammar.getInitialProduction();
@@ -678,12 +688,61 @@ public class ParseTable implements IParseTable, Serializable {
     	
     }
     
-    public void calculateFirstSet(Symbol s) {
-    	
+    private Map<Symbol, CharacterClass> firstSets = Maps.newLinkedHashMap();
+    private SetMultimap<Symbol, Symbol> firstSetDependencies = HashMultimap.create();
+    
+    
+    public void calculateSLRFirstSets() {
+    	for(IProduction prod : productionsMapping.keySet()) {
+    		Symbol s = prod.leftHand();
+    		calculateSLRFirstSetInitial(s);
+    	}
+    	for(IProduction prod : productionsMapping.keySet()) {
+    		Symbol s = prod.leftHand();
+    		calculateSLRFirstSetDependencies(s);
+    	}
     }
     
-    //public void calculateInitialFirstSets()
-    //public void calculateInitialFirstSet(Symbol s)
+    public void calculateSLRFirstSetInitial(Symbol s) {
+    	for(IProduction prod : productionsMapping.keySet()) {
+    		int i = 0;
+    		Symbol rhsSymbol = prod.rightHand().get(0);
+    		
+    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
+    			rhsSymbol = prod.rightHand().get(i);
+    			if(s.equals(prod.leftHand())) {
+    				if(rhsSymbol instanceof CharacterClass) {
+    					CharacterClass cc = (CharacterClass) rhsSymbol;
+    					if(firstSets.get(s) == null) {
+    						firstSets.put(s, cc);
+    					} else {
+    						firstSets.put(s, CharacterClass.union(firstSets.get(s), cc));
+    					}
+    				} else {
+	    				rhsSymbol = prod.rightHand().get(i);
+	    				firstSetDependencies.put(s, rhsSymbol);
+    				}	
+    			}
+    			i++;
+    		}
+    	}
+    }
+    
+    public void calculateSLRFirstSetDependencies(Symbol s) {
+    	Set<Symbol> dependencies = firstSetDependencies.get(s);
+    	Queue<Symbol> q = Lists.newLinkedList();
+    	q.addAll(dependencies);
+    	
+    	while(!q.isEmpty()) {
+    		Symbol sDependency = q.poll();
+    		firstSets.put(s, CharacterClass.union(firstSets.get(s), firstSets.get(sDependency)));
+    		if (!sDependency.isVisitedFirst()) {
+    			Set<Symbol> nestedDependencies = firstSetDependencies.get(sDependency);
+    			q.addAll(nestedDependencies);
+    			sDependency.setVisitedFirst(true);
+    		}
+    	}
+    }
     
     public void calculateFollowSets(State state) {
     	// if (SLR) calcSLRFollowSet, ignore label; else calcLRFollowSets
@@ -803,11 +862,11 @@ public class ParseTable implements IParseTable, Serializable {
         return startState();
     }
     
-    public int getParseTableGenType() {
+    public ParseTableGenType getParseTableGenType() {
 		return parseTableGenType;
 	}
 
-	public void setParseTableGenType(int parseTableGenType) {
+	public void setParseTableGenType(ParseTableGenType parseTableGenType) {
 		this.parseTableGenType = parseTableGenType;
 	}
 
