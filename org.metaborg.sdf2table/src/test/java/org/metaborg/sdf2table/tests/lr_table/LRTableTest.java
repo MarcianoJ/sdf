@@ -40,7 +40,7 @@ public class LRTableTest {
     public void LR0Test() throws Exception {
 		String resourcesPath = "src/test/resources/";
 		//String grammarName = "sum-nonambiguous";
-		String grammarName = "helloworld4";
+		String grammarName = "helloworld5";
 		
 		String tableFilePath = resourcesPath + "GreenMarl.tbl";
 		
