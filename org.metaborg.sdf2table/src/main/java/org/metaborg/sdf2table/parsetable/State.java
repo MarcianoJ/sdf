@@ -14,6 +14,7 @@ import org.metaborg.parsetable.IState;
 import org.metaborg.parsetable.actions.IAction;
 import org.metaborg.parsetable.actions.IGoto;
 import org.metaborg.parsetable.actions.IReduce;
+import org.metaborg.parsetable.characterclasses.ICharacterClass;
 import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.IProduction;
 import org.metaborg.sdf2table.grammar.Symbol;
@@ -90,6 +91,16 @@ public class State implements IState, Comparable<State>, Serializable {
             // }
             item.process(items, symbol_items, this);
         }
+    }
+    
+    public void calculateLRFirstSets() {
+    	// for symbol s in symbol_items.keys
+    	// for lr_items in symbol_items.get(s)
+    	// ...
+    }
+    
+    public void calculateLRFollowSets() {
+    	
     }
 
     public void doShift() {

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.metaborg.parsetable.characterclasses.ICharacterClass;
 import org.metaborg.sdf2table.deepconflicts.ContextualProduction;
 import org.metaborg.sdf2table.deepconflicts.ContextualSymbol;
+import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.IPriority;
 import org.metaborg.sdf2table.grammar.IProduction;
 import org.metaborg.sdf2table.grammar.Priority;
@@ -35,7 +36,10 @@ public class LRItem implements Serializable {
         this.pt = pt;
         this.dotPosition = dotPosition;
         this.prod_label = pt.productionLabels().get(prod);
-        this.lookahead = new ArrayList<ICharacterClass>();
+        
+        ArrayList<ICharacterClass> lookaheadList = new ArrayList<ICharacterClass>();
+        lookaheadList.add(CharacterClass.getFullCharacterClass());
+        this.lookahead = lookaheadList;
     }
 
     public void process(Set<LRItem> items, SetMultimap<Symbol, LRItem> symbol_items, State originalState) {
@@ -106,7 +110,15 @@ public class LRItem implements Serializable {
         return dotPosition;
     }
 
-    @Override public String toString() {
+    public List<ICharacterClass> getLookahead() {
+		return lookahead;
+	}
+
+	public void setLookahead(List<ICharacterClass> lookahead) {
+		this.lookahead = lookahead;
+	}
+
+	@Override public String toString() {
         String buf = "";
         buf += prod.leftHand();
         buf += " -> ";
@@ -120,6 +132,12 @@ public class LRItem implements Serializable {
         }
         if(dotPosition >= prod.rightHand().size()) {
             buf += " .";
+        }
+        if(lookahead != null && !lookahead.isEmpty()) {
+        	buf += " , {";
+        	for(ICharacterClass cc : lookahead) {
+        		buf += "(" + cc.toString() + ")";
+        	}
         }
 
         return buf;

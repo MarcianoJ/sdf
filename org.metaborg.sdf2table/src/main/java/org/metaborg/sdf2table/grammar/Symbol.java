@@ -19,8 +19,8 @@ public abstract class Symbol implements Serializable {
     protected List<CharacterClass[]> followRestrictionsLookahead;
 
     private boolean nullable = false;
-    private boolean visitedFirst = false;
-    private boolean visitedFollow = false;
+//    private boolean[] visitedFirst = new boolean[] {false, false};
+//    private boolean[] visitedFollow = new boolean[] {false, false};
 
     public abstract String name();
 
@@ -32,21 +32,21 @@ public abstract class Symbol implements Serializable {
         this.nullable = nullable;
     }
     
-    public boolean isVisitedFirst() {
-		return visitedFirst;
-	}
-
-	public void setVisitedFirst(boolean visitedFirst) {
-		this.visitedFirst = visitedFirst;
-	}
-
-	public boolean isVisitedFollow() {
-		return visitedFollow;
-	}
-
-	public void setVisitedFollow(boolean visitedFollow) {
-		this.visitedFollow = visitedFollow;
-	}
+//    public boolean isVisitedFirst(int i) {
+//		return visitedFirst[i];
+//	}
+//
+//	public void setVisitedFirst(int i, boolean visited) {
+//		this.visitedFirst[i] = visited;
+//	}
+//
+//	public boolean isVisitedFollow(int i) {
+//		return visitedFollow[i];
+//	}
+//
+//	public void setVisitedFollow(int i, boolean visited) {
+//		this.visitedFollow[i] = visited;
+//	}
 
     @Override public String toString() {
         return name();

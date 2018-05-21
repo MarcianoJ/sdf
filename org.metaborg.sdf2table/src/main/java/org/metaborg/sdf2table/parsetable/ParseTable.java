@@ -1,6 +1,7 @@
 package org.metaborg.sdf2table.parsetable;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -45,6 +46,9 @@ public class ParseTable implements IParseTable, Serializable {
     public static final int FIRST_PRODUCTION_LABEL = 257;
     public static final int INITIAL_STATE_NUMBER = 0;
     public static final int VERSION_NUMBER = 6;
+
+    public static final int CALCFIRST = 0;
+    public static final int CALCFOLLOW = 1;
 
     // private static final ILogger logger = LoggerUtils.logger(ParseTable.class);
     private NormGrammar grammar;
@@ -92,9 +96,47 @@ public class ParseTable implements IParseTable, Serializable {
     public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts,
     		ParseTableGenType parseType, int k) {
     	
-    	this(grammar, dynamic, dataDependent, solveDeepConflicts);
-    	parseTableGenType = parseType;
-    	kLookahead = k;
+    	this.grammar = grammar;
+        this.dataDependent = dataDependent;
+        this.parseTableGenType = parseType;
+    	this.kLookahead = k;
+
+        // calculate nullable symbols
+        calculateNullable();
+
+        // calculate left and right recursive productions (considering nullable symbols)
+        calculateRecursion();
+
+        // normalize priorities according to recursion
+        normalizePriorities();
+
+        // create labels for productions
+        createLabels();
+
+        // calculate deep priority conflicts based on current priorities
+        // and generate contextual productions
+        if (solveDeepConflicts) {
+            final DeepConflictsAnalyzer analysis = DeepConflictsAnalyzer.fromParseTable(this);
+            analysis.patchParseTable();
+
+            updateLabelsContextualProductions();
+        }
+
+        createJSGLRParseTableProductions(productionLabels);
+        
+        if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
+        	calculateSLRFirstSets();
+        	calculateSLRFollowSets();
+        }
+        
+        // create states if the table should not be generated dynamically
+        initialProduction = grammar.getInitialProduction();
+
+        if(!dynamic) {
+            State s0 = new State(initialProduction, this);
+            stateQueue.add(s0);
+            processStateQueue();
+        }
     }
     
     public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) {
@@ -624,6 +666,7 @@ public class ParseTable implements IParseTable, Serializable {
 
     private void processState(State state) {
         state.closure();
+        //state.calculateFirstFollowSets();
         state.doShift();
         state.doReduces();
         state.calculateActionsForCharacter();
@@ -692,20 +735,21 @@ public class ParseTable implements IParseTable, Serializable {
     private SetMultimap<Symbol, Symbol> firstSetDependencies = HashMultimap.create();
     private Map<Symbol, CharacterClass> followSets = Maps.newLinkedHashMap();
     private SetMultimap<Symbol, Symbol> followSetDependencies = HashMultimap.create();
-    
-    
+    private Map<Symbol, boolean[]> symbolsVisited = Maps.newLinkedHashMap();
+
     public void calculateSLRFirstSets() {
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
     		if(firstSets.get(s) == null) {
-    			CharacterClass cc = (CharacterClass) CharacterClassFactory.EMPTY_CHARACTER_CLASS;
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				firstSets.put(s, cc);
+                symbolsVisited.put(s, new boolean[] {false, false, false, false});
     		}
     		calculateSLRFirstSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSLRFirstSetDependencies(s);
+    		calculateSetDependencies(CALCFIRST, s, firstSets, firstSetDependencies, symbolsVisited);
     	}
     }
     
@@ -729,80 +773,133 @@ public class ParseTable implements IParseTable, Serializable {
     	}
     }
     
-    public void calculateSLRFirstSetDependencies(Symbol s) {
-    	Set<Symbol> dependencies = firstSetDependencies.get(s);
-    	Queue<Symbol> q = Lists.newLinkedList();
-    	q.addAll(dependencies);
-    	
-    	while(!q.isEmpty()) {
-    		Symbol sDependency = q.poll();
-    		firstSets.put(s, CharacterClass.union(firstSets.get(s), firstSets.get(sDependency)));
-    		if (!sDependency.isVisitedFirst()) {
-    			Set<Symbol> nestedDependencies = firstSetDependencies.get(sDependency);
-    			q.addAll(nestedDependencies);
-    			sDependency.setVisitedFirst(true);
-    		}
-    	}
-    }
+//    public void calculateSLRFirstSetDependencies(Symbol s) {
+//    	Set<Symbol> dependencies = firstSetDependencies.get(s);
+//    	Queue<Symbol> q = Lists.newLinkedList();
+//    	q.addAll(dependencies);
+//    	
+//    	while(!q.isEmpty()) {
+//    		Symbol sDependency = q.poll();
+//    		firstSets.put(s, CharacterClass.union(firstSets.get(s), firstSets.get(sDependency)));
+//    		if (!sDependency.isVisitedFirst()) {
+//    			Set<Symbol> nestedDependencies = firstSetDependencies.get(sDependency);
+//    			q.addAll(nestedDependencies);
+//    			sDependency.setVisitedFirst(true);
+//    		}
+//    	}
+//    }
     
     public void calculateSLRFollowSets() {
-    	// if (SLR) calcSLRFollowSet, ignore state; else calcLRFollowSets
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
     		if(followSets.get(s) == null) {
-    			CharacterClass cc = (CharacterClass) CharacterClassFactory.EMPTY_CHARACTER_CLASS;
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				followSets.put(s, cc);
     		}
     		calculateSLRFollowSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSLRFollowSetDependencies(s);
+    		calculateSetDependencies(CALCFOLLOW, s, followSets, followSetDependencies, symbolsVisited);
     	}
     }
     
     public void calculateSLRFollowSetInitial(Symbol s) {
-    	//Start = $
-    	//Search for s in rhs
-    	//Follow = First of next if present
     	for(IProduction prod : productionsMapping.keySet()) {
-    		int sIndex = prod.rightHand().indexOf(s);
-    		if(sIndex > -1) {
-    			if(sIndex == prod.rightHand().size()-1) {
-    				followSetDependencies.put(s, prod.leftHand());
-    			}
-    			int i = 1;
-        		Symbol sNext = null;
-        		if(sIndex+i < prod.rightHand().size()) {
-        			sNext = prod.rightHand().get(sIndex+i);
-        		}
-        		
-        		while(sNext != null && sIndex+i < prod.rightHand().size() && (i == 1 || sNext.isNullable())) {
-            		sNext = prod.rightHand().get(sIndex+i);
-    				if (prod.rightHand().get(sIndex+1) instanceof CharacterClass) {
-	    				CharacterClass ccNext = (CharacterClass) sNext;
-	    				followSets.put(s, CharacterClass.union(followSets.get(s), ccNext));
-    				} else {
-	    				followSetDependencies.put(sNext, s);
-    				}
-    			}
+    		for(int sIndex = 0; sIndex < prod.rightHand().size(); sIndex++) {
+	    		if(prod.rightHand().get(sIndex).equals(s)) {
+	    			if(sIndex == prod.rightHand().size()-1) {
+	    				Symbol sLHS = prod.leftHand();
+	    				followSetDependencies.put(s, sLHS);
+	    			}
+	    			int i = 1;
+	        		Symbol sNext = null;
+	        		if(sIndex+i < prod.rightHand().size()) {
+	        			sNext = prod.rightHand().get(sIndex+i);
+	        		}
+	        		
+	        		while(sNext != null && sIndex+i < prod.rightHand().size() && (i == 1 || sNext.isNullable())) {
+	            		sNext = prod.rightHand().get(sIndex+i);
+	    				if (prod.rightHand().get(sIndex+1) instanceof CharacterClass) {
+		    				CharacterClass ccNext = (CharacterClass) sNext;
+		    				followSets.put(s, CharacterClass.union(followSets.get(s), ccNext));
+	    				} else {
+	    					followSets.put(s, CharacterClass.union(followSets.get(s), firstSets.get(sNext)));
+	    				}
+	    				i++;
+	    			}
+	    		}
     		}
     	}
     }
     
-    public void calculateSLRFollowSetDependencies(Symbol s) {
-    	Set<Symbol> dependencies = followSetDependencies.get(s);
-    	Queue<Symbol> q = Lists.newLinkedList();
-    	q.addAll(dependencies);
+//    public void calculateSLRFollowSetDependencies(Symbol s) {
+//    	Set<Symbol> dependencies = followSetDependencies.get(s);
+//    	Queue<Symbol> q = Lists.newLinkedList();
+//    	q.addAll(dependencies);
+//    	
+//    	while(!q.isEmpty()) {
+//    		Symbol sDependency = q.poll();
+//    		followSets.put(s, CharacterClass.union(followSets.get(s), followSets.get(sDependency)));
+//    		if(!sDependency.isVisitedFollow()) {
+//    			Set<Symbol> nestedDependencies = followSetDependencies.get(sDependency);
+//    			for(Symbol nestedDependency : nestedDependencies)
+//    				followSets.put(s, CharacterClass.union(followSets.get(s), followSets.get(sDependency)));
+//    			
+//    			q.addAll(nestedDependencies);
+//    			sDependency.setVisitedFollow(true);
+//    		}
+//    	}
+//    }
+    
+    public void calculateSetDependencies(int type, Symbol s, Map<Symbol, CharacterClass> sets, SetMultimap<Symbol, Symbol> setDependencies, Map<Symbol, boolean[]> symbolsVisited) {
+    	int startCycle;
+    	if (type == CALCFOLLOW) {
+    		startCycle = 2;
+    	} else {
+    		startCycle = 0;
+    	}
     	
-    	while(!q.isEmpty()) {
-    		Symbol sDependency = q.poll();
-    		followSets.put(s, CharacterClass.union(followSets.get(s), followSets.get(sDependency)));
-    		if (!sDependency.isVisitedFollow()) {
-    			Set<Symbol> nestedDependencies = followSetDependencies.get(sDependency);
-    			q.addAll(nestedDependencies);
-    			sDependency.setVisitedFollow(true);
-    		}
+    	for(int cycle = startCycle; cycle < startCycle + 2; cycle++) {
+	    	Set<Symbol> sDependencies = setDependencies.get(s);
+	    	Deque<Symbol[]> stack = Lists.newLinkedList();
+	    	for(Symbol sDependency : sDependencies) {
+	    		stack.push(new Symbol[] {s, sDependency});
+	    	}
+	    	
+	    	while(!stack.isEmpty()) {
+	    		Symbol[] symbols = stack.peek();
+	    		Symbol sSuper = symbols[0];
+	    		Symbol sSub = symbols[1];
+	    		boolean sSubVisited = symbolsVisited.get(sSub)[cycle];
+	    		
+	    		if (sSubVisited) {
+	    			stack.pop();
+	    		} else {
+	                symbolsVisited.get(sSub)[cycle] = true;
+		    		
+		    		Set<Symbol> nestedDependencies = setDependencies.get(sSub);
+		    		if(nestedDependencies.isEmpty()) {
+		    			sets.put(sSuper, CharacterClass.union(sets.get(sSuper), sets.get(sSub)));
+		    			stack.pop();
+		    		} else {
+		    			boolean processNested = false;
+		    			for(Symbol sNested : nestedDependencies) {
+	                        boolean sNestedIsVisited = symbolsVisited.get(sNested)[cycle];
+		    				if(sNestedIsVisited) {
+		    					sets.put(sSub, CharacterClass.union(sets.get(sSub), sets.get(sNested)));
+		    				} else {
+		    					stack.push(new Symbol[] {sSub, sNested});
+		    					processNested = true;
+		    				}
+		    			}
+		    			if (!processNested) {
+		    				sets.put(sSuper, CharacterClass.union(sets.get(sSuper), sets.get(sSub)));
+		    				stack.pop();
+		    			}
+		    		}
+	    		}
+	    	}
     	}
     }
     
