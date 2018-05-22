@@ -134,10 +134,16 @@ public class LRItem implements Serializable {
             buf += " .";
         }
         if(lookahead != null && !lookahead.isEmpty()) {
-        	buf += " , {";
+        	buf += " ";
+        	String la = "";
+        	boolean fullRange = true;
         	for(ICharacterClass cc : lookahead) {
-        		buf += "(" + cc.toString() + ")";
+        		la += "{" + cc.toString() + "}";
+        		if(!cc.equals(CharacterClass.getFullCharacterClass()))
+        			fullRange = false;
         	}
+        	if(!fullRange)
+        		buf += la;
         }
 
         return buf;
@@ -162,10 +168,6 @@ public class LRItem implements Serializable {
         if(dotPosition != other.dotPosition)
             return false;
         if(prod_label != other.prod_label)
-            return false;
-        if(lookahead.size() != other.lookahead.size())
-            return false;
-        if(!lookahead.equals(other.lookahead))
             return false;
         return true;
     }

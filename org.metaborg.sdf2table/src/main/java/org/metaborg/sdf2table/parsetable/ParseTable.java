@@ -1,6 +1,7 @@
 package org.metaborg.sdf2table.parsetable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,7 @@ public class ParseTable implements IParseTable, Serializable {
     private SymbolStatesMapping symbolStatesMapping = new SymbolStatesMapping();
 
     private Map<Set<LRItem>, State> kernelStatesMapping = Maps.newLinkedHashMap();
+    private Map<Map<LRItem, List<ICharacterClass>>, State> augmentedKernelStatesMapping = Maps.newLinkedHashMap();
     private Map<LRItem, Set<LRItem>> itemDerivedItemsCache = Maps.newLinkedHashMap();
 
     // maps a set of contexts to a unique integer
@@ -124,63 +126,27 @@ public class ParseTable implements IParseTable, Serializable {
 
         createJSGLRParseTableProductions(productionLabels);
         
-        if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
-        	calculateSLRFirstSets();
-        	calculateSLRFollowSets();
-        }
-        
         // create states if the table should not be generated dynamically
         initialProduction = grammar.getInitialProduction();
 
         if(!dynamic) {
-            State s0 = new State(initialProduction, this);
-            stateQueue.add(s0);
-            processStateQueue();
+        	initProcessing();
         }
     }
     
     public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) {
-        this.grammar = grammar;
-        this.dataDependent = dataDependent;
-        this.parseTableGenType = ParseTableGenType.LR;
-    	this.kLookahead = 0;
-
-        // calculate nullable symbols
-        calculateNullable();
-
-        // calculate left and right recursive productions (considering nullable symbols)
-        calculateRecursion();
-
-        // normalize priorities according to recursion
-        normalizePriorities();
-
-        // create labels for productions
-        createLabels();
-
-        // calculate deep priority conflicts based on current priorities
-        // and generate contextual productions
-        if (solveDeepConflicts) {
-            final DeepConflictsAnalyzer analysis = DeepConflictsAnalyzer.fromParseTable(this);
-            analysis.patchParseTable();
-
-            updateLabelsContextualProductions();
-        }
-
-        createJSGLRParseTableProductions(productionLabels);
-        
-        if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
+        this(grammar, dynamic, dataDependent, solveDeepConflicts, ParseTableGenType.LR, 0);
+    }
+    
+    private void initProcessing() {
+    	if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
         	calculateSLRFirstSets();
+        	calculateSLRFollowSets();
         }
         
-        // create states if the table should not be generated dynamically
-        initialProduction = grammar.getInitialProduction();
-
-        if(!dynamic) {
-            State s0 = new State(initialProduction, this);
-            stateQueue.add(s0);
-            processStateQueue();
-        }
-
+        State s0 = new State(initialProduction, this);
+        stateQueue.add(s0);
+        processStateQueue();
     }
 
     private void calculateNullable() {
@@ -727,29 +693,31 @@ public class ParseTable implements IParseTable, Serializable {
         return s;
     }
     
-    public void calculateFirstSets() {
-    	
-    }
+    private Map<Symbol, CharacterClass> firstSetsSLR = Maps.newLinkedHashMap();
+    private SetMultimap<Symbol, Symbol> firstSetDependenciesSLR = HashMultimap.create();
+    private Map<Symbol, CharacterClass> followSetsSLR = Maps.newLinkedHashMap();
+    private SetMultimap<Symbol, Symbol> followSetDependenciesSLR = HashMultimap.create();
     
-    private Map<Symbol, CharacterClass> firstSets = Maps.newLinkedHashMap();
-    private SetMultimap<Symbol, Symbol> firstSetDependencies = HashMultimap.create();
-    private Map<Symbol, CharacterClass> followSets = Maps.newLinkedHashMap();
-    private SetMultimap<Symbol, Symbol> followSetDependencies = HashMultimap.create();
+    private Map<State, Map<Symbol, CharacterClass>> firstSetsLR = Maps.newLinkedHashMap();
+    private Map<State, SetMultimap<Symbol, Symbol>> firstSetDependenciesLR = Maps.newLinkedHashMap();
+    private Map<State, Map<Symbol, CharacterClass>> followSetsLR = Maps.newLinkedHashMap();
+    private Map<State, SetMultimap<Symbol, Symbol>> followSetDependenciesLR = Maps.newLinkedHashMap();
+    
     private Map<Symbol, boolean[]> symbolsVisited = Maps.newLinkedHashMap();
 
     public void calculateSLRFirstSets() {
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		if(firstSets.get(s) == null) {
+    		if(firstSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
-				firstSets.put(s, cc);
+				firstSetsSLR.put(s, cc);
                 symbolsVisited.put(s, new boolean[] {false, false, false, false});
     		}
     		calculateSLRFirstSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSetDependencies(CALCFIRST, s, firstSets, firstSetDependencies, symbolsVisited);
+    		calculateSetDependencies(CALCFIRST, s, firstSetsSLR, firstSetDependenciesSLR, symbolsVisited);
     	}
     }
     
@@ -763,9 +731,9 @@ public class ParseTable implements IParseTable, Serializable {
     			if(s.equals(prod.leftHand())) {
     				if(rhsSymbol instanceof CharacterClass) {
     					CharacterClass cc = (CharacterClass) rhsSymbol;
-    					firstSets.put(s, CharacterClass.union(firstSets.get(s), cc));
+    					firstSetsSLR.put(s, CharacterClass.union(firstSetsSLR.get(s), cc));
     				} else {
-	    				firstSetDependencies.put(s, rhsSymbol);
+	    				firstSetDependenciesSLR.put(s, rhsSymbol);
     				}	
     			}
     			i++;
@@ -773,34 +741,18 @@ public class ParseTable implements IParseTable, Serializable {
     	}
     }
     
-//    public void calculateSLRFirstSetDependencies(Symbol s) {
-//    	Set<Symbol> dependencies = firstSetDependencies.get(s);
-//    	Queue<Symbol> q = Lists.newLinkedList();
-//    	q.addAll(dependencies);
-//    	
-//    	while(!q.isEmpty()) {
-//    		Symbol sDependency = q.poll();
-//    		firstSets.put(s, CharacterClass.union(firstSets.get(s), firstSets.get(sDependency)));
-//    		if (!sDependency.isVisitedFirst()) {
-//    			Set<Symbol> nestedDependencies = firstSetDependencies.get(sDependency);
-//    			q.addAll(nestedDependencies);
-//    			sDependency.setVisitedFirst(true);
-//    		}
-//    	}
-//    }
-    
     public void calculateSLRFollowSets() {
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		if(followSets.get(s) == null) {
+    		if(followSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
-				followSets.put(s, cc);
+				followSetsSLR.put(s, cc);
     		}
     		calculateSLRFollowSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSetDependencies(CALCFOLLOW, s, followSets, followSetDependencies, symbolsVisited);
+    		calculateSetDependencies(CALCFOLLOW, s, followSetsSLR, followSetDependenciesSLR, symbolsVisited);
     	}
     }
     
@@ -810,7 +762,7 @@ public class ParseTable implements IParseTable, Serializable {
 	    		if(prod.rightHand().get(sIndex).equals(s)) {
 	    			if(sIndex == prod.rightHand().size()-1) {
 	    				Symbol sLHS = prod.leftHand();
-	    				followSetDependencies.put(s, sLHS);
+	    				followSetDependenciesSLR.put(s, sLHS);
 	    			}
 	    			int i = 1;
 	        		Symbol sNext = null;
@@ -822,9 +774,9 @@ public class ParseTable implements IParseTable, Serializable {
 	            		sNext = prod.rightHand().get(sIndex+i);
 	    				if (prod.rightHand().get(sIndex+1) instanceof CharacterClass) {
 		    				CharacterClass ccNext = (CharacterClass) sNext;
-		    				followSets.put(s, CharacterClass.union(followSets.get(s), ccNext));
+		    				followSetsSLR.put(s, CharacterClass.union(followSetsSLR.get(s), ccNext));
 	    				} else {
-	    					followSets.put(s, CharacterClass.union(followSets.get(s), firstSets.get(sNext)));
+	    					followSetsSLR.put(s, CharacterClass.union(followSetsSLR.get(s), firstSetsSLR.get(sNext)));
 	    				}
 	    				i++;
 	    			}
@@ -833,24 +785,138 @@ public class ParseTable implements IParseTable, Serializable {
     	}
     }
     
-//    public void calculateSLRFollowSetDependencies(Symbol s) {
-//    	Set<Symbol> dependencies = followSetDependencies.get(s);
-//    	Queue<Symbol> q = Lists.newLinkedList();
-//    	q.addAll(dependencies);
-//    	
-//    	while(!q.isEmpty()) {
-//    		Symbol sDependency = q.poll();
-//    		followSets.put(s, CharacterClass.union(followSets.get(s), followSets.get(sDependency)));
-//    		if(!sDependency.isVisitedFollow()) {
-//    			Set<Symbol> nestedDependencies = followSetDependencies.get(sDependency);
-//    			for(Symbol nestedDependency : nestedDependencies)
-//    				followSets.put(s, CharacterClass.union(followSets.get(s), followSets.get(sDependency)));
-//    			
-//    			q.addAll(nestedDependencies);
-//    			sDependency.setVisitedFollow(true);
-//    		}
-//    	}
-//    }
+    
+    
+    
+    
+    
+    // LR
+    
+    public void calculateLRFirstSets(State state) {
+    	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
+    	
+    	if(stateFirstSets == null) {
+    		stateFirstSets = Maps.newLinkedHashMap();
+    		firstSetsLR.put(state, stateFirstSets);
+    	}
+    	if(stateFirstSetDependencies == null) {
+    		stateFirstSetDependencies = HashMultimap.create();
+    		firstSetDependenciesLR.put(state, stateFirstSetDependencies);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		
+    		if(stateFirstSets.get(s) == null) {
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
+    			stateFirstSets.put(s, cc);
+                symbolsVisited.put(s, new boolean[] {false, false, false, false});
+    		}
+    		calculateLRFirstSetInitial(state, s);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		calculateSetDependencies(CALCFIRST, s, stateFirstSets, stateFirstSetDependencies, symbolsVisited);
+    	}
+    }
+    
+    public void calculateLRFirstSetInitial(State state, Symbol s) {
+    	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
+    	
+    	for(LRItem item : state.getItems()) {
+    		int i = 0;
+    		IProduction prod = item.getProd();
+    		Symbol rhsSymbol = prod.rightHand().get(0);
+    		
+    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
+    			rhsSymbol = prod.rightHand().get(i);
+    			if(s.equals(prod.leftHand())) {
+    				if(rhsSymbol instanceof CharacterClass) {
+    					CharacterClass cc = (CharacterClass) rhsSymbol;
+    					stateFirstSets.put(s, CharacterClass.union(stateFirstSets.get(s), cc));
+    				} else {
+    					stateFirstSetDependencies.put(s, rhsSymbol);
+    				}	
+    			}
+    			i++;
+    		}
+    	}
+    }
+    
+    public void calculateLRFollowSets(State state) {
+    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFollowSetDependencies = followSetDependenciesLR.get(state);
+    	
+    	if(stateFollowSets == null) {
+    		stateFollowSets = Maps.newLinkedHashMap();
+    		firstSetsLR.put(state, stateFollowSets);
+    	}
+    	if(stateFollowSetDependencies == null) {
+    		stateFollowSetDependencies = HashMultimap.create();
+    		firstSetDependenciesLR.put(state, stateFollowSetDependencies);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		if(stateFollowSets.get(s) == null) {
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
+    			stateFollowSets.put(s, cc);
+    		}
+    		calculateLRFollowSetInitial(state, s);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		calculateSetDependencies(CALCFOLLOW, s, stateFollowSets, stateFollowSetDependencies, symbolsVisited);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		Symbol s = item.getProd().leftHand();
+    		List<ICharacterClass> itemLookahead = new ArrayList();
+    		itemLookahead.add(stateFollowSets.get(s));
+    		item.setLookahead(itemLookahead);
+    	}
+    }
+    
+    public void calculateLRFollowSetInitial(State state, Symbol s) {
+    	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
+    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFollowSetDependencies = followSetDependenciesLR.get(state);
+    	
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		int startIndex = item.getDotPosition();
+    		
+    		for(int sIndex = startIndex; sIndex < prod.rightHand().size(); sIndex++) {
+	    		if(prod.rightHand().get(sIndex).equals(s)) {
+	    			if(sIndex == prod.rightHand().size()-1) {
+	    				Symbol sLHS = prod.leftHand();
+	    				stateFollowSetDependencies.put(s, sLHS);
+	    			}
+	    			int i = 1;
+	        		Symbol sNext = null;
+	        		if(sIndex+i < prod.rightHand().size()) {
+	        			sNext = prod.rightHand().get(sIndex+i);
+	        		}
+	        		
+	        		while(sNext != null && sIndex+i < prod.rightHand().size() && (i == 1 || sNext.isNullable())) {
+	            		sNext = prod.rightHand().get(sIndex+i);
+	    				if (prod.rightHand().get(sIndex+1) instanceof CharacterClass) {
+		    				CharacterClass ccNext = (CharacterClass) sNext;
+		    				stateFollowSets.put(s, CharacterClass.union(stateFollowSets.get(s), ccNext));
+	    				} else {
+	    					stateFollowSets.put(s, CharacterClass.union(stateFollowSets.get(s), stateFirstSets.get(sNext)));
+	    				}
+	    				i++;
+	    			}
+	    		}
+    		}
+    	}
+    }
+    
+    
     
     public void calculateSetDependencies(int type, Symbol s, Map<Symbol, CharacterClass> sets, SetMultimap<Symbol, Symbol> setDependencies, Map<Symbol, boolean[]> symbolsVisited) {
     	int startCycle;
@@ -905,7 +971,7 @@ public class ParseTable implements IParseTable, Serializable {
     
     public CharacterClass getFollowSet(Symbol s, State state) {
     	if (kLookahead == 1 && parseTableGenType == ParseTableGenType.SLR) {
-    		return followSets.get(s);
+    		return followSetsSLR.get(s);
     	} else if (kLookahead == 1 && (parseTableGenType == ParseTableGenType.LR || parseTableGenType == ParseTableGenType.LALR)) {
     		return state.getFollowSet(s);
     	} else {
