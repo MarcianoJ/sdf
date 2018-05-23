@@ -36,6 +36,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Queues;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
@@ -630,10 +631,29 @@ public class ParseTable implements IParseTable, Serializable {
         }
     }
 
-    private void processState(State state) {
+    public void prepareState(State state) {
         state.closure();
-        //state.calculateFirstFollowSets();
-        state.doShift();
+        if(kLookahead > 0) {
+        	if(parseTableGenType == ParseTableGenType.LR || parseTableGenType == ParseTableGenType.LALR) {
+	        	calculateLRFirstSets(state);
+	        	calculateLRFollowSets(state);
+        	}
+	        if(parseTableGenType == ParseTableGenType.SLR) {
+	        	applyFollowSetsSLR(state);
+	        } else {
+	        	applyFollowSetsLR(state);
+	        }
+        }
+        
+        addKernelToMappings(state);
+    }
+    
+    public void processState(State state) {
+        if(parseTableGenType == ParseTableGenType.LALR) {
+        	state.doShift(true);
+        } else {
+        	state.doShift(false);
+        }
         state.doReduces();
         state.calculateActionsForCharacter();
         state.setStatus(StateStatus.PROCESSED);
@@ -651,11 +671,8 @@ public class ParseTable implements IParseTable, Serializable {
         State s0;
         if(totalStates == 0) {
             s0 = new State(initialProduction(), this);
-            s0.closure();
-            s0.doShift();
-            s0.doReduces();
-            s0.calculateActionsForCharacter();
-            s0.setStatus(StateStatus.PROCESSED);
+            prepareState(s0);
+            processState(s0);
             setProcessedStates(getProcessedStates() + 1);
         } else if(((State) stateLabels.get(0)).status() != StateStatus.PROCESSED) {
             s0 = (State) stateLabels.get(0);
@@ -664,11 +681,8 @@ public class ParseTable implements IParseTable, Serializable {
                 // uncheckOldReferences(s0.gotos());
                 s0.gotos().clear();
             }
-            s0.closure();
-            s0.doShift();
-            s0.doReduces();
-            s0.calculateActionsForCharacter();
-            s0.setStatus(StateStatus.PROCESSED);
+            prepareState(s0);
+            processState(s0);
         } else {
             return stateLabels.get(0);
         }
@@ -683,11 +697,8 @@ public class ParseTable implements IParseTable, Serializable {
                 // uncheckOldReferences(s0.gotos());
                 s.gotos().clear();
             }
-            s.closure();
-            s.doShift();
-            s.doReduces();
-            s.calculateActionsForCharacter();
-            s.setStatus(StateStatus.PROCESSED);
+            prepareState(s);
+            processState(s);
             setProcessedStates(getProcessedStates() + 1);
         }
         return s;
@@ -804,15 +815,18 @@ public class ParseTable implements IParseTable, Serializable {
     		stateFirstSetDependencies = HashMultimap.create();
     		firstSetDependenciesLR.put(state, stateFirstSetDependencies);
     	}
-    	for(LRItem item : state.getItems()) {
-    		IProduction prod = item.getProd();
-    		Symbol s = prod.leftHand();
-    		
+    	
+    	Multiset<Symbol> allSymbols = normalizedGrammar().getSymbolProductionsMapping().keys();
+    	for(Symbol s : allSymbols) {
     		if(stateFirstSets.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
     			stateFirstSets.put(s, cc);
-                symbolsVisited.put(s, new boolean[] {false, false, false, false});
     		}
+            symbolsVisited.put(s, new boolean[] {false, false, false, false});
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
     		calculateLRFirstSetInitial(state, s);
     	}
     	for(LRItem item : state.getItems()) {
@@ -852,31 +866,37 @@ public class ParseTable implements IParseTable, Serializable {
     	
     	if(stateFollowSets == null) {
     		stateFollowSets = Maps.newLinkedHashMap();
-    		firstSetsLR.put(state, stateFollowSets);
+    		followSetsLR.put(state, stateFollowSets);
     	}
     	if(stateFollowSetDependencies == null) {
     		stateFollowSetDependencies = HashMultimap.create();
-    		firstSetDependenciesLR.put(state, stateFollowSetDependencies);
+    		followSetDependenciesLR.put(state, stateFollowSetDependencies);
     	}
-    	for(LRItem item : state.getItems()) {
+    	
+    	for(LRItem item : state.getKernel()) {
     		IProduction prod = item.getProd();
     		Symbol s = prod.leftHand();
+			CharacterClass itemLookahead = (CharacterClass) item.getLookahead().get(0);
+			stateFollowSets.put(s, itemLookahead);
+    	}
+    	
+    	Multiset<Symbol> allSymbols = normalizedGrammar().getSymbolProductionsMapping().keys();
+    	for(Symbol s : allSymbols) {
     		if(stateFollowSets.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
     			stateFollowSets.put(s, cc);
     		}
+    	}
+    	
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
     		calculateLRFollowSetInitial(state, s);
     	}
     	for(LRItem item : state.getItems()) {
     		IProduction prod = item.getProd();
     		Symbol s = prod.leftHand();
     		calculateSetDependencies(CALCFOLLOW, s, stateFollowSets, stateFollowSetDependencies, symbolsVisited);
-    	}
-    	for(LRItem item : state.getItems()) {
-    		Symbol s = item.getProd().leftHand();
-    		List<ICharacterClass> itemLookahead = new ArrayList();
-    		itemLookahead.add(stateFollowSets.get(s));
-    		item.setLookahead(itemLookahead);
     	}
     }
     
@@ -969,16 +989,47 @@ public class ParseTable implements IParseTable, Serializable {
     	}
     }
     
-    public CharacterClass getFollowSet(Symbol s, State state) {
-    	if (kLookahead == 1 && parseTableGenType == ParseTableGenType.SLR) {
-    		return followSetsSLR.get(s);
-    	} else if (kLookahead == 1 && (parseTableGenType == ParseTableGenType.LR || parseTableGenType == ParseTableGenType.LALR)) {
-    		return state.getFollowSet(s);
-    	} else {
-    		return CharacterClass.getFullCharacterClass();
+    public void applyFollowSetsLR(State state) {
+    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
+    	
+    	for(LRItem item : state.getItems()) {
+    		Symbol s = item.getProd().leftHand();
+    		List<ICharacterClass> itemLookahead = new ArrayList<ICharacterClass>();
+    		itemLookahead.add(stateFollowSets.get(s));
+    		item.setLookahead(itemLookahead);
     	}
-//    	ICharacterClassFactory ccFactory = new CharacterClassFactory(true, true);
-//    	return new CharacterClass(ccFactory.fromSingle(97));
+    }
+    
+    public void applyFollowSetsSLR(State state) {
+    	for(LRItem item : state.getItems()) {
+    		Symbol s = item.getProd().leftHand();
+    		List<ICharacterClass> itemLookahead = new ArrayList<ICharacterClass>();
+    		itemLookahead.add(followSetsSLR.get(s));
+    		item.setLookahead(itemLookahead);
+    	}
+    }
+    
+    public void addKernelToMappings(State state) {
+    	kernelStatesMapping.put(state.getKernel(), state);
+    	
+    	Map<LRItem, List<ICharacterClass>> augmentedKernel = Maps.newLinkedHashMap();
+    	for(LRItem item : state.getKernel()) {
+    		augmentedKernel.put(item, item.getLookahead());
+    	}
+    	augmentedKernelStatesMapping.put(augmentedKernel, state);
+    }
+    
+    public List<ICharacterClass> getFollowSet(State state, Symbol s) {
+    	List<ICharacterClass> followList = new ArrayList<ICharacterClass>();
+    	
+    	if (kLookahead == 1 && parseTableGenType == ParseTableGenType.SLR) {
+    		followList.add(followSetsSLR.get(s));
+    	} else if (kLookahead == 1 && (parseTableGenType == ParseTableGenType.LR || parseTableGenType == ParseTableGenType.LALR)) {
+    		followList.add(followSetsLR.get(state).get(s));
+    	} else {
+    		followList.add(CharacterClass.getFullCharacterClass());
+    	}
+    	return followList;
     }
     
 
@@ -986,6 +1037,7 @@ public class ParseTable implements IParseTable, Serializable {
         while(!stateQueue.isEmpty()) {
             State state = stateQueue.poll();
             if(state.status() != StateStatus.PROCESSED) {
+            	prepareState(state);
                 processState(state);
             }
         }
@@ -1009,6 +1061,10 @@ public class ParseTable implements IParseTable, Serializable {
 
     public Map<Set<LRItem>, State> kernelMap() {
         return kernelStatesMapping;
+    }
+    
+    public Map<Map<LRItem, List<ICharacterClass>>, State> augmentedKernelMap() {
+        return augmentedKernelStatesMapping;
     }
 
     public IProduction initialProduction() {
@@ -1098,7 +1154,5 @@ public class ParseTable implements IParseTable, Serializable {
 	public void setK(int k) {
 		this.kLookahead = k;
 	}
-
-
 
 }

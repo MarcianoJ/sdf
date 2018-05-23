@@ -41,6 +41,11 @@ public class LRItem implements Serializable {
         lookaheadList.add(CharacterClass.getFullCharacterClass());
         this.lookahead = lookaheadList;
     }
+    
+    public LRItem(IProduction prod, int dotPosition, ParseTable pt, List<ICharacterClass> lookahead) {
+    	this(prod, dotPosition, pt);
+    	this.lookahead = lookahead;
+    }
 
     public void process(Set<LRItem> items, SetMultimap<Symbol, LRItem> symbol_items, State originalState) {
 
@@ -71,7 +76,8 @@ public class LRItem implements Serializable {
                         if(pt.normalizedGrammar().getProdContextualProdMapping().get(p) != null) {
                             p = pt.normalizedGrammar().getProdContextualProdMapping().get(p);
                         }
-
+                        
+                        
                         LRItem newItem = new LRItem(p, 0, pt);
                         derivedItems.add(newItem);
 
@@ -99,7 +105,7 @@ public class LRItem implements Serializable {
     }
 
     public LRItem shiftDot() {
-        return new LRItem(this.prod, this.dotPosition + 1, this.pt);
+        return new LRItem(this.prod, this.dotPosition + 1, this.pt, lookahead);
     }
 
     public IProduction getProd() {
@@ -116,6 +122,23 @@ public class LRItem implements Serializable {
 
 	public void setLookahead(List<ICharacterClass> lookahead) {
 		this.lookahead = lookahead;
+	}
+	
+	public void mergeLookahead(List<ICharacterClass> otherLookahead) {
+		int maxSize = lookahead.size();
+		if(otherLookahead.size() > maxSize) {
+			maxSize = otherLookahead.size();
+		}
+		for(int i = 0; i < maxSize; i++) {
+			if(i < otherLookahead.size()) {
+				if(i < lookahead.size()) {
+					CharacterClass cc = CharacterClass.union((CharacterClass) lookahead.get(i), (CharacterClass) otherLookahead.get(i));
+					lookahead.set(i, cc);
+				} else {
+					lookahead.add(otherLookahead.get(i));
+				}
+			}
+		}
 	}
 
 	@Override public String toString() {
