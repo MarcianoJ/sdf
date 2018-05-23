@@ -46,8 +46,12 @@ public class State implements IState, Comparable<State>, Serializable {
     private StateStatus status = StateStatus.VISIBLE;
 
     public Set<State> states = Sets.newHashSet();
-
+    
     public State(IProduction p, ParseTable pt) {
+    	this(p, pt, false);
+    }
+    
+    public State(IProduction p, ParseTable pt, boolean temporary) {
         items = Sets.newLinkedHashSet();
         gotos = Sets.newLinkedHashSet();
         gotosMapping = Maps.newHashMap();
@@ -55,18 +59,26 @@ public class State implements IState, Comparable<State>, Serializable {
         symbol_items = LinkedHashMultimap.create();
         lr_actions = LinkedHashMultimap.create();
         this.rejectable = false;
-
+        
         this.pt = pt;
-        label = this.pt.totalStates();
-        this.pt.stateLabels().put(label, this);
-        this.pt.incTotalStates();
+        
+        if(temporary) {
+        	label = -1;
+        } else {
+	        label = this.pt.totalStates();
+	        this.pt.stateLabels().put(label, this);
+	        this.pt.incTotalStates();
+        }
 
         LRItem item = new LRItem(p, 0, pt);
         kernel.add(item);
-        pt.kernelMap().put(kernel, this);
+    }
+    
+    public State(Set<LRItem> kernel, ParseTable pt) {
+    	this(kernel, pt, false);
     }
 
-    public State(Set<LRItem> kernel, ParseTable pt) {
+    public State(Set<LRItem> kernel, ParseTable pt, boolean temporary) {
         items = Sets.newLinkedHashSet();
         gotos = Sets.newLinkedHashSet();
         gotosMapping = Maps.newHashMap();
@@ -76,12 +88,16 @@ public class State implements IState, Comparable<State>, Serializable {
 
         this.kernel = Sets.newLinkedHashSet();
         this.kernel.addAll(kernel);
-        pt.kernelMap().put(kernel, this);
-
+        
         this.pt = pt;
-        label = this.pt.totalStates();
-        this.pt.stateLabels().put(label, this);
-        this.pt.incTotalStates();
+        
+        if(temporary) {
+        	label = -1;
+        } else {
+	        label = this.pt.totalStates();
+	        this.pt.stateLabels().put(label, this);
+	        this.pt.incTotalStates();
+        }
     }
 
     public void closure() {
@@ -92,18 +108,8 @@ public class State implements IState, Comparable<State>, Serializable {
             item.process(items, symbol_items, this);
         }
     }
-    
-    public void calculateLRFirstSets() {
-    	// for symbol s in symbol_items.keys
-    	// for lr_items in symbol_items.get(s)
-    	// ...
-    }
-    
-    public void calculateLRFollowSets() {
-    	
-    }
 
-    public void doShift() {
+    public void doShift(boolean mergeStates) {
         for(Symbol s_at_dot : symbol_items.keySet()) {
             if(s_at_dot instanceof CharacterClass) {
                 Set<LRItem> new_kernel = Sets.newLinkedHashSet();
@@ -118,7 +124,7 @@ public class State implements IState, Comparable<State>, Serializable {
                     new_gotos.add(new GoTo((CharacterClass) s_at_dot, pt));
                 }
                 if(!new_kernel.isEmpty()) {
-                    checkKernel(new_kernel, new_gotos, new_shifts);
+                    checkKernel(new_kernel, new_gotos, new_shifts, mergeStates);
                 }
             } else {
                 for(IProduction p : pt.normalizedGrammar().getSymbolProductionsMapping().get(s_at_dot)) {
@@ -139,7 +145,7 @@ public class State implements IState, Comparable<State>, Serializable {
                         }
                     }
                     if(!new_kernel.isEmpty()) {
-                        checkKernel(new_kernel, new_gotos, new_shifts);
+                        checkKernel(new_kernel, new_gotos, new_shifts, mergeStates);
                     }
                 }
             }
@@ -154,14 +160,15 @@ public class State implements IState, Comparable<State>, Serializable {
             if(item.getDotPosition() == item.getProd().rightHand().size()) {
                 int prod_label = pt.productionLabels().get(item.getProd());
                 
+                List<ICharacterClass> itemFollowSet = item.getLookahead();
+                CharacterClass final_range = (CharacterClass) itemFollowSet.get(0);
+                
+                // TODO: support lookahead for followSets with k > 1
                 if(item.getProd().leftHand().followRestriction() == null
                     || item.getProd().leftHand().followRestriction().isEmptyCC()) {
-                    addReduceAction(item.getProd(), prod_label, pt.getFollowSet(item.getProd().leftHand(), this), null);
+                    addReduceAction(item.getProd(), prod_label, final_range, null);
                 } else {
-                    // Not based on first and follow sets thus, only considering the follow restrictions
-                    //CharacterClass final_range = CharacterClass.getFullCharacterClass()
-                	CharacterClass final_range = pt.getFollowSet(item.getProd().leftHand(), this)
-                        .difference(item.getProd().leftHand().followRestriction());
+                	final_range = final_range.difference(item.getProd().leftHand().followRestriction());
                     for(CharacterClass[] s : item.getProd().leftHand().followRestrictionLookahead()) {
                         final_range = final_range.difference(s[0]);
 
@@ -214,22 +221,36 @@ public class State implements IState, Comparable<State>, Serializable {
         }
     }
 
-    private void checkKernel(Set<LRItem> new_kernel, Set<GoTo> new_gotos, Set<Shift> new_shifts) {
-        // TODO pt.kernelMap().containsKey(new_kernel) && 
-    	if(pt.kernelMap().containsKey(new_kernel)) {
-            int stateNumber = pt.kernelMap().get(new_kernel).getLabel();
-            // set recently added shift and goto actions to new state
-            for(Shift shift : new_shifts) {
-                shift.setState(stateNumber);
-
-                this.lr_actions.put(shift.cc, shift);
-                // this.lr_actions.add(new LRAction(shift.cc, shift));
-            }
-            for(GoTo g : new_gotos) {
-                g.setState(stateNumber);
-                this.gotos.add(g);
-                this.gotosMapping.put(g.label, g);
-            }
+    private void checkKernel(Set<LRItem> new_kernel, Set<GoTo> new_gotos, Set<Shift> new_shifts, boolean mergeStates) {
+    	Map<LRItem, List<ICharacterClass>> newAugmentedKernel = Maps.newLinkedHashMap();
+        for(LRItem newKernelItem : new_kernel) {
+        	newAugmentedKernel.put(newKernelItem, newKernelItem.getLookahead());
+        }
+        
+    	//if(pt.kernelMap().containsKey(new_kernel)) {
+    	if(pt.augmentedKernelMap().containsKey(newAugmentedKernel)) {
+            int stateNumber = pt.augmentedKernelMap().get(newAugmentedKernel).getLabel();
+            // set recently added shift and goto actions to existing state
+            addNewShiftsAndGotos(stateNumber, new_shifts, new_gotos);
+            
+        // If state with same kernel with same lookahead doesn't yet exist and mergeStates == true,
+        // create temporary state from new_kernel, compute follow and merge item lookahead from temp state to existing state
+    	} else if(mergeStates == true && pt.kernelMap().containsKey(new_kernel)) {
+    		int stateNumber = pt.kernelMap().get(new_kernel).getLabel();
+    		addNewShiftsAndGotos(stateNumber, new_shifts, new_gotos);
+    		
+        	State existingState = pt.kernelMap().get(new_kernel);
+        	State temporaryState = new State(new_kernel, pt, true);
+        	pt.prepareState(temporaryState);
+        	
+        	Map<LRItem, List<ICharacterClass>> temporaryStateItems = Maps.newLinkedHashMap();
+        	for (LRItem item : existingState.getItems()) {
+        		temporaryStateItems.put(item, item.getLookahead());
+        	}
+        	for(LRItem item : existingState.getKernel()) {
+        		List<ICharacterClass> lookahead = temporaryStateItems.get(item);
+        		item.mergeLookahead(lookahead);
+        	}
         } else {
             State new_state = new State(new_kernel, pt);
             for(Shift shift : new_shifts) {
@@ -246,9 +267,18 @@ public class State implements IState, Comparable<State>, Serializable {
         }
     }
     
-    public CharacterClass getFollowSet(Symbol s) {
-    	ICharacterClassFactory ccFactory = new CharacterClassFactory(true, true);
-    	return new CharacterClass(ccFactory.fromSingle(97));
+    private void addNewShiftsAndGotos(int stateNumber, Set<Shift> new_shifts, Set<GoTo> new_gotos) {
+    	for(Shift shift : new_shifts) {
+            shift.setState(stateNumber);
+
+            this.lr_actions.put(shift.cc, shift);
+            // this.lr_actions.add(new LRAction(shift.cc, shift));
+        }
+        for(GoTo g : new_gotos) {
+            g.setState(stateNumber);
+            this.gotos.add(g);
+            this.gotosMapping.put(g.label, g);
+        }
     }
 
     @Override public String toString() {
@@ -335,6 +365,10 @@ public class State implements IState, Comparable<State>, Serializable {
 
     public int getLabel() {
         return label;
+    }
+    
+    public Set<LRItem> getKernel() {
+    	return kernel;
     }
 
     public Set<LRItem> getItems() {
