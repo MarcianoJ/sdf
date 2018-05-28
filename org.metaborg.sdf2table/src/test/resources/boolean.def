@@ -1,0 +1,17 @@
+module basic/Booleans
+
+exports
+  sorts Boolean
+  context-free start-symbols Boolean
+
+context-free syntax
+   "true"                      -> Boolean
+   "false"                     -> Boolean
+   lhs:Boolean "|" rhs:Boolean -> Boolean {left}         
+   lhs:Boolean "&" rhs:Boolean -> Boolean {left}       
+   "not" "(" Boolean ")"       -> Boolean           
+   "(" Boolean ")"             -> Boolean
+
+ context-free priorities
+   Boolean "&" Boolean -> Boolean >
+   Boolean "|" Boolean -> Boolean

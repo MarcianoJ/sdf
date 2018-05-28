@@ -1,10 +1,14 @@
 package org.metaborg.sdf2table.parsetable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import org.metaborg.parsetable.characterclasses.ICharacterClass;
 import org.metaborg.sdf2table.deepconflicts.ContextualProduction;
 import org.metaborg.sdf2table.deepconflicts.ContextualSymbol;
+import org.metaborg.sdf2table.grammar.CharacterClass;
 import org.metaborg.sdf2table.grammar.IPriority;
 import org.metaborg.sdf2table.grammar.IProduction;
 import org.metaborg.sdf2table.grammar.Priority;
@@ -21,7 +25,8 @@ public class LRItem implements Serializable {
     private IProduction prod;
     private int dotPosition;
     private int prod_label;
-
+    private List<ICharacterClass> lookahead;
+    
     public LRItem(IProduction prod, int dotPosition, ParseTable pt) {
         if(!(prod instanceof ContextualProduction) && pt.normalizedGrammar().getProdContextualProdMapping().containsKey(prod)) {
             this.prod = pt.normalizedGrammar().getProdContextualProdMapping().get(prod);
@@ -31,6 +36,15 @@ public class LRItem implements Serializable {
         this.pt = pt;
         this.dotPosition = dotPosition;
         this.prod_label = pt.productionLabels().get(prod);
+        
+        ArrayList<ICharacterClass> lookaheadList = new ArrayList<ICharacterClass>();
+        lookaheadList.add(CharacterClass.getFullCharacterClass());
+        this.lookahead = lookaheadList;
+    }
+    
+    public LRItem(IProduction prod, int dotPosition, ParseTable pt, List<ICharacterClass> lookahead) {
+    	this(prod, dotPosition, pt);
+    	this.lookahead = lookahead;
     }
 
     public void process(Set<LRItem> items, SetMultimap<Symbol, LRItem> symbol_items, State originalState) {
@@ -62,7 +76,8 @@ public class LRItem implements Serializable {
                         if(pt.normalizedGrammar().getProdContextualProdMapping().get(p) != null) {
                             p = pt.normalizedGrammar().getProdContextualProdMapping().get(p);
                         }
-
+                        
+                        
                         LRItem newItem = new LRItem(p, 0, pt);
                         derivedItems.add(newItem);
 
@@ -90,7 +105,7 @@ public class LRItem implements Serializable {
     }
 
     public LRItem shiftDot() {
-        return new LRItem(this.prod, this.dotPosition + 1, this.pt);
+        return new LRItem(this.prod, this.dotPosition + 1, this.pt, lookahead);
     }
 
     public IProduction getProd() {
@@ -101,7 +116,32 @@ public class LRItem implements Serializable {
         return dotPosition;
     }
 
-    @Override public String toString() {
+    public List<ICharacterClass> getLookahead() {
+		return lookahead;
+	}
+
+	public void setLookahead(List<ICharacterClass> lookahead) {
+		this.lookahead = lookahead;
+	}
+	
+	public void mergeLookahead(List<ICharacterClass> otherLookahead) {
+		int maxSize = lookahead.size();
+		if(otherLookahead.size() > maxSize) {
+			maxSize = otherLookahead.size();
+		}
+		for(int i = 0; i < maxSize; i++) {
+			if(i < otherLookahead.size()) {
+				if(i < lookahead.size()) {
+					CharacterClass cc = CharacterClass.union((CharacterClass) lookahead.get(i), (CharacterClass) otherLookahead.get(i));
+					lookahead.set(i, cc);
+				} else {
+					lookahead.add(otherLookahead.get(i));
+				}
+			}
+		}
+	}
+
+	@Override public String toString() {
         String buf = "";
         buf += prod.leftHand();
         buf += " -> ";
@@ -115,6 +155,18 @@ public class LRItem implements Serializable {
         }
         if(dotPosition >= prod.rightHand().size()) {
             buf += " .";
+        }
+        if(lookahead != null && !lookahead.isEmpty()) {
+        	buf += " ";
+        	String la = "";
+        	boolean fullRange = true;
+        	for(ICharacterClass cc : lookahead) {
+        		la += "{" + cc.toString() + "}";
+        		if(!cc.equals(CharacterClass.getFullCharacterClass()))
+        			fullRange = false;
+        	}
+        	if(!fullRange)
+        		buf += la;
         }
 
         return buf;
@@ -137,8 +189,6 @@ public class LRItem implements Serializable {
             return false;
         LRItem other = (LRItem) obj;
         if(dotPosition != other.dotPosition)
-            return false;
-        if(prod_label != other.prod_label)
             return false;
         return true;
     }

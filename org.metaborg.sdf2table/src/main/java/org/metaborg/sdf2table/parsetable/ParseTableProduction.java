@@ -415,7 +415,8 @@ public class ParseTableProduction implements org.metaborg.parsetable.IProduction
         return isSkippableInParseForest;
     }
 
-    @Override public boolean isLongestMatch() {
+    //@Override commented out, otherwise Maven gave a build error
+    public boolean isLongestMatch() {
         return isLongestMatch;
     }
 
