@@ -190,8 +190,6 @@ public class LRItem implements Serializable {
         LRItem other = (LRItem) obj;
         if(dotPosition != other.dotPosition)
             return false;
-        if(prod_label != other.prod_label)
-            return false;
         return true;
     }
 
