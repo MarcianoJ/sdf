@@ -62,9 +62,11 @@ public class State implements IState, Comparable<State>, Serializable {
         
         this.pt = pt;
         
+        
         if(temporary) {
         	label = -1;
         } else {
+        	pt.addKernelToMappings(this);
 	        label = this.pt.totalStates();
 	        this.pt.stateLabels().put(label, this);
 	        this.pt.incTotalStates();
@@ -91,9 +93,11 @@ public class State implements IState, Comparable<State>, Serializable {
         
         this.pt = pt;
         
+        
         if(temporary) {
         	label = -1;
         } else {
+        	pt.addKernelToMappings(this);
 	        label = this.pt.totalStates();
 	        this.pt.stateLabels().put(label, this);
 	        this.pt.incTotalStates();
@@ -220,20 +224,21 @@ public class State implements IState, Comparable<State>, Serializable {
             }
         }
     }
-
+    
+    // Checks new kernel to determine whether kernel exists, a new state should be created, or whether to merge lookaheads
     private void checkKernel(Set<LRItem> new_kernel, Set<GoTo> new_gotos, Set<Shift> new_shifts, boolean mergeStates) {
     	Map<LRItem, List<ICharacterClass>> newAugmentedKernel = Maps.newLinkedHashMap();
         for(LRItem newKernelItem : new_kernel) {
         	newAugmentedKernel.put(newKernelItem, newKernelItem.getLookahead());
         }
         
-    	//if(pt.kernelMap().containsKey(new_kernel)) {
+        // If same kernel with same lookahead exists, just add new shifts and gotos
     	if(pt.augmentedKernelMap().containsKey(newAugmentedKernel)) {
             int stateNumber = pt.augmentedKernelMap().get(newAugmentedKernel).getLabel();
             // set recently added shift and goto actions to existing state
             addNewShiftsAndGotos(stateNumber, new_shifts, new_gotos);
             
-        // If state with same kernel with same lookahead doesn't yet exist and mergeStates == true,
+        // If state with same kernel without same lookahead exists and mergeStates == true (LALR),
         // create temporary state from new_kernel, compute follow and merge item lookahead from temp state to existing state
     	} else if(mergeStates == true && pt.kernelMap().containsKey(new_kernel)) {
     		int stateNumber = pt.kernelMap().get(new_kernel).getLabel();
@@ -244,38 +249,31 @@ public class State implements IState, Comparable<State>, Serializable {
         	pt.prepareState(temporaryState);
         	
         	Map<LRItem, List<ICharacterClass>> temporaryStateItems = Maps.newLinkedHashMap();
-        	for (LRItem item : existingState.getItems()) {
+        	for (LRItem item : temporaryState.getItems()) {
         		temporaryStateItems.put(item, item.getLookahead());
         	}
         	for(LRItem item : existingState.getKernel()) {
         		List<ICharacterClass> lookahead = temporaryStateItems.get(item);
         		item.mergeLookahead(lookahead);
         	}
+        // If same kernel without same lookahead doesn't exist or mergeStates == false, create new state
         } else {
             State new_state = new State(new_kernel, pt);
-            for(Shift shift : new_shifts) {
-                shift.setState(new_state.getLabel());
-                this.lr_actions.put(shift.cc, shift);
-                // this.lr_actions.add(new LRAction(shift.cc, shift));
-            }
-            for(GoTo g : new_gotos) {
-                g.setState(new_state.getLabel());
-                this.gotos.add(g);
-                this.gotosMapping.put(g.label, g);
-            }
+            
+            addNewShiftsAndGotos(new_state.getLabel(), new_shifts, new_gotos);
             pt.stateQueue().add(new_state);
         }
     }
     
-    private void addNewShiftsAndGotos(int stateNumber, Set<Shift> new_shifts, Set<GoTo> new_gotos) {
+    // Add new shifts and gotos to the state with the specified label
+    private void addNewShiftsAndGotos(int stateLabel, Set<Shift> new_shifts, Set<GoTo> new_gotos) {
     	for(Shift shift : new_shifts) {
-            shift.setState(stateNumber);
+            shift.setState(stateLabel);
 
             this.lr_actions.put(shift.cc, shift);
-            // this.lr_actions.add(new LRAction(shift.cc, shift));
         }
         for(GoTo g : new_gotos) {
-            g.setState(stateNumber);
+            g.setState(stateLabel);
             this.gotos.add(g);
             this.gotosMapping.put(g.label, g);
         }
