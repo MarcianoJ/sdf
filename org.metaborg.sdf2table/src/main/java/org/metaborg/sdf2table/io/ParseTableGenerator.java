@@ -20,6 +20,7 @@ import org.metaborg.sdf2table.grammar.NormGrammar;
 import org.metaborg.sdf2table.parsetable.Action;
 import org.metaborg.sdf2table.parsetable.GoTo;
 import org.metaborg.sdf2table.parsetable.ParseTable;
+import org.metaborg.sdf2table.parsetable.ParseTableGenType;
 import org.metaborg.sdf2table.parsetable.State;
 import org.metaborg.util.log.ILogger;
 import org.metaborg.util.log.LoggerUtils;
@@ -42,7 +43,17 @@ public class ParseTableGenerator {
     private final static CharacterClassFactory ccFactory = new CharacterClassFactory(true, true);
     private boolean tableCreated = false;
     private ParseTable pt;
-
+    
+    private ParseTableGenType parseTableGenType;
+	private int kLookahead;
+    
+    public ParseTableGenerator(File input, File output, File persistedTable, File ctxGrammar, List<String> paths,
+    		ParseTableGenType parseType, int k) {
+    	
+    	this(input, output, persistedTable, ctxGrammar, paths);
+    	this.parseTableGenType = parseType;
+    	this.kLookahead = k;
+    }
     public ParseTableGenerator(File input, File output, File persistedTable, File ctxGrammar, List<String> paths) {
         this.input = input;
         this.outputFile = output;
@@ -63,15 +74,19 @@ public class ParseTableGenerator {
     }
 
     public void createParseTable(boolean dynamic, boolean dataDependent) throws Exception {
-        NormGrammar grammar = new GrammarReader().readGrammar(input, paths);
-        pt = new ParseTable(grammar, dynamic, dataDependent, true);
-        tableCreated = true;
+    	createParseTable(dynamic, dataDependent, true);
     }
 
     public void createParseTable(boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) throws Exception {
         NormGrammar grammar = new GrammarReader().readGrammar(input, paths);
-        pt = new ParseTable(grammar, dynamic, dataDependent, solveDeepConflicts);
-        tableCreated = true;
+        if(!tableCreated) {
+	        if(parseTableGenType != null && kLookahead >= 0) {
+	        	pt = new ParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+	        } else {
+	        	pt = new ParseTable(grammar, dynamic, dataDependent, solveDeepConflicts);
+	        }
+	        tableCreated = true;
+        }
     }
 
     public void outputTable(boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) throws Exception {
