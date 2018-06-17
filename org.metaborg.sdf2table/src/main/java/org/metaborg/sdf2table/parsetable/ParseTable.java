@@ -690,7 +690,12 @@ public class ParseTable implements IParseTable, Serializable {
     
     // Maps symbols visited by for calculating dependencies for first and follow sets.
     // symbolsVisited[0] and [1] for first, [2] and [3] for follow
-    private Map<Symbol, boolean[]> symbolsVisitedSLR = Maps.newLinkedHashMap();
+    // private Map<Symbol, boolean[]> symbolsVisitedSLR = Maps.newLinkedHashMap();
+    // First/follow, Symbol, cycle, boolean
+    private Map<Symbol, Map<Integer, Boolean>> firstSetsVisitedSLR = Maps.newLinkedHashMap();
+    private Map<Symbol, Boolean> firstSetsCompleteSLR = Maps.newLinkedHashMap();
+    private Map<Symbol, Map<Integer, Boolean>> followSetsVisitedSLR = Maps.newLinkedHashMap();
+    private Map<Symbol, Boolean> followSetsCompleteSLR = Maps.newLinkedHashMap();
     
     // Maps symbols to first and follow sets and symbols to dependent symbols for each state
     private Map<State, Map<Symbol, CharacterClass>> firstSetsLR = Maps.newLinkedHashMap();
@@ -700,7 +705,13 @@ public class ParseTable implements IParseTable, Serializable {
     
     // Maps symbols visited by for calculating dependencies for first and follow sets.
     // symbolsVisited[0] and [1] for first, [2] and [3] for follow
-    private Map<State, Map<Symbol, boolean[]>> symbolsVisitedLR = Maps.newLinkedHashMap();
+    
+    // First/follow, State, Symbol, cycle, boolean
+    //private Map<State, Map<Symbol, boolean[]>> symbolsVisitedLR = Maps.newLinkedHashMap();
+    private Map<State, Map<Symbol, Map<Integer, Boolean>>> firstSetsVisitedLR = Maps.newLinkedHashMap();
+    private Map<State, Map<Symbol, Boolean>> firstSetsCompleteLR = Maps.newLinkedHashMap();
+    private Map<State, Map<Symbol, Map<Integer, Boolean>>> followSetsVisitedLR = Maps.newLinkedHashMap();
+    private Map<State, Map<Symbol, Boolean>> followSetsCompleteLR = Maps.newLinkedHashMap();
     
     // Calculates firsts sets for symbols
     public void calculateSLRFirstSets() {
@@ -709,13 +720,13 @@ public class ParseTable implements IParseTable, Serializable {
     		if(firstSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				firstSetsSLR.put(s, cc);
-                symbolsVisitedSLR.put(s, new boolean[] {false, false, false, false});
+                firstSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
     		}
     		calculateSLRFirstSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSetDependencies(CALCFIRST, s, firstSetsSLR, firstSetDependenciesSLR, symbolsVisitedSLR);
+    		calculateSetDependencies(s, firstSetsSLR, firstSetDependenciesSLR, firstSetsVisitedSLR, firstSetsCompleteSLR);
     	}
     }
     
@@ -748,12 +759,13 @@ public class ParseTable implements IParseTable, Serializable {
     		if(followSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				followSetsSLR.put(s, cc);
+				followSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
     		}
     		calculateSLRFollowSetInitial(s);
     	}
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		calculateSetDependencies(CALCFOLLOW, s, followSetsSLR, followSetDependenciesSLR, symbolsVisitedSLR);
+    		calculateSetDependencies(s, followSetsSLR, followSetDependenciesSLR, followSetsVisitedSLR, followSetsCompleteSLR);
     	}
     }
     
@@ -802,7 +814,9 @@ public class ParseTable implements IParseTable, Serializable {
     public void calculateLRFirstSets(State state) {
     	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
     	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
-    	Map<Symbol, boolean[]> stateSymbolsVisited = Maps.newLinkedHashMap();
+    	Map<Symbol, Boolean> stateSymbolsComplete = firstSetsCompleteLR.get(state);
+    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
+    	
     	
     	if(stateFirstSets == null) {
     		stateFirstSets = Maps.newLinkedHashMap();
@@ -812,6 +826,10 @@ public class ParseTable implements IParseTable, Serializable {
     		stateFirstSetDependencies = HashMultimap.create();
     		firstSetDependenciesLR.put(state, stateFirstSetDependencies);
     	}
+    	if(stateSymbolsComplete == null) {
+    		stateSymbolsComplete = Maps.newLinkedHashMap();
+    		firstSetsCompleteLR.put(state, stateSymbolsComplete);
+    	}
     	
     	Multiset<Symbol> allSymbols = normalizedGrammar().getSymbolProductionsMapping().keys();
     	for(Symbol s : allSymbols) {
@@ -819,10 +837,10 @@ public class ParseTable implements IParseTable, Serializable {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
     			stateFirstSets.put(s, cc);
     		}
-    		stateSymbolsVisited.put(s, new boolean[] {false, false, false, false});    
+    		stateSymbolsVisited.put(s, Maps.newLinkedHashMap());    
     	}
     	
-    	symbolsVisitedLR.put(state, stateSymbolsVisited);
+    	firstSetsVisitedLR.put(state, stateSymbolsVisited);
     	
     	for(LRItem item : state.getItems()) {
     		IProduction prod = item.getProd();
@@ -833,7 +851,7 @@ public class ParseTable implements IParseTable, Serializable {
     		IProduction prod = item.getProd();
     		Symbol s = prod.leftHand();
     		
-    		calculateSetDependencies(CALCFIRST, s, stateFirstSets, stateFirstSetDependencies, symbolsVisitedLR.get(state));
+    		calculateSetDependencies(s, stateFirstSets, stateFirstSetDependencies, firstSetsVisitedLR.get(state), stateSymbolsComplete);
     	}
     }
     
@@ -866,6 +884,8 @@ public class ParseTable implements IParseTable, Serializable {
     public void calculateLRFollowSets(State state) {
     	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
     	SetMultimap<Symbol, Symbol> stateFollowSetDependencies = followSetDependenciesLR.get(state);
+    	Map<Symbol, Boolean> stateSymbolsComplete = followSetsCompleteLR.get(state);
+    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
     	
     	if(stateFollowSets == null) {
     		stateFollowSets = Maps.newLinkedHashMap();
@@ -874,6 +894,10 @@ public class ParseTable implements IParseTable, Serializable {
     	if(stateFollowSetDependencies == null) {
     		stateFollowSetDependencies = HashMultimap.create();
     		followSetDependenciesLR.put(state, stateFollowSetDependencies);
+    	}
+    	if(stateSymbolsComplete == null) {
+    		stateSymbolsComplete = Maps.newLinkedHashMap();
+    		followSetsCompleteLR.put(state, stateSymbolsComplete);
     	}
     	
     	for(LRItem item : state.getKernel()) {
@@ -889,7 +913,10 @@ public class ParseTable implements IParseTable, Serializable {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
     			stateFollowSets.put(s, cc);
     		}
+    		stateSymbolsVisited.put(s, Maps.newLinkedHashMap());
     	}
+    	
+    	followSetsVisitedLR.put(state, stateSymbolsVisited);
     	
     	for(LRItem item : state.getItems()) {
     		IProduction prod = item.getProd();
@@ -899,7 +926,7 @@ public class ParseTable implements IParseTable, Serializable {
     	for(LRItem item : state.getItems()) {
     		IProduction prod = item.getProd();
     		Symbol s = prod.leftHand();
-    		calculateSetDependencies(CALCFOLLOW, s, stateFollowSets, stateFollowSetDependencies, symbolsVisitedLR.get(state));
+    		calculateSetDependencies(s, stateFollowSets, stateFollowSetDependencies, followSetsVisitedLR.get(state), stateSymbolsComplete);
     	}
     }
     
@@ -939,62 +966,68 @@ public class ParseTable implements IParseTable, Serializable {
     }
     
     
-    // Expand first or follow sets by going through the dependencies in a DFS manner in two passes.
+    // Expands first or follow sets by going through the dependencies in a DFS manner in two passes.
     // The first pass guarantees that the set for symbol s is complete, the second pass guarantees that all
     // dependencies of s have a complete set (even for cyclical dependencies).
-    public void calculateSetDependencies(int type, Symbol s, Map<Symbol, CharacterClass> sets,
-    		SetMultimap<Symbol, Symbol> setDependencies, Map<Symbol, boolean[]> symbolsVisited) {
-    	int startCycle;
-    	if (type == CALCFOLLOW) {
-    		startCycle = 2;
-    	} else {
-    		startCycle = 0;
-    	}
+    public void calculateSetDependencies(Symbol s, Map<Symbol, CharacterClass> sets,
+    		SetMultimap<Symbol, Symbol> setDependencies, Map<Symbol, Map<Integer, Boolean>> symbolsVisited, Map<Symbol, Boolean> symbolsComplete) {
     	
-    	for(int cycle = startCycle; cycle < startCycle + 2; cycle++) {
-	    	Set<Symbol> sDependencies = setDependencies.get(s);
-	    	Deque<Symbol[]> stack = Lists.newLinkedList();
-	    	for(Symbol sDependency : sDependencies) {
-	    		stack.push(new Symbol[] {s, sDependency});
-	    	}
+    	if(!symbolsComplete.containsKey(s)) {
+	    	boolean allComplete = false;
+	    	int cycle = 0;
 	    	
-	    	while(!stack.isEmpty()) {
-	    		Symbol[] symbols = stack.peek();
-	    		Symbol sSuper = symbols[0];
-	    		Symbol sSub = symbols[1];
+	    	while(allComplete == false) {
+	    		allComplete = true;
+	    		ArrayList<Symbol> visitedThisCycle = new ArrayList<Symbol>();
+	    		visitedThisCycle.add(s);
+	    		symbolsVisited.get(s).put(cycle, true);
 	    		
-	    		// Keep track of which symbols are visited to avoid infinite loops
-	    		boolean sSubVisited = symbolsVisited.get(sSub)[cycle];
-	    		
-	    		if (sSubVisited) {
-	    			sets.put(sSuper, CharacterClass.union(sets.get(sSuper), sets.get(sSub)));
-	    			stack.pop();
-	    		} else {
-	                symbolsVisited.get(sSub)[cycle] = true;
+		    	Set<Symbol> sDependencies = setDependencies.get(s);
+		    	Deque<Symbol[]> stack = Lists.newLinkedList();
+		    	for(Symbol sDependency : sDependencies) {
+		    		stack.push(new Symbol[] {s, sDependency});
+		    	}
+		    	
+		    	while(!stack.isEmpty()) {
+		    		Symbol[] symbols = stack.peek();
+		    		Symbol sSuper = symbols[0];
+		    		Symbol sSub = symbols[1];
 		    		
-		    		Set<Symbol> nestedDependencies = setDependencies.get(sSub);
-		    		if(nestedDependencies.isEmpty()) {
-		    			sets.put(sSuper, CharacterClass.union(sets.get(sSuper), sets.get(sSub)));
+		    		// Keep track of which symbols are visited to avoid infinite loops
+		    		boolean sSubVisited = symbolsVisited.get(sSub).containsKey(cycle);
+		    		boolean sSubComplete = symbolsComplete.containsKey(sSub);
+		    		
+		    		
+		    		if (sSubComplete || sSubVisited) {
+		    			CharacterClass union = CharacterClass.union(sets.get(sSuper), sets.get(sSub));
+		    			if(!union.equals(sets.get(sSuper))) {	
+		    				sets.put(sSuper, union);
+		    				allComplete = false;
+		    			}
 		    			stack.pop();
 		    		} else {
-		    			// If there are non-processed nested dependencies, push them on the stack and process first
-		    			boolean processNested = false;
+		                symbolsVisited.get(sSub).put(cycle, true);
+		                visitedThisCycle.add(sSub);
+		                
+			    		// If there are non-processed nested dependencies, push them on the stack
+			    		Set<Symbol> nestedDependencies = setDependencies.get(sSub);
 		    			for(Symbol sNested : nestedDependencies) {
-	                        boolean sNestedIsVisited = symbolsVisited.get(sNested)[cycle];
-		    				if(sNestedIsVisited) {
-		    					sets.put(sSub, CharacterClass.union(sets.get(sSub), sets.get(sNested)));
-		    				} else {
+	                        boolean sNestedIsVisited = symbolsVisited.get(sNested).containsKey(cycle);
+	                        boolean sNestedComplete = symbolsComplete.containsKey(sNested);
+	                        
+		    				if(!(sNestedComplete || sNestedIsVisited)) {
 		    					stack.push(new Symbol[] {sSub, sNested});
-		    					processNested = true;
 		    				}
 		    			}
-		    			// If all nested dependencies are processed, process sSuper
-		    			if (!processNested) {
-		    				sets.put(sSuper, CharacterClass.union(sets.get(sSuper), sets.get(sSub)));
-		    				stack.pop();
-		    			}
 		    		}
-	    		}
+		    	}
+	    	
+		    	if(allComplete) {
+		    		for(Symbol sVisited : visitedThisCycle) {
+		    			symbolsComplete.put(sVisited, true);
+		    		}
+		    	}
+		    	cycle++;
 	    	}
     	}
     }
