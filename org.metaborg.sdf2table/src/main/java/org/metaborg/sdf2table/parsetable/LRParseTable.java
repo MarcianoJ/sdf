@@ -106,12 +106,33 @@ public class LRParseTable extends ParseTable {
     
     // Calculates follow sets for symbols for this state
     public void calculateLRFirstSets(State state) {
+    	prepareLRFirstSets(state);
+    	
     	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
     	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
     	Map<Symbol, Boolean> stateSymbolsComplete = firstSetsCompleteLR.get(state);
     	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
     	
-    	// Prepare variables
+    	// Calculate first sets for each symbol in state
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		calculateLRFirstSetInitial(state, s);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		
+    		calculateSetDependencies(s, stateFirstSets, stateFirstSetDependencies, stateSymbolsVisited, stateSymbolsComplete);
+    	}
+    }
+    
+    public void prepareLRFirstSets(State state) {
+    	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
+    	Map<Symbol, Boolean> stateSymbolsComplete = firstSetsCompleteLR.get(state);
+    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
+    	
     	if(stateFirstSets == null) {
     		stateFirstSets = Maps.newLinkedHashMap();
     		firstSetsLR.put(state, stateFirstSets);
@@ -135,19 +156,6 @@ public class LRParseTable extends ParseTable {
     	}
     	
     	firstSetsVisitedLR.put(state, stateSymbolsVisited);
-    	
-    	// Calculate first sets for each symbol in state
-    	for(LRItem item : state.getItems()) {
-    		IProduction prod = item.getProd();
-    		Symbol s = prod.leftHand();
-    		calculateLRFirstSetInitial(state, s);
-    	}
-    	for(LRItem item : state.getItems()) {
-    		IProduction prod = item.getProd();
-    		Symbol s = prod.leftHand();
-    		
-    		calculateSetDependencies(s, stateFirstSets, stateFirstSetDependencies, firstSetsVisitedLR.get(state), stateSymbolsComplete);
-    	}
     }
     
     // Calculates the immediately derivable first set characters of symbol s and maps first set dependencies
@@ -177,14 +185,36 @@ public class LRParseTable extends ParseTable {
     	}
     }
     
+    
     // Calculates follow sets for this state
     public void calculateLRFollowSets(State state) {
+    	prepareLRFollowSets(state);
+    	
+    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
+    	SetMultimap<Symbol, Symbol> stateFollowSetDependencies = followSetDependenciesLR.get(state);
+    	Map<Symbol, Boolean> stateSymbolsComplete = followSetsCompleteLR.get(state);
+    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = followSetsVisitedLR.get(state);
+    	
+    	
+    	// Calculate follow sets for each symbol in state
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		calculateLRFollowSetInitial(state, s);
+    	}
+    	for(LRItem item : state.getItems()) {
+    		IProduction prod = item.getProd();
+    		Symbol s = prod.leftHand();
+    		calculateSetDependencies(s, stateFollowSets, stateFollowSetDependencies, stateSymbolsVisited, stateSymbolsComplete);
+    	}
+    }
+    
+    public void prepareLRFollowSets(State state) {
     	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
     	SetMultimap<Symbol, Symbol> stateFollowSetDependencies = followSetDependenciesLR.get(state);
     	Map<Symbol, Boolean> stateSymbolsComplete = followSetsCompleteLR.get(state);
     	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
     	
-    	// Prepare variables
     	if(stateFollowSets == null) {
     		stateFollowSets = Maps.newLinkedHashMap();
     		followSetsLR.put(state, stateFollowSets);
@@ -215,18 +245,6 @@ public class LRParseTable extends ParseTable {
     	}
     	
     	followSetsVisitedLR.put(state, stateSymbolsVisited);
-    	
-    	// Calculate follow sets for each symbol in state
-    	for(LRItem item : state.getItems()) {
-    		IProduction prod = item.getProd();
-    		Symbol s = prod.leftHand();
-    		calculateLRFollowSetInitial(state, s);
-    	}
-    	for(LRItem item : state.getItems()) {
-    		IProduction prod = item.getProd();
-    		Symbol s = prod.leftHand();
-    		calculateSetDependencies(s, stateFollowSets, stateFollowSetDependencies, followSetsVisitedLR.get(state), stateSymbolsComplete);
-    	}
     }
     
     // Calculates the immediately derivable follow set characters of symbol s and maps follow set dependencies
@@ -241,7 +259,7 @@ public class LRParseTable extends ParseTable {
     		int sIndex = item.getDotPosition();
 
     		if(sIndex < prod.rightHand().size() && prod.rightHand().get(sIndex).equals(s)) {
-    			// If production has format B -> alpha A, then add follow(B) to follow(A)
+    			// If production has format B -> alpha A, then create dependency for follow(B) and follow(A)
     			if(sIndex == prod.rightHand().size()-1) {
     				Symbol sLHS = prod.leftHand();
     				stateFollowSetDependencies.put(s, sLHS);
