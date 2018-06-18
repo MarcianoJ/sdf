@@ -41,6 +41,7 @@ public class SLRParseTable extends ParseTable {
 	
 	@Override
 	protected void initVariables() {
+		// Init first/follow set variables
 		firstSetsSLR = Maps.newLinkedHashMap();
         firstSetDependenciesSLR = HashMultimap.create();
         followSetsSLR = Maps.newLinkedHashMap();
@@ -50,6 +51,25 @@ public class SLRParseTable extends ParseTable {
         firstSetsCompleteSLR = Maps.newLinkedHashMap();
         followSetsVisitedSLR = Maps.newLinkedHashMap();
         followSetsCompleteSLR = Maps.newLinkedHashMap();
+        
+        // Fill first and follow sets with empty CharacterClasses
+        for(IProduction prod : productionsMapping.keySet()) {
+    		Symbol s = prod.leftHand();
+    		if(firstSetsSLR.get(s) == null) {
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
+				firstSetsSLR.put(s, cc);
+                firstSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
+    		}
+    	}
+        
+        for(IProduction prod : productionsMapping.keySet()) {
+    		Symbol s = prod.leftHand();
+    		if(followSetsSLR.get(s) == null) {
+    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
+				followSetsSLR.put(s, cc);
+				followSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
+    		}
+    	}
 	}
 	
 	@Override
@@ -99,13 +119,9 @@ public class SLRParseTable extends ParseTable {
     public void calculateSLRFirstSets() {
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		if(firstSetsSLR.get(s) == null) {
-    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
-				firstSetsSLR.put(s, cc);
-                firstSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
-    		}
     		calculateSLRFirstSetInitial(s);
     	}
+    	
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
     		calculateSetDependencies(s, firstSetsSLR, firstSetDependenciesSLR, firstSetsVisitedSLR, firstSetsCompleteSLR);
@@ -139,13 +155,9 @@ public class SLRParseTable extends ParseTable {
     public void calculateSLRFollowSets() {
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
-    		if(followSetsSLR.get(s) == null) {
-    			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
-				followSetsSLR.put(s, cc);
-				followSetsVisitedSLR.put(s, Maps.newLinkedHashMap());
-    		}
     		calculateSLRFollowSetInitial(s);
     	}
+    	
     	for(IProduction prod : productionsMapping.keySet()) {
     		Symbol s = prod.leftHand();
     		calculateSetDependencies(s, followSetsSLR, followSetDependenciesSLR, followSetsVisitedSLR, followSetsCompleteSLR);
@@ -158,7 +170,7 @@ public class SLRParseTable extends ParseTable {
     	for(IProduction prod : productionsMapping.keySet()) {
     		for(int sIndex = 0; sIndex < prod.rightHand().size(); sIndex++) {
 	    		if(prod.rightHand().get(sIndex).equals(s)) {
-	    			// If production has format B -> alpha A, then add follow(B) to follow(A)
+	    			// If production has format B -> alpha A, then create dependency for follow(B) and follow(A)
 	    			if(sIndex == prod.rightHand().size()-1) {
 	    				Symbol sLHS = prod.leftHand();
 	    				followSetDependenciesSLR.put(s, sLHS);

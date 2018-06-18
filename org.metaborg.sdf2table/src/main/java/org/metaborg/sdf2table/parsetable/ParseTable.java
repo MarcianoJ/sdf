@@ -77,7 +77,7 @@ public abstract class ParseTable implements IParseTable, Serializable {
     protected int totalStates = 0;
 
     protected List<org.metaborg.parsetable.IProduction> productions = Lists.newArrayList();
-    Map<IProduction, ParseTableProduction> productionsMapping = Maps.newLinkedHashMap();
+    protected Map<IProduction, ParseTableProduction> productionsMapping = Maps.newLinkedHashMap();
     
     // Parse table generation type and k (lookahead)
     protected ParseTableGenType parseTableGenType;
@@ -126,10 +126,6 @@ public abstract class ParseTable implements IParseTable, Serializable {
         	initProcessing();
         }
     }
-    
-//    public ParseTable(NormGrammar grammar, boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) {
-//        this(grammar, dynamic, dataDependent, solveDeepConflicts, ParseTableGenType.LR, 0);
-//    }
     
     
     /*
