@@ -19,8 +19,11 @@ import org.metaborg.sdf2table.grammar.IProduction;
 import org.metaborg.sdf2table.grammar.NormGrammar;
 import org.metaborg.sdf2table.parsetable.Action;
 import org.metaborg.sdf2table.parsetable.GoTo;
+import org.metaborg.sdf2table.parsetable.LALRParseTable;
+import org.metaborg.sdf2table.parsetable.LRParseTable;
 import org.metaborg.sdf2table.parsetable.ParseTable;
 import org.metaborg.sdf2table.parsetable.ParseTableGenType;
+import org.metaborg.sdf2table.parsetable.SLRParseTable;
 import org.metaborg.sdf2table.parsetable.State;
 import org.metaborg.util.log.ILogger;
 import org.metaborg.util.log.LoggerUtils;
@@ -80,10 +83,15 @@ public class ParseTableGenerator {
     public void createParseTable(boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) throws Exception {
         NormGrammar grammar = new GrammarReader().readGrammar(input, paths);
         if(!tableCreated) {
-	        if(parseTableGenType != null && kLookahead >= 0) {
-	        	pt = new ParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+	        if(parseTableGenType == ParseTableGenType.LR && (kLookahead == 0 || kLookahead == 1)) {
+	        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+	        } else if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
+	        	pt = new SLRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+	        } else if(parseTableGenType == ParseTableGenType.LALR && kLookahead == 1) {
+	        	pt = new LALRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
 	        } else {
-	        	pt = new ParseTable(grammar, dynamic, dataDependent, solveDeepConflicts);
+	        	System.out.println("Invalid Parse table arguments or implementation does not exist. Defaulting to LR(0).");
+	        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, ParseTableGenType.LR, 0);
 	        }
 	        tableCreated = true;
         }
