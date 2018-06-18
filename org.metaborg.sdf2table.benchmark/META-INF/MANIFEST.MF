@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1529181059471
+Bnd-LastModified: 1529248555707
 Build-Jdk: 1.8.0_171
 Built-By: marciano
 Bundle-Description: Maven parent POM for Java projects
@@ -11,16 +11,20 @@ Bundle-Version: 2.4.1
 Created-By: Apache Maven Bundle Plugin
 Eclipse-BuddyPolicy: registered
 Embed-Transitive: true
-Export-Package: org.metaborg.sdf2table.benchmark
+Export-Package: org.metaborg.sdf2table.benchmark,org.metaborg.sdf2table.
+ benchmark.generated
 Import-Package: org.spoofax.interpreter.terms,org.spoofax.jsglr2,org.spo
- ofax.jsglr2.actions,org.spoofax.jsglr2.benchmark.jsglr2,org.spoofax.jsg
- lr2.parseforest,org.spoofax.jsglr2.parser,org.spoofax.jsglr2.parsetable
- ,org.spoofax.jsglr2.reducing,org.spoofax.jsglr2.stack,org.spoofax.jsglr
- 2.stack.collections,org.spoofax.jsglr2.states,org.spoofax.jsglr2.testse
- t,org.metaborg.characterclasses,org.metaborg.parsetable,org.metaborg.sd
- f2table.io,org.metaborg.sdf2table.parsetable,org.metaborg.sdf2table.par
- setable.query,org.openjdk.jmh.annotations;provider=metaborg;mandatory:=
- provider;version=0,org.openjdk.jmh.infra;provider=metaborg;mandatory:=p
- rovider;version=0
+ ofax.jsglr2.actions,org.spoofax.jsglr2.benchmark,org.spoofax.jsglr2.ben
+ chmark.jsglr2,org.spoofax.jsglr2.parseforest,org.spoofax.jsglr2.parser,
+ org.spoofax.jsglr2.parsetable,org.spoofax.jsglr2.reducing,org.spoofax.j
+ sglr2.stack,org.spoofax.jsglr2.stack.collections,org.spoofax.jsglr2.sta
+ tes,org.spoofax.jsglr2.testset,org.metaborg.characterclasses,org.metabo
+ rg.parsetable,org.metaborg.sdf2table.io,org.metaborg.sdf2table.parsetab
+ le,org.metaborg.sdf2table.parsetable.query,org.openjdk.jmh.annotations;
+ provider=metaborg;mandatory:=provider;version=0,org.openjdk.jmh.infra;p
+ rovider=metaborg;mandatory:=provider;version=0,org.openjdk.jmh.results;
+ provider=metaborg;mandatory:=provider;version=0,org.openjdk.jmh.runner;
+ provider=metaborg;mandatory:=provider;version=0,org.openjdk.jmh.util;pr
+ ovider=metaborg;mandatory:=provider;version=0
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Tool: Bnd-2.4.1.201501161923
