@@ -17,7 +17,7 @@ public class LRTableTest {
 	
 	@Test
     public void LR0CompileTest() throws Exception {
-		String grammarName = "helloworld5";
+		String grammarName = "helloworld6";
 		File[] files = getFiles(grammarName);
 		
 		assert(files[0].exists() && !files[0].isDirectory());
@@ -30,7 +30,7 @@ public class LRTableTest {
 	
 	@Test
     public void LR0StatesTest() throws Exception {
-		String grammarName = "helloworld5";
+		String grammarName = "helloworld6";
 		File[] files = getFiles(grammarName);
 		
 		assert(files[0].exists() && !files[0].isDirectory());
@@ -47,7 +47,7 @@ public class LRTableTest {
 	
 	@Test
 	public void LR1CompileTest() throws Exception {
-		String grammarName = "helloworld5";
+		String grammarName = "helloworld6";
 		File[] files = getFiles(grammarName);
 		
 		assert(files[0].exists() && !files[0].isDirectory());
@@ -60,7 +60,7 @@ public class LRTableTest {
 	
 	@Test
 	public void LR1StatesTest() throws Exception {
-		String grammarName = "helloworld5";
+		String grammarName = "helloworld6";
 		File[] files = getFiles(grammarName);
 		
 		assert(files[0].exists() && !files[0].isDirectory());
@@ -81,10 +81,10 @@ public class LRTableTest {
 	public File[] getFiles(String grammarName) {
 		File[] files = new File[4];
 		resourcesPath = "src/test/resources/";
-		files[0] = new File(resourcesPath + grammarName + "_in.aterm");
-		files[1] = new File(resourcesPath + grammarName + "_out.aterm");
-		files[2] = new File(resourcesPath + grammarName + ".tbl");
-		files[3] = new File(resourcesPath + grammarName + ".yy");
+		files[0] = new File(resourcesPath + "grammars/" + grammarName + ".aterm");
+		files[1] = new File(resourcesPath + "parsetables/" + grammarName + ".tbl");
+		files[2] = new File(resourcesPath + "persisted_objects/" + grammarName + ".obj");
+		files[3] = new File(resourcesPath + grammarName + ".xx");
 		
 		return files;
 	}
