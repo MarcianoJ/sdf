@@ -111,7 +111,7 @@ public class LRParseTable extends ParseTable {
     	Map<Symbol, CharacterClass> stateFirstSets = firstSetsLR.get(state);
     	SetMultimap<Symbol, Symbol> stateFirstSetDependencies = firstSetDependenciesLR.get(state);
     	Map<Symbol, Boolean> stateSymbolsComplete = firstSetsCompleteLR.get(state);
-    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = Maps.newLinkedHashMap();
+    	Map<Symbol, Map<Integer, Boolean>> stateSymbolsVisited = firstSetsVisitedLR.get(state);
     	
     	// Calculate first sets for each symbol in state
     	for(LRItem item : state.getItems()) {
