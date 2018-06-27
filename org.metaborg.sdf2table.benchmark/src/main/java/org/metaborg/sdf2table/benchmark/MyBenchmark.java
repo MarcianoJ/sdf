@@ -66,14 +66,10 @@ public class MyBenchmark extends BaseBenchmark {
 	public MyBenchmark() {
 		super(testSet);
 
-		grammarName = "jasmin";
-
-		// testSet = new TestSet(grammarName, new
-		// TestSetParseTableFromATerm(grammarName),
-		// new TestSetSingleInput(grammarName + "/test.txt"));
+		grammarName = "metaborgc";  //helloworld6, helloworld7, jasmin, Calc, Pascal, metaborgc
 
 		testSet = new TestSet(grammarName, new TestSetParseTableFromATerm(grammarName),
-				new TestSetSingleInput(grammarName + "/sampleProgram.txt"));
+				new TestSetSingleInput(grammarName + "/test.txt"));
 	}
 
 	// @Param({ "7", "7", "7" }) public int n;
@@ -104,41 +100,41 @@ public class MyBenchmark extends BaseBenchmark {
 		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1], files[2], files[3], dependencyPaths,
-				ParseTableGenType.LR, 0);
+				ParseTableGenType.SLR, 1);
 
 		ptGen.outputTable(false, true, true);
 
-		Iterable<Input> inputs;
-
-		TestSetReader testSetReader = new BenchmarkTestsetReader(testSet);
-		if (n == -1)
-			inputs = testSetReader.getInputs();
-		else
-			inputs = testSetReader.getInputsForSize(n);
-
-		IStateFactory stateFactory = new StateFactory(StateFactory.defaultActionsForCharacterRepresentation,
-				StateFactory.defaultProductionToGotoRepresentation);
-
-		IActionsFactory actionsFactory = new ActionsFactory(true);
-		ICharacterClassFactory characterClassFactory = new CharacterClassFactory(true, true);
-
-		IParseTable parseTable = new ParseTableReader(characterClassFactory, actionsFactory, stateFactory)
-				.read(testSetReader.getParseTableTerm());
-
-		ParseTableVariant bestParseTableVariant = new ParseTableVariant(
-				ActionsForCharacterRepresentation.DisjointSorted, ProductionToGotoRepresentation.JavaHashMap);
-		Variant variant = new Variant(bestParseTableVariant,
-				new ParserVariant(ActiveStacksRepresentation.ArrayList, ForActorStacksRepresentation.ArrayDeque,
-						ParseForestRepresentation.Hybrid, ParseForestConstruction.Optimized,
-						StackRepresentation.HybridElkhound, Reducing.Elkhound));
-
-		parser = JSGLR2Variants.getParser(parseTable, variant.parser);
-		jsglr2 = JSGLR2Variants.getJSGLR2(parseTable, variant.parser);
-
-		for (Input input : inputs) {
-			// bh.consume(parser.parseUnsafe(input.content, input.filename, null));
-			bh.consume(jsglr2.parseUnsafe(input.content, input.filename, null));
-		}
+//		Iterable<Input> inputs;
+//
+//		TestSetReader testSetReader = new BenchmarkTestsetReader(testSet);
+//		if (n == -1)
+//			inputs = testSetReader.getInputs();
+//		else
+//			inputs = testSetReader.getInputsForSize(n);
+//
+//		IStateFactory stateFactory = new StateFactory(StateFactory.defaultActionsForCharacterRepresentation,
+//				StateFactory.defaultProductionToGotoRepresentation);
+//
+//		IActionsFactory actionsFactory = new ActionsFactory(true);
+//		ICharacterClassFactory characterClassFactory = new CharacterClassFactory(true, true);
+//
+//		IParseTable parseTable = new ParseTableReader(characterClassFactory, actionsFactory, stateFactory)
+//				.read(testSetReader.getParseTableTerm());
+//
+//		ParseTableVariant bestParseTableVariant = new ParseTableVariant(
+//				ActionsForCharacterRepresentation.DisjointSorted, ProductionToGotoRepresentation.JavaHashMap);
+//		Variant variant = new Variant(bestParseTableVariant,
+//				new ParserVariant(ActiveStacksRepresentation.ArrayList, ForActorStacksRepresentation.ArrayDeque,
+//						ParseForestRepresentation.Hybrid, ParseForestConstruction.Optimized,
+//						StackRepresentation.HybridElkhound, Reducing.Elkhound));
+//
+//		parser = JSGLR2Variants.getParser(parseTable, variant.parser);
+//		jsglr2 = JSGLR2Variants.getJSGLR2(parseTable, variant.parser);
+//
+//		for (Input input : inputs) {
+//			// bh.consume(parser.parseUnsafe(input.content, input.filename, null));
+//			bh.consume(jsglr2.parseUnsafe(input.content, input.filename, null));
+//		}
 	}
 
 }

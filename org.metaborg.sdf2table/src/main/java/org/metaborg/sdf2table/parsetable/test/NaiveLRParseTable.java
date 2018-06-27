@@ -47,25 +47,27 @@ public class NaiveLRParseTable extends LRParseTable {
 	    	for(LRItem item : state.getItems()) {
 	    		int i = 0;
 	    		IProduction prod = item.getProd();
-	    		Symbol rhsSymbol = prod.rightHand().get(0);
-	    		
-	    		// Look at the first RHS symbol, and the next one if the previous one is nullable, etc.
-	    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
-	    			rhsSymbol = prod.rightHand().get(i);
-	    			if(s.equals(prod.leftHand())) {
-	    				// If first RHS symbol is terminal, add to first set, else, add first set of rhsSymbol to first set of s
-	    				if(rhsSymbol instanceof CharacterClass) {
-	    					CharacterClass cc = (CharacterClass) rhsSymbol;
-	    					stateFirstSets.put(s, CharacterClass.union(stateFirstSets.get(s), cc));
-	    				} else {
-	    					CharacterClass union = CharacterClass.union(stateFirstSets.get(s), stateFirstSets.get(rhsSymbol));
-	    					if(!stateFirstSets.get(s).equals(union)) {
-	    						stateFirstSets.put(s, union);
-	    						allComplete = false;
-	    					}
-	    				}	
-	    			}
-	    			i++;
+	    		if(prod.rightHand().size() > 0) {
+		    		Symbol rhsSymbol = prod.rightHand().get(0);
+		    		
+		    		// Look at the first RHS symbol, and the next one if the previous one is nullable, etc.
+		    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
+		    			rhsSymbol = prod.rightHand().get(i);
+		    			if(s.equals(prod.leftHand())) {
+		    				// If first RHS symbol is terminal, add to first set, else, add first set of rhsSymbol to first set of s
+		    				if(rhsSymbol instanceof CharacterClass) {
+		    					CharacterClass cc = (CharacterClass) rhsSymbol;
+		    					stateFirstSets.put(s, CharacterClass.union(stateFirstSets.get(s), cc));
+		    				} else {
+		    					CharacterClass union = CharacterClass.union(stateFirstSets.get(s), stateFirstSets.get(rhsSymbol));
+		    					if(!stateFirstSets.get(s).equals(union)) {
+		    						stateFirstSets.put(s, union);
+		    						allComplete = false;
+		    					}
+		    				}	
+		    			}
+		    			i++;
+		    		}
 	    		}
 	    	}
     	}
