@@ -1,0 +1,1316 @@
+Module(
+  Unparameterized("normalized/Lexical-norm")
+, [Imports([Module(Unparameterized("normalized/Expressions-norm")), Module(Unparameterized("normalized/Common-norm"))])]
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"ll\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"LL\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\76"))))
+              , CharClass(Simple(Present(Numeric("\\76"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\".\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\46"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\\u\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , CharClass(Simple(Present(Numeric("\\117"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\\U\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , CharClass(Simple(Present(Numeric("\\85"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"'\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\39"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\"\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\34"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"u8\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\56"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$CharConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\104"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$IntConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\73"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$OctConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\79"))))
+              , CharClass(Simple(Present(Numeric("\\99"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$HexConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\72"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\120"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$FloatConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\70"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Constant\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$StringConst\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\103"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("SChar")))
+          , Rhs([Lex(Sort("SChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("SChar")))
+          , Rhs(
+              [Lex(Iter(Sort("SChar"))), Lex(Sort("SChar"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("SChar"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("SChar")))
+          , Rhs([Lex(Iter(Sort("SChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("SChar")))
+          , Rhs([Lex(Iter(Sort("SChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Opt(Sort("EncPrefix")))
+          , Rhs([Lex(Sort("EncPrefix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("EncPrefix"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Iter(Sort("Char")))
+          , Rhs([Lex(Sort("Char"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("Char")))
+          , Rhs(
+              [Lex(Iter(Sort("Char"))), Lex(Sort("Char"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("Char"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("Char")))
+          , Rhs([Lex(Iter(Sort("Char")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("Char")))
+          , Rhs([Lex(IterStar(Sort("Char")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Opt(
+                CharClass(
+                  Simple(
+                    Present(
+                      Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                    )
+                  )
+                )
+              )
+            )
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Opt(
+                CharClass(
+                  Simple(
+                    Present(
+                      Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                    )
+                  )
+                )
+              )
+            )
+          , Rhs([])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Opt(Sort("OctDigit")))
+          , Rhs([Lex(Sort("OctDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("OctDigit"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Opt(Sort("Sign")))
+          , Rhs([Lex(Sort("Sign"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("Sign"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Cf(Sort("Sign"))
+          , Rhs([Lex(Sort("Sign"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Opt(Sort("FloatSuffix")))
+          , Rhs([Lex(Sort("FloatSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("FloatSuffix"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Opt(Sort("ExpPart")))
+          , Rhs([Lex(Sort("ExpPart"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("ExpPart"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Iter(Sort("HexDigit")))
+          , Rhs([Lex(Sort("HexDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("HexDigit")))
+          , Rhs(
+              [Lex(Iter(Sort("HexDigit"))), Lex(Sort("HexDigit"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("HexDigit"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("HexDigit")))
+          , Rhs([Lex(Iter(Sort("HexDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("OctDigit")))
+          , Rhs([Lex(Sort("OctDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("OctDigit")))
+          , Rhs(
+              [Lex(Iter(Sort("OctDigit"))), Lex(Sort("OctDigit"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("OctDigit"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("OctDigit")))
+          , Rhs([Lex(Iter(Sort("OctDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("OctDigit")))
+          , Rhs([Lex(IterStar(Sort("OctDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Opt(Sort("UnsignedSuffix")))
+          , Rhs([Lex(Sort("UnsignedSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("UnsignedSuffix"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Opt(Sort("LongSuffix")))
+          , Rhs([Lex(Sort("LongSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("LongSuffix"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Opt(Sort("IntSuffix")))
+          , Rhs([Lex(Sort("IntSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("IntSuffix"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Iter(Sort("Digit")))
+          , Rhs([Lex(Sort("Digit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("Digit")))
+          , Rhs(
+              [Lex(Iter(Sort("Digit"))), Lex(Sort("Digit"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("Digit"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("Digit")))
+          , Rhs([Lex(Iter(Sort("Digit")))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("CharConst"))
+          , Rhs([Cf(Sort("CharConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("IntConst"))
+          , Rhs([Cf(Sort("IntConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("OctConst"))
+          , Rhs([Cf(Sort("OctConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("HexConst"))
+          , Rhs([Cf(Sort("HexConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("FloatConst"))
+          , Rhs([Cf(Sort("FloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("StringConst"))
+          , Rhs([Cf(Sort("StringConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntConst"))
+          , Rhs(
+              [ Lex(Sort("NonzeroDigit"))
+              , Lex(IterStar(Sort("Digit")))
+              , Lex(Opt(Sort("IntSuffix")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntConst"))
+          , Rhs(
+              [CharClass(Simple(Present(Numeric("\\48")))), Lex(Opt(Sort("IntSuffix")))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntSuffix"))
+          , Rhs(
+              [Lex(Sort("UnsignedSuffix")), Lex(Opt(Sort("LongSuffix")))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntSuffix"))
+          , Rhs([Lex(Sort("UnsignedSuffix")), Lex(Sort("LongLongSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntSuffix"))
+          , Rhs(
+              [Lex(Sort("LongSuffix")), Lex(Opt(Sort("UnsignedSuffix")))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("IntSuffix"))
+          , Rhs(
+              [ Lex(Sort("LongLongSuffix"))
+              , Lex(Opt(Sort("UnsignedSuffix")))
+              , Lex(Sort("IntSuffix"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("UnsignedSuffix"))
+          , Rhs(
+              [CharClass(Simple(Present(Conc(Numeric("\\85"), Numeric("\\117")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("LongSuffix"))
+          , Rhs(
+              [CharClass(Simple(Present(Conc(Numeric("\\76"), Numeric("\\108")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("LongLongSuffix"))
+          , Rhs([Lit("\"ll\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("LongLongSuffix"))
+          , Rhs([Lit("\"LL\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("Digit"))
+          , Rhs(
+              [CharClass(Simple(Present(Range(Numeric("\\48"), Numeric("\\57")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("NonzeroDigit"))
+          , Rhs(
+              [CharClass(Simple(Present(Range(Numeric("\\49"), Numeric("\\57")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("OctConst"))
+          , Rhs(
+              [CharClass(Simple(Present(Numeric("\\48")))), Lex(Iter(Sort("OctDigit")))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("OctDigit"))
+          , Rhs(
+              [CharClass(Simple(Present(Range(Numeric("\\48"), Numeric("\\55")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexConst"))
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\48"))))
+              , Lex(Sort("HexPrefix"))
+              , Lex(Iter(Sort("HexDigit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexPrefix"))
+          , Rhs(
+              [CharClass(Simple(Present(Conc(Numeric("\\88"), Numeric("\\120")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexDigit"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\48"), Numeric("\\57"))
+                      , Conc(
+                          Range(Numeric("\\65"), Numeric("\\70"))
+                        , Range(Numeric("\\97"), Numeric("\\102"))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("FloatConst"))
+          , Rhs([Lex(Sort("DecFloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("FloatConst"))
+          , Rhs([Lex(Sort("HexFloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("DecFloatConst"))
+          , Rhs(
+              [ Lex(Sort("FracConst"))
+              , Lex(Opt(Sort("ExpPart")))
+              , Lex(Opt(Sort("FloatSuffix")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("DecFloatConst"))
+          , Rhs(
+              [ Lex(Iter(Sort("Digit")))
+              , Lex(Sort("ExpPart"))
+              , Lex(Opt(Sort("FloatSuffix")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("FracConst"))
+          , Rhs(
+              [ Lex(IterStar(Sort("Digit")))
+              , Lit("\".\"")
+              , Lex(Iter(Sort("Digit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("FracConst"))
+          , Rhs([Lex(Iter(Sort("Digit"))), Lit("\".\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ExpPart"))
+          , Rhs(
+              [ CharClass(Simple(Present(Conc(Numeric("\\69"), Numeric("\\101")))))
+              , Lex(Opt(Sort("Sign")))
+              , Lex(Iter(Sort("Digit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("BinExpPart"))
+          , Rhs(
+              [ CharClass(Simple(Present(Conc(Numeric("\\80"), Numeric("\\112")))))
+              , Lex(Opt(Sort("Sign")))
+              , Lex(Iter(Sort("Digit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexFloatConst"))
+          , Rhs(
+              [ Lex(Sort("HexPrefix"))
+              , Lex(Sort("HexFracConst"))
+              , Lex(Sort("BinExpPart"))
+              , Lex(Opt(Sort("FloatSuffix")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexFloatConst"))
+          , Rhs(
+              [ Lex(Sort("HexPrefix"))
+              , Lex(Iter(Sort("HexDigit")))
+              , Lex(Sort("BinExpPart"))
+              , Lex(Opt(Sort("FloatSuffix")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexFracConst"))
+          , Rhs(
+              [ Lex(IterStar(Sort("HexDigit")))
+              , Lit("\".\"")
+              , Lex(Iter(Sort("HexDigit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexFracConst"))
+          , Rhs([Lex(Iter(Sort("HexDigit"))), Lit("\".\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("FloatSuffix"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Numeric("\\70")
+                      , Conc(Numeric("\\76"), Conc(Numeric("\\102"), Numeric("\\108")))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("UniCharName"))
+          , Rhs([Lit("\"\\\\u\""), Lex(Sort("HexQuad"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("UniCharName"))
+          , Rhs(
+              [Lit("\"\\\\U\""), Lex(Sort("HexQuad")), Lex(Sort("HexQuad"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("HexQuad"))
+          , Rhs(
+              [ Lex(Sort("HexDigit"))
+              , Lex(Sort("HexDigit"))
+              , Lex(Sort("HexDigit"))
+              , Lex(Sort("HexDigit"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EscSeq"))
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Numeric("\\34")
+                      , Conc(
+                          Numeric("\\39")
+                        , Conc(
+                            Numeric("\\63")
+                          , Conc(
+                              Numeric("\\92")
+                            , Conc(
+                                Range(Numeric("\\97"), Numeric("\\98"))
+                              , Conc(
+                                  Numeric("\\102")
+                                , Conc(
+                                    Numeric("\\110")
+                                  , Conc(Numeric("\\114"), Conc(Numeric("\\116"), Numeric("\\118")))
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EscSeq"))
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , Lex(Sort("OctDigit"))
+              , Lex(Opt(Sort("OctDigit")))
+              , Lex(Opt(Sort("OctDigit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EscSeq"))
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , Lex(Sort("HexPrefix"))
+              , Lex(Iter(Sort("HexDigit")))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EscSeq"))
+          , Rhs([Lex(Sort("UniCharName"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("CharConst"))
+          , Rhs(
+              [ Lex(
+                  Opt(
+                    CharClass(
+                      Simple(
+                        Present(
+                          Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                        )
+                      )
+                    )
+                  )
+                )
+              , Lit("\"'\"")
+              , Lex(Iter(Sort("Char")))
+              , Lit("\"'\"")
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("Char"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\38"))
+                        , Conc(
+                            Range(Numeric("\\40"), Numeric("\\91"))
+                          , Range(Numeric("\\93"), Numeric("\\255"))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("Char"))
+          , Rhs([Lex(Sort("EscSeq"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("StringConst"))
+          , Rhs(
+              [ Lex(Opt(Sort("EncPrefix")))
+              , Lit("\"\\\"\"")
+              , Lex(IterStar(Sort("SChar")))
+              , Lit("\"\\\"\"")
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EncPrefix"))
+          , Rhs([Lit("\"u8\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("EncPrefix"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("SChar"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\33"))
+                        , Conc(
+                            Range(Numeric("\\35"), Numeric("\\91"))
+                          , Range(Numeric("\\93"), Numeric("\\255"))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("SChar"))
+          , Rhs([Lex(Sort("EscSeq"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("SChar"))
+          , Rhs([Lex(Sort("SChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("EncPrefix"))
+          , Rhs([Lex(Sort("EncPrefix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("SChar")))
+          , Rhs([Lex(IterStar(Sort("SChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("EncPrefix")))
+          , Rhs([Lex(Opt(Sort("EncPrefix")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("StringConst"))
+          , Rhs([Lex(Sort("StringConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Char"))
+          , Rhs([Lex(Sort("Char"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("Char")))
+          , Rhs([Lex(Iter(Sort("Char")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              Opt(
+                CharClass(
+                  Simple(
+                    Present(
+                      Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                    )
+                  )
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Opt(
+                    CharClass(
+                      Simple(
+                        Present(
+                          Conc(Numeric("\\76"), Conc(Numeric("\\85"), Numeric("\\117")))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("CharConst"))
+          , Rhs([Lex(Sort("CharConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("OctDigit")))
+          , Rhs([Lex(Opt(Sort("OctDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("EscSeq"))
+          , Rhs([Lex(Sort("EscSeq"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexQuad"))
+          , Rhs([Lex(Sort("HexQuad"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("UniCharName"))
+          , Rhs([Lex(Sort("UniCharName"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("FloatSuffix"))
+          , Rhs([Lex(Sort("FloatSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("HexDigit")))
+          , Rhs([Lex(IterStar(Sort("HexDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexFracConst"))
+          , Rhs([Lex(Sort("HexFracConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("BinExpPart"))
+          , Rhs([Lex(Sort("BinExpPart"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("Sign")))
+          , Rhs([Lex(Opt(Sort("Sign")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("ExpPart"))
+          , Rhs([Lex(Sort("ExpPart"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("Digit")))
+          , Rhs([Lex(Iter(Sort("Digit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("FloatSuffix")))
+          , Rhs([Lex(Opt(Sort("FloatSuffix")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("ExpPart")))
+          , Rhs([Lex(Opt(Sort("ExpPart")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("FracConst"))
+          , Rhs([Lex(Sort("FracConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexFloatConst"))
+          , Rhs([Lex(Sort("HexFloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("DecFloatConst"))
+          , Rhs([Lex(Sort("DecFloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("FloatConst"))
+          , Rhs([Lex(Sort("FloatConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexDigit"))
+          , Rhs([Lex(Sort("HexDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("HexDigit")))
+          , Rhs([Lex(Iter(Sort("HexDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexPrefix"))
+          , Rhs([Lex(Sort("HexPrefix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("HexConst"))
+          , Rhs([Lex(Sort("HexConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("OctDigit"))
+          , Rhs([Lex(Sort("OctDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("OctDigit")))
+          , Rhs([Lex(Iter(Sort("OctDigit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("OctConst"))
+          , Rhs([Lex(Sort("OctConst"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Digit"))
+          , Rhs([Lex(Sort("Digit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("UnsignedSuffix")))
+          , Rhs([Lex(Opt(Sort("UnsignedSuffix")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("LongSuffix"))
+          , Rhs([Lex(Sort("LongSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("LongLongSuffix"))
+          , Rhs([Lex(Sort("LongLongSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("LongSuffix")))
+          , Rhs([Lex(Opt(Sort("LongSuffix")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("UnsignedSuffix"))
+          , Rhs([Lex(Sort("UnsignedSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("IntSuffix"))
+          , Rhs([Lex(Sort("IntSuffix"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("IntSuffix")))
+          , Rhs([Lex(Opt(Sort("IntSuffix")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("Digit")))
+          , Rhs([Lex(IterStar(Sort("Digit")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("NonzeroDigit"))
+          , Rhs([Lex(Sort("NonzeroDigit"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("IntConst"))
+          , Rhs([Lex(Sort("IntConst"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("CharConst")), Constructor("CharConst-Plhdr"))
+          , Rhs([Lit("\"$CharConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("IntConst")), Constructor("IntConst-Plhdr"))
+          , Rhs([Lit("\"$IntConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("OctConst")), Constructor("OctConst-Plhdr"))
+          , Rhs([Lit("\"$OctConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("HexConst")), Constructor("HexConst-Plhdr"))
+          , Rhs([Lit("\"$HexConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("FloatConst")), Constructor("FloatConst-Plhdr"))
+          , Rhs([Lit("\"$FloatConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Constant")), Constructor("Constant-Plhdr"))
+          , Rhs([Lit("\"$Constant\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("StringConst")), Constructor("StringConst-Plhdr"))
+          , Rhs([Lit("\"$StringConst\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Lex(Sort("OctConst"))]
+          , List(
+              [CharClass(Simple(Present(Range(Numeric("\\48"), Numeric("\\55")))))]
+            )
+          )
+        , Follow(
+            [Lex(Sort("HexConst"))]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\48"), Numeric("\\57"))
+                      , Conc(
+                          Range(Numeric("\\65"), Numeric("\\70"))
+                        , Conc(
+                            Numeric("\\88")
+                          , Conc(Range(Numeric("\\97"), Numeric("\\102")), Numeric("\\120"))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$CharConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$IntConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$OctConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$HexConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$FloatConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Constant\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$StringConst\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

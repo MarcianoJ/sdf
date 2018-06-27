@@ -1,0 +1,106 @@
+Module(
+  Unparameterized("normalized/helloworld6-norm")
+, []
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"aa\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"bb\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\98"))))
+              , CharClass(Simple(Present(Numeric("\\98"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Sort("Word"), Constructor("Aa"))
+          , Rhs([Lit("\"aa\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Sort("Word"), Constructor("Bb"))
+          , Rhs([Lit("\"bb\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Sort("AdChar")
+          , Rhs(
+              [CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\100")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Sort("Start"), Constructor("Program"))
+          , Rhs(
+              [ Sort("AdChar")
+              , Sort("AdChar")
+              , Sort("AdChar")
+              , Sort("Word")
+              , Sort("Word")
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(Start(), Rhs([Sort("Start")]), NoAttrs())
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Sort("AdChar")]
+          , List(
+              [ CharClass(Simple(Present(Numeric("\\100"))))
+              , Seq(
+                  Simple(Present(Numeric("\\98")))
+                , List([CharClass(Simple(Present(Numeric("\\100"))))])
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

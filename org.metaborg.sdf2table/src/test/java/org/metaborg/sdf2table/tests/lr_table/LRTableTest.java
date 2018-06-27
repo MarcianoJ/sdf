@@ -65,8 +65,10 @@ public class LRTableTest {
 		
 		assert(files[0].exists() && !files[0].isDirectory());
 		
+		ArrayList<String> dependencyPaths = new ArrayList<String>();
+		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], new ArrayList<String>(), ParseTableGenType.LR, 1);
+				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 1);
 		
 		ptGen.outputTable(false, true, true);
 		
@@ -78,13 +80,39 @@ public class LRTableTest {
 		assert(states == 23);
 	}
 	
+//	@Test
+//	public void LR1CompileWithGrammarImportTest() throws Exception {
+//		String grammarName = "jasmin";
+//		File[] files = getFiles(grammarName);
+//		
+//		assert(files[0].exists() && !files[0].isDirectory());
+//		
+//		ArrayList<String> dependencyPaths = new ArrayList<String>();
+//		dependencyPaths.add(resourcesPath + "grammars/" + grammarName);
+//		dependencyPaths.add(resourcesPath + "grammars/common");
+//		
+//		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
+//				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 1);
+//		
+//		ptGen.outputTable(false, true, true);
+//		
+//		int states = ptGen.getParseTable().totalStates();
+//		
+//		System.out.println(ptGen.getParseTable().stateLabels());
+//		System.out.println(states);
+//		System.out.println(ptGen.getParseTable().augmentedKernelMap().keySet().size());
+//	}
+	
 	public File[] getFiles(String grammarName) {
+		new File(resourcesPath + "grammars/" + grammarName + "/normalized").mkdirs();
+		new File(resourcesPath + "generated/parsetables").mkdirs();
+		new File(resourcesPath + "generated/persisted_objects").mkdirs();
+		
 		File[] files = new File[4];
-		resourcesPath = "src/test/resources/";
-		files[0] = new File(resourcesPath + "grammars/" + grammarName + ".aterm");
-		files[1] = new File(resourcesPath + "parsetables/" + grammarName + ".tbl");
-		files[2] = new File(resourcesPath + "persisted_objects/" + grammarName + ".obj");
-		files[3] = new File(resourcesPath + grammarName + ".xx");
+		files[0] = new File(resourcesPath + "grammars/" + grammarName + "/normalized/" + grammarName + "-norm.aterm");
+		files[1] = new File(resourcesPath + "generated/parsetables/" + grammarName + ".tbl");
+		files[2] = new File(resourcesPath + "generated/persisted_objects/" + grammarName + ".obj");
+		files[3] = new File(resourcesPath + "generated/" + grammarName + ".xx");
 		
 		return files;
 	}

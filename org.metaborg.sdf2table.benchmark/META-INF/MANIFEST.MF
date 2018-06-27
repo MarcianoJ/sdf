@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1529856502983
+Bnd-LastModified: 1530031278821
 Build-Jdk: 1.8.0_171
 Built-By: marciano
 Bundle-Description: Maven parent POM for Java projects
@@ -11,15 +11,18 @@ Bundle-Version: 2.4.1
 Created-By: Apache Maven Bundle Plugin
 Eclipse-BuddyPolicy: registered
 Embed-Transitive: true
-Export-Package: GreenMarl.tbl,boolean.def,grammars,helloworld.aterm,hell
- oworld.def,helloworld.xx,helloworld2.def,helloworld2.xx,helloworld2_in.
- aterm,helloworld2_out.aterm,helloworld3.xx,helloworld3_in.aterm,hellowo
- rld3_out.aterm,helloworld4.xx,helloworld4_in.aterm,helloworld4_out.ater
- m,helloworld5.tbl,helloworld5.xx,helloworld5_in.aterm,helloworld5_out.a
- term,helloworld_in.aterm,helloworld_out.aterm,org.metaborg.sdf2table.be
- nchmark,org.metaborg.sdf2table.benchmark.generated,parsetables,samples.
- CSV,samples.GreenMarl,samples.Java,samples.WebDSL,samples.helloworld,su
- m-nonambiguous.aterm,sum-nonambiguous.def,sum-nonambiguous.xx
+Export-Package: GreenMarl.tbl,boolean.def,generated.parsetables,generate
+ d.persisted_objects,grammars.helloworld5.normalized,grammars.helloworld
+ 6.normalized,grammars.helloworld7.normalized,grammars.jasmin.normalized
+ ,helloworld.aterm,helloworld.def,helloworld.xx,helloworld2.def,hellowor
+ ld2.xx,helloworld2_in.aterm,helloworld2_out.aterm,helloworld3.xx,hellow
+ orld3_in.aterm,helloworld3_out.aterm,helloworld4.xx,helloworld4_in.ater
+ m,helloworld4_out.aterm,helloworld5.tbl,helloworld5.xx,helloworld5_in.a
+ term,helloworld5_out.aterm,helloworld_in.aterm,helloworld_out.aterm,org
+ .metaborg.sdf2table.benchmark,org.metaborg.sdf2table.benchmark.generate
+ d,samples.CSV,samples.GreenMarl,samples.Java,samples.WebDSL,samples.hel
+ loworld,samples.helloworld6,samples.helloworld7,samples.jasmin,sum-nona
+ mbiguous.aterm,sum-nonambiguous.def,sum-nonambiguous.xx
 Import-Package: org.spoofax.interpreter.terms,org.spoofax.jsglr2,org.spo
  ofax.jsglr2.actions,org.spoofax.jsglr2.parseforest,org.spoofax.jsglr2.p
  arser,org.spoofax.jsglr2.parsetable,org.spoofax.jsglr2.reducing,org.spo

@@ -25,6 +25,9 @@ import org.metaborg.sdf2table.parsetable.ParseTable;
 import org.metaborg.sdf2table.parsetable.ParseTableGenType;
 import org.metaborg.sdf2table.parsetable.SLRParseTable;
 import org.metaborg.sdf2table.parsetable.State;
+import org.metaborg.sdf2table.parsetable.test.NaiveLALRParseTable;
+import org.metaborg.sdf2table.parsetable.test.NaiveLRParseTable;
+import org.metaborg.sdf2table.parsetable.test.NaiveSLRParseTable;
 import org.metaborg.util.log.ILogger;
 import org.metaborg.util.log.LoggerUtils;
 import org.spoofax.interpreter.terms.IStrategoTerm;
@@ -49,6 +52,13 @@ public class ParseTableGenerator {
     
     private ParseTableGenType parseTableGenType;
 	private int kLookahead;
+	private boolean useNaive = false;
+	
+	public ParseTableGenerator(File input, File output, File persistedTable, File ctxGrammar, List<String> paths,
+    		ParseTableGenType parseType, int k, boolean useNaiveVariant) {
+		this(input, output, persistedTable, ctxGrammar, paths, parseType, k);
+		this.useNaive = useNaiveVariant;
+	}
     
     public ParseTableGenerator(File input, File output, File persistedTable, File ctxGrammar, List<String> paths,
     		ParseTableGenType parseType, int k) {
@@ -83,16 +93,26 @@ public class ParseTableGenerator {
     public void createParseTable(boolean dynamic, boolean dataDependent, boolean solveDeepConflicts) throws Exception {
         NormGrammar grammar = new GrammarReader().readGrammar(input, paths);
         if(!tableCreated) {
-	        if(parseTableGenType == ParseTableGenType.LR && (kLookahead == 0 || kLookahead == 1)) {
-	        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
-	        } else if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
-	        	pt = new SLRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
-	        } else if(parseTableGenType == ParseTableGenType.LALR && kLookahead == 1) {
-	        	pt = new LALRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
-	        } else {
-	        	System.out.println("Invalid Parse table arguments or implementation does not exist. Defaulting to LR(0).");
-	        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, ParseTableGenType.LR, 0);
-	        }
+        	if(useNaive == true && kLookahead == 1) {
+        		if(parseTableGenType == ParseTableGenType.LR) {
+		        	pt = new NaiveLRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        } else if(parseTableGenType == ParseTableGenType.SLR) {
+		        	pt = new NaiveSLRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        } else if(parseTableGenType == ParseTableGenType.LALR) {
+		        	pt = new NaiveLALRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        }
+        	} else {
+		        if(parseTableGenType == ParseTableGenType.LR && (kLookahead == 0 || kLookahead == 1)) {
+		        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        } else if(parseTableGenType == ParseTableGenType.SLR && kLookahead == 1) {
+		        	pt = new SLRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        } else if(parseTableGenType == ParseTableGenType.LALR && kLookahead == 1) {
+		        	pt = new LALRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, parseTableGenType, kLookahead);
+		        } else {
+		        	System.out.println("Invalid Parse table arguments or implementation does not exist. Defaulting to LR(0).");
+		        	pt = new LRParseTable(grammar, dynamic, dataDependent, solveDeepConflicts, ParseTableGenType.LR, 0);
+		        }
+        	}
 	        tableCreated = true;
         }
     }

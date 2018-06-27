@@ -1,0 +1,307 @@
+Module(
+  Unparameterized("normalized/JasminXT-Types-norm")
+, []
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"B\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\66"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"C\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\67"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"D\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\68"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"F\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\70"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"I\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\73"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"J\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\74"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"S\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\83"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"Z\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\90"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"[\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\91"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$BaseType\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\66"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\84"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$ArrayType\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\65"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\84"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$ComponentType\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\109"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\84"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$FieldType\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\70"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\84"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Byte"))
+          , Rhs([Lit("\"B\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Char"))
+          , Rhs([Lit("\"C\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Double"))
+          , Rhs([Lit("\"D\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Float"))
+          , Rhs([Lit("\"F\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Int"))
+          , Rhs([Lit("\"I\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Long"))
+          , Rhs([Lit("\"J\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Short"))
+          , Rhs([Lit("\"S\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("Boolean"))
+          , Rhs([Lit("\"Z\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("FieldType"))
+          , Rhs([Cf(Sort("BaseType"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("FieldType"))
+          , Rhs([Cf(Sort("ArrayType"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("ComponentType"))
+          , Rhs([Cf(Sort("FieldType"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ArrayType")), Constructor("Array"))
+          , Rhs([Lit("\"[\""), Cf(Sort("ComponentType"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("BaseType")), Constructor("BaseType-Plhdr"))
+          , Rhs([Lit("\"$BaseType\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ArrayType")), Constructor("ArrayType-Plhdr"))
+          , Rhs([Lit("\"$ArrayType\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ComponentType")), Constructor("ComponentType-Plhdr"))
+          , Rhs([Lit("\"$ComponentType\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("FieldType")), Constructor("FieldType-Plhdr"))
+          , Rhs([Lit("\"$FieldType\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Lit("\"$BaseType\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$ArrayType\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$ComponentType\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$FieldType\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

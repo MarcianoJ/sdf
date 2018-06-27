@@ -32,34 +32,35 @@ public class BenchmarkTestsetReader extends TestSetReader {
 
     @Override
     public IStrategoTerm parseTableTerm(String filename) throws ParseError, IOException {
-        InputStream inputStream = new FileInputStream(basePath() + "/" + filename);
+        InputStream inputStream = new FileInputStream(basePath() + "/generated/" + filename);
 
         return getTermReader().parseFromStream(inputStream);
     }
 
     @Override
     public String grammarsPath() {
-        return basePath() + "/grammars";
+        return basePath() + "/classes/grammars";
     }
+    
 
     @Override
     public void setupParseTableFile(String parseTableName) throws IOException {
-        new File(basePath() + "/parsetables").mkdirs();
-
-        InputStream defResourceInJar = getClass().getResourceAsStream("/parsetables/" + parseTableName + ".tbl");
-        String destinationInTargetDir = basePath() + "/parsetables/" + parseTableName + ".tbl";
-
-        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
+//        new File(basePath() + "/parsetables").mkdirs();
+//
+//        InputStream defResourceInJar = getClass().getResourceAsStream("/parsetables/" + parseTableName + ".tbl");
+//        String destinationInTargetDir = basePath() + "/parsetables/" + parseTableName + ".tbl";
+//
+//        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Override
     public void setupDefFile(String grammarName) throws IOException {
-        new File(basePath() + "/grammars").mkdirs();
-
-        InputStream defResourceInJar = getClass().getResourceAsStream("/grammars/" + grammarName + ".def");
-        String destinationInTargetDir = basePath() + "/grammars/" + grammarName + ".def";
-
-        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
+//        new File(basePath() + "/grammars").mkdirs();
+//
+//        InputStream defResourceInJar = getClass().getResourceAsStream("/grammars/" + grammarName + ".def");
+//        String destinationInTargetDir = basePath() + "/grammars/" + grammarName + ".def";
+//
+//        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Override

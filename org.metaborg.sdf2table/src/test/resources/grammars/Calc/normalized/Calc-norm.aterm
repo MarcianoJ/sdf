@@ -1,0 +1,1108 @@
+Module(
+  Unparameterized("normalized/Calc-norm")
+, [Imports([Module(Unparameterized("normalized/CalcLexical-norm"))])]
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\";\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\59"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"^\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\94"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"*\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\42"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"/\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\47"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"-\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\45"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"+\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\43"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"==\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\61"))))
+              , CharClass(Simple(Present(Numeric("\\61"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"!=\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\33"))))
+              , CharClass(Simple(Present(Numeric("\\61"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\">\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\62"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"<\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\60"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"!\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\33"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"&\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\38"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"|\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\124"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"=\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\61"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\\\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\92"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\".\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\46"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"->\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\45"))))
+              , CharClass(Simple(Present(Numeric("\\62"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"(\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\40"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\")\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\41"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"true\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"false\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\102"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"if\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"else\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"let\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"in\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"Num\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\78"))))
+              , CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\109"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"Bool\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\66"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Program\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\80"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\103"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\109"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Stat\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$NUM\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\78"))))
+              , CharClass(Simple(Present(Numeric("\\85"))))
+              , CharClass(Simple(Present(Numeric("\\77"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$ID\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\73"))))
+              , CharClass(Simple(Present(Numeric("\\68"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Exp\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\69"))))
+              , CharClass(Simple(Present(Numeric("\\120"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Type\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\84"))))
+              , CharClass(Simple(Present(Numeric("\\121"))))
+              , CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("ID")))
+          , Rhs([Cf(Sort("ID"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("ID")))
+          , Rhs(
+              [ Cf(Iter(Sort("ID")))
+              , Cf(Opt(Layout()))
+              , Cf(Sort("ID"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Cf(IterStar(Sort("ID"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Cf(IterStar(Sort("ID")))
+          , Rhs([Cf(Iter(Sort("ID")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Layout()))
+          , Rhs([Cf(Layout())])
+          , NoAttrs()
+          )
+        , SdfProduction(Cf(Opt(Layout())), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Cf(Iter(Sort("Stat")))
+          , Rhs([Cf(Sort("Stat"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("Stat")))
+          , Rhs(
+              [ Cf(Iter(Sort("Stat")))
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Stat"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Cf(IterStar(Sort("Stat"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Cf(IterStar(Sort("Stat")))
+          , Rhs([Cf(Iter(Sort("Stat")))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Program")), Constructor("Program"))
+          , Rhs([Cf(Iter(Sort("Stat")))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Stat")), Constructor("Exp"))
+          , Rhs(
+              [Cf(Sort("Exp")), Cf(Opt(Layout())), Lit("\";\"")]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Stat")), Constructor("Bind"))
+          , Rhs(
+              [ Cf(Sort("ID"))
+              , Cf(Opt(Layout()))
+              , Lit("\"=\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\";\"")
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Exp"))
+          , Rhs(
+              [ Lit("\"(\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\")\"")
+              ]
+            )
+          , Attrs([Bracket()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Num"))
+          , Rhs([Cf(Sort("NUM"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Min"))
+          , Rhs(
+              [Lit("\"-\""), Cf(Opt(Layout())), Cf(Sort("Exp"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Pow"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"^\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Right())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Mul"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"*\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Div"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"/\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Sub"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"-\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left()), Prefer()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Add"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"+\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Eq"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"==\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(NonAssoc())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Neq"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"!=\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(NonAssoc())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Gt"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\">\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(NonAssoc())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Lt"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"<\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(NonAssoc())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("True"))
+          , Rhs([Lit("\"true\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("False"))
+          , Rhs([Lit("\"false\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Not"))
+          , Rhs(
+              [Lit("\"!\""), Cf(Opt(Layout())), Cf(Sort("Exp"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("And"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"&\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Or"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"|\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("If"))
+          , Rhs(
+              [ Lit("\"if\"")
+              , Cf(Opt(Layout()))
+              , Lit("\"(\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\")\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"else\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Var"))
+          , Rhs([Cf(Sort("ID"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Let"))
+          , Rhs(
+              [ Lit("\"let\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("ID"))
+              , Cf(Opt(Layout()))
+              , Lit("\"=\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"in\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Fun"))
+          , Rhs(
+              [ Lit("\"\\\\\"")
+              , Cf(Opt(Layout()))
+              , Cf(Iter(Sort("ID")))
+              , Cf(Opt(Layout()))
+              , Lit("\".\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("App"))
+          , Rhs(
+              [Cf(Sort("Exp")), Cf(Opt(Layout())), Cf(Sort("Exp"))]
+            )
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Type")), Constructor("NumT"))
+          , Rhs([Lit("\"Num\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Type")), Constructor("BoolT"))
+          , Rhs([Lit("\"Bool\"")])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Type")), Constructor("FunT"))
+          , Rhs(
+              [ Cf(Sort("Exp"))
+              , Cf(Opt(Layout()))
+              , Lit("\"->\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Exp"))
+              ]
+            )
+          , Attrs([Assoc(Right())])
+          )
+        , SdfProduction(
+            Cf(Sort("Type"))
+          , Rhs(
+              [ Lit("\"(\"")
+              , Cf(Opt(Layout()))
+              , Cf(Sort("Type"))
+              , Cf(Opt(Layout()))
+              , Lit("\")\"")
+              ]
+            )
+          , Attrs([Bracket()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"true\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"false\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"if\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"else\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"let\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"in\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"Num\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Lex(Sort("ID"))
+          , Rhs([Lit("\"Bool\"")])
+          , Attrs([Reject()])
+          )
+        , SdfProduction(
+            Cf(Sort("ID"))
+          , Rhs([Lex(Sort("ID"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Program")), Constructor("Program-Plhdr"))
+          , Rhs([Lit("\"$Program\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Stat")), Constructor("Stat-Plhdr"))
+          , Rhs([Lit("\"$Stat\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("NUM")), Constructor("NUM-Plhdr"))
+          , Rhs([Lit("\"$NUM\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ID")), Constructor("ID-Plhdr"))
+          , Rhs([Lit("\"$ID\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Exp")), Constructor("Exp-Plhdr"))
+          , Rhs([Lit("\"$Exp\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Type")), Constructor("Type-Plhdr"))
+          , Rhs([Lit("\"$Type\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(
+            Start()
+          , Rhs(
+              [Cf(Opt(Layout())), Cf(Sort("Program")), Cf(Opt(Layout()))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Start()
+          , Rhs(
+              [Cf(Opt(Layout())), Cf(Sort("Exp")), Cf(Opt(Layout()))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Lit("\"$Program\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Stat\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$NUM\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$ID\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Exp\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Type\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Min")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("App")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("App")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Pow")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Pow")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Pow")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+            ]
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            ]
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+            ]
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Not")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Not")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Not")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Not")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Not")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("And")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("And")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Or")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Or")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("If")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("If")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Let")))
+            ]
+          )
+        , Chain(
+            [ SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Let")))
+            , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Fun")))
+            ]
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Pow")))
+          , Right()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Pow")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Mul")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Div")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Sub")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Add")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Eq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Neq")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Gt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          , NonAssoc()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Lt")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("And")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("And")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Or")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("Or")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("App")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Exp")), Constructor("App")))
+          )
+        , Assoc(
+            SimpleRefGroup(SortConsRef(Cf(Sort("Type")), Constructor("FunT")))
+          , Right()
+          , SimpleRefGroup(SortConsRef(Cf(Sort("Type")), Constructor("FunT")))
+          )
+        , Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

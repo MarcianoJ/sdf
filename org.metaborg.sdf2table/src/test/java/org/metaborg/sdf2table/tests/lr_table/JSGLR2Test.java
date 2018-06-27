@@ -20,6 +20,7 @@ import org.metaborg.sdf2table.io.ParseTableGenerator;
 import org.metaborg.sdf2table.parsetable.ParseTableGenType;
 import org.metaborg.sdf2table.parsetable.query.ActionsForCharacterRepresentation;
 import org.metaborg.sdf2table.parsetable.query.ProductionToGotoRepresentation;
+import org.metaborg.sdf2table.parsetable.test.JSGLR2TestSetReader;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr2.JSGLR2;
 import org.spoofax.jsglr2.JSGLR2Variants;
@@ -47,16 +48,23 @@ import org.spoofax.jsglr2.testset.TestSetSingleInput;
 import org.spoofax.terms.ParseError;
 
 
-public class JSGLR2Test extends TestSetReader {
+public class JSGLR2Test {
 	
 	protected IParser<?, ?> parser; // Just parsing
     protected JSGLR2<?, ?> jsglr2; // Parsing and imploding (including tokenization)
     
-	protected static TestSet testSet = new TestSet("helloworld6", new TestSetParseTableFromATerm("helloworld6"), 
-    		new TestSetSingleInput("helloworld/test.txt"));
+    protected String basePath = "src/test/resources/";
+    protected String grammarName;
+    
+	protected static TestSet testSet;
 	
 	public JSGLR2Test() {
-		super(TestSet.greenMarl);
+		
+		grammarName = "metaborgc"; //helloworld6, helloworld7, jasmin, Calc, Pascal, metaborgc
+		
+		testSet = new TestSet(grammarName, new TestSetParseTableFromATerm(grammarName), 
+	    		new TestSetSingleInput(grammarName + "/test.txt"));
+		
 	}
 	
 	@Test
@@ -65,21 +73,31 @@ public class JSGLR2Test extends TestSetReader {
     	String parseTablePath = "parsetables/";
     	String persistedObjectPath = "persisted_objects/";
     	
-    	String grammarName = "helloworld6";
-    	
     	//String basePath = new File(JSGLR2Test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent() + "/classes/";
-    	String basePath = "src/test/resources/";
     	
+    	
+    	new File(basePath + "grammars/" + grammarName + "/normalized").mkdirs();
+    	new File(basePath + "generated/" + parseTablePath).mkdirs();
+		new File(basePath + "generated/" + persistedObjectPath).mkdirs();
+		
+		ArrayList<String> dependencyPaths = new ArrayList<String>();
+		dependencyPaths.add(basePath + normGrammarPath + grammarName);
+		dependencyPaths.add(basePath + normGrammarPath + "common");
+		
     	File[] files = new File[4];
-		files[0] = new File(basePath + normGrammarPath + grammarName + ".aterm");
-		files[1] = new File(basePath + parseTablePath + grammarName + ".tbl");
-		files[2] = new File(basePath + persistedObjectPath + grammarName + ".obj");
-		files[3] = new File(basePath + normGrammarPath + grammarName + ".xx");
+		files[0] = new File(basePath + normGrammarPath + grammarName + "/normalized/" + grammarName + "-norm.aterm");
+		files[1] = new File(basePath + "generated/" + parseTablePath + grammarName + ".tbl");
+		files[2] = new File(basePath + "generated/" + persistedObjectPath + grammarName + ".obj");
+		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], new ArrayList<String>(), ParseTableGenType.LR, 0);
+				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 0);
 		
 		ptGen.outputTable(false, true, true);
+		
+		
+		TestSetReader testSetReader = new JSGLR2TestSetReader(testSet);
+		
 		
 		
 		IStateFactory stateFactory = new StateFactory(StateFactory.defaultActionsForCharacterRepresentation,
@@ -88,95 +106,23 @@ public class JSGLR2Test extends TestSetReader {
         IActionsFactory actionsFactory = new ActionsFactory(true);
         ICharacterClassFactory characterClassFactory = new CharacterClassFactory(true, true);
         
-        IParseTable parseTable = new ParseTableReader(characterClassFactory, actionsFactory, stateFactory).read(this.getParseTableTerm());
+        IParseTable parseTable = new ParseTableReader(characterClassFactory, actionsFactory, stateFactory).read(testSetReader.getParseTableTerm());
         
         ParseTableVariant bestParseTableVariant = new ParseTableVariant(ActionsForCharacterRepresentation.DisjointSorted, ProductionToGotoRepresentation.JavaHashMap);
 		Variant variant = new Variant(bestParseTableVariant, new ParserVariant(ActiveStacksRepresentation.ArrayList, ForActorStacksRepresentation.ArrayDeque, ParseForestRepresentation.Hybrid, ParseForestConstruction.Optimized, StackRepresentation.HybridElkhound, Reducing.Elkhound));
-		
-		// -> BenchmarkTestsetReader 
+		 
 				
 		parser = JSGLR2Variants.getParser(parseTable, variant.parser);
         jsglr2 = JSGLR2Variants.getJSGLR2(parseTable, variant.parser);
         
-        Input in = new Input("test.txt", "aaaaaaa");
         
-        jsglr2.parseUnsafe(in.content, in.filename, null);
+        Iterable<Input> inputs = testSetReader.getInputs();
         
-//        for(Input input : inputs) {
-//			//bh.consume(parser.parseUnsafe(input.content, input.filename, null));
-//			bh.consume(jsglr2.parseUnsafe(input.content, input.filename, null));
-//        }
+        for(Input input : inputs) {
+			parser.parseUnsafe(input.content, input.filename, null);
+			//jsglr2.parseUnsafe(input.content, input.filename, null);
+        }
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private String basePath() {
-        try {
-            return new File(
-            		JSGLR2Test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
-                    .getParent();
-        } catch(URISyntaxException e) {
-            throw new IllegalStateException("base path for benchmarks could not be retrieved");
-        }
-    }
-
-    @Override
-    public IStrategoTerm parseTableTerm(String filename) throws ParseError, IOException {
-        InputStream inputStream = new FileInputStream(basePath() + "/" + filename);
-
-        return getTermReader().parseFromStream(inputStream);
-    }
-
-    @Override
-    public String grammarsPath() {
-        return basePath() + "/grammars";
-    }
-
-    @Override
-    public void setupParseTableFile(String parseTableName) throws IOException {
-        File file = new File(basePath() + "/parsetables");
-        file.mkdirs();
-        
-        Class aclass = this.getClass();
-		try {
-			aclass = JSGLR2Test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getClass();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        URL s = aclass.getResource("/");
-        
-        InputStream defResourceInJar = getClass().getResourceAsStream("/" + parseTableName + ".tbl");
-        InputStream defResourceInJar2 = getClass().getResourceAsStream(basePath() + "/parsetables/" + parseTableName + ".tbl");
-        String destinationInTargetDir = basePath() + "/parsetables/" + parseTableName + ".tbl";
-
-        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    @Override
-    public void setupDefFile(String grammarName) throws IOException {
-        new File(basePath() + "/grammars").mkdirs();
-
-        InputStream defResourceInJar = getClass().getResourceAsStream("/grammars/" + grammarName + ".def");
-        String destinationInTargetDir = basePath() + "/grammars/" + grammarName + ".def";
-
-        Files.copy(defResourceInJar, Paths.get(destinationInTargetDir), StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    @Override
-    protected String getFileAsString(String filename) throws IOException {
-        InputStream inputStream = getClass().getResourceAsStream("/samples/" + filename);
-
-        return inputStreamAsString(inputStream);
-    }
 }

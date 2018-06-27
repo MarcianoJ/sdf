@@ -13,6 +13,7 @@ import org.metaborg.sdf2table.grammar.Symbol;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 
 // Parse table class for SLR(1)
@@ -53,8 +54,10 @@ public class SLRParseTable extends ParseTable {
         followSetsCompleteSLR = Maps.newLinkedHashMap();
         
         // Fill first and follow sets with empty CharacterClasses
-        for(IProduction prod : productionsMapping.keySet()) {
-    		Symbol s = prod.leftHand();
+        Multiset<Symbol> allSymbols = normalizedGrammar().getSymbolProductionsMapping().keys();
+        for(Symbol s : allSymbols) {
+        //for(IProduction prod : productionsMapping.keySet()) {
+    		//Symbol s = prod.leftHand();
     		if(firstSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				firstSetsSLR.put(s, cc);
@@ -62,8 +65,9 @@ public class SLRParseTable extends ParseTable {
     		}
     	}
         
-        for(IProduction prod : productionsMapping.keySet()) {
-    		Symbol s = prod.leftHand();
+        for(Symbol s : allSymbols) {
+        //for(IProduction prod : productionsMapping.keySet()) {
+    		//Symbol s = prod.leftHand();
     		if(followSetsSLR.get(s) == null) {
     			CharacterClass cc = new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 				followSetsSLR.put(s, cc);
@@ -132,21 +136,23 @@ public class SLRParseTable extends ParseTable {
     public void calculateSLRFirstSetInitial(Symbol s) {
     	for(IProduction prod : productionsMapping.keySet()) {
     		int i = 0;
-    		Symbol rhsSymbol = prod.rightHand().get(0);
-    		
-    		// Look at the first RHS symbol, and the next one if the previous one is nullable, etc.
-    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
-    			rhsSymbol = prod.rightHand().get(i);
-    			if(s.equals(prod.leftHand())) {
-    				// If first RHS symbol is terminal, add to first set, else, create dependency
-    				if(rhsSymbol instanceof CharacterClass) {
-    					CharacterClass cc = (CharacterClass) rhsSymbol;
-    					firstSetsSLR.put(s, CharacterClass.union(firstSetsSLR.get(s), cc));
-    				} else {
-	    				firstSetDependenciesSLR.put(s, rhsSymbol);
-    				}	
-    			}
-    			i++;
+    		if(prod.rightHand().size() > 0) {
+	    		Symbol rhsSymbol = prod.rightHand().get(0);
+	    		
+	    		// Look at the first RHS symbol, and the next one if the previous one is nullable, etc.
+	    		while(i < prod.rightHand().size() && (i == 0 || rhsSymbol.isNullable())) {
+	    			rhsSymbol = prod.rightHand().get(i);
+	    			if(s.equals(prod.leftHand())) {
+	    				// If first RHS symbol is terminal, add to first set, else, create dependency
+	    				if(rhsSymbol instanceof CharacterClass) {
+	    					CharacterClass cc = (CharacterClass) rhsSymbol;
+	    					firstSetsSLR.put(s, CharacterClass.union(firstSetsSLR.get(s), cc));
+	    				} else {
+		    				firstSetDependenciesSLR.put(s, rhsSymbol);
+	    				}	
+	    			}
+	    			i++;
+	    		}
     		}
     	}
     }

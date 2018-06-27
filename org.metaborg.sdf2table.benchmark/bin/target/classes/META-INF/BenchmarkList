@@ -1,0 +1,1 @@
+JMH S 44 org.metaborg.sdf2table.benchmark.MyBenchmark S 73 org.metaborg.sdf2table.benchmark.generated.MyBenchmark_testMethod_jmhTest S 10 testMethod S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 2 -1 U 12 MILLISECONDS E E 

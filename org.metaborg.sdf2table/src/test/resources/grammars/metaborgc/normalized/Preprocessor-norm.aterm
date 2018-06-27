@@ -1,0 +1,1011 @@
+Module(
+  Unparameterized("normalized/Preprocessor-norm")
+, [Imports([Module(Unparameterized("normalized/Common-norm"))])]
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"<\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\60"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\">\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\62"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\"\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\34"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"if\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"ifdef\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"ifndef\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"elif\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"else\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\115"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"endif\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"include\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\99"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"define\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"undef\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\100"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\102"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"line\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"error\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"pragma\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\112"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\103"))))
+              , CharClass(Simple(Present(Numeric("\\109"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"#\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\35"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$ExternalDecl\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\69"))))
+              , CharClass(Simple(Present(Numeric("\\120"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\68"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\99"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$StructDecl\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\117"))))
+              , CharClass(Simple(Present(Numeric("\\99"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\68"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              , CharClass(Simple(Present(Numeric("\\99"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Stm\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\109"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$ControlLine\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\67"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\111"))))
+              , CharClass(Simple(Present(Numeric("\\108"))))
+              , CharClass(Simple(Present(Numeric("\\76"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\101"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Opt(Sort("PPTokenSeq")))
+          , Rhs([Lex(Sort("PPTokenSeq"))])
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(Opt(Sort("PPTokenSeq"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Iter(Sort("PPQChar")))
+          , Rhs([Lex(Sort("PPQChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("PPQChar")))
+          , Rhs(
+              [Lex(Iter(Sort("PPQChar"))), Lex(Sort("PPQChar"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("PPQChar"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("PPQChar")))
+          , Rhs([Lex(Iter(Sort("PPQChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("PPQChar")))
+          , Rhs([Lex(IterStar(Sort("PPQChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("PPHChar")))
+          , Rhs([Lex(Sort("PPHChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("PPHChar")))
+          , Rhs(
+              [Lex(Iter(Sort("PPHChar"))), Lex(Sort("PPHChar"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("PPHChar"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("PPHChar")))
+          , Rhs([Lex(Iter(Sort("PPHChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("PPHChar")))
+          , Rhs([Lex(IterStar(Sort("PPHChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Alt(CharClass(Simple(Present(Numeric("\\10")))), Sort("EOF"))
+            )
+          , Rhs([CharClass(Simple(Present(Numeric("\\10"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Alt(CharClass(Simple(Present(Numeric("\\10")))), Sort("EOF"))
+            )
+          , Rhs([Lex(Sort("EOF"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("EOF"))
+          , Rhs([Lex(Sort("EOF"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Iter(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Alt(
+                    CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                  , Sort("Comment")
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Iter(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    Alt(
+                      CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                    , Sort("Comment")
+                    )
+                  )
+                )
+              , Lex(
+                  Alt(
+                    CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                  , Sort("Comment")
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              IterStar(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs([])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              IterStar(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    Alt(
+                      CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                    , Sort("Comment")
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              Iter(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    Alt(
+                      CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                    , Sort("Comment")
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              Alt(
+                CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+              , Sort("Comment")
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Alt(
+                    CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                  , Sort("Comment")
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Alt(
+                CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+              , Sort("Comment")
+              )
+            )
+          , Rhs(
+              [CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Alt(
+                CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+              , Sort("Comment")
+              )
+            )
+          , Rhs([Lex(Sort("Comment"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Comment"))
+          , Rhs([Lex(Sort("Comment"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("PPToken")))
+          , Rhs([Lex(Sort("PPToken"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("PPToken")))
+          , Rhs(
+              [Lex(Iter(Sort("PPToken"))), Lex(Sort("PPToken"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("PPToken"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("PPToken")))
+          , Rhs([Lex(Iter(Sort("PPToken")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("PPToken")))
+          , Rhs([Lex(IterStar(Sort("PPToken")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPToken"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Range(Numeric("\\11"), Numeric("\\255"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPTokenSeq"))
+          , Rhs([Lex(Iter(Sort("PPToken")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPWS"))
+          , Rhs(
+              [ Lex(
+                  IterStar(
+                    Alt(
+                      CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                    , Sort("Comment")
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPNL"))
+          , Rhs(
+              [Lex(
+                 Alt(CharClass(Simple(Present(Numeric("\\10")))), Sort("EOF"))
+               )]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPHChar"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\61"))
+                        , Range(Numeric("\\63"), Numeric("\\255"))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPQChar"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\33"))
+                        , Range(Numeric("\\35"), Numeric("\\255"))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPHeaderName"))
+          , Rhs(
+              [Lit("\"<\""), Lex(Iter(Sort("PPHChar"))), Lit("\">\"")]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("PPHeaderName"))
+          , Rhs(
+              [Lit("\"\\\"\""), Lex(Iter(Sort("PPQChar"))), Lit("\"\\\"\"")]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"if\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPTokenSeq"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"ifdef\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("ID"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"ifndef\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("ID"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"elif\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPTokenSeq"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"else\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"endif\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"include\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPHeaderName"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"define\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPTokenSeq"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"undef\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPTokenSeq"))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"line\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Opt(Sort("PPTokenSeq")))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"error\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Opt(Sort("PPTokenSeq")))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [ Lit("\"#\"")
+              , Lex(Sort("PPWS"))
+              , Lit("\"pragma\"")
+              , Lex(Sort("PPWS"))
+              , Lex(Opt(Sort("PPTokenSeq")))
+              , Lex(Sort("PPWS"))
+              , Lex(Sort("PPNL"))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("ControlLine"))
+          , Rhs(
+              [Lit("\"#\""), Lex(Sort("PPWS")), Lex(Sort("PPNL"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ExternalDecl")), Constructor("PP"))
+          , Rhs([Cf(Sort("ControlLine"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("StructDecl")), Constructor("PP"))
+          , Rhs([Cf(Sort("ControlLine"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Stm")), Constructor("PP"))
+          , Rhs([Cf(Sort("ControlLine"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Sort("PPTokenSeq")))
+          , Rhs([Lex(Opt(Sort("PPTokenSeq")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("ID"))
+          , Rhs([Lex(Sort("ID"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("ControlLine"))
+          , Rhs([Lex(Sort("ControlLine"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("PPQChar")))
+          , Rhs([Lex(Iter(Sort("PPQChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("PPHChar")))
+          , Rhs([Lex(Iter(Sort("PPHChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPHeaderName"))
+          , Rhs([Lex(Sort("PPHeaderName"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPQChar"))
+          , Rhs([Lex(Sort("PPQChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPHChar"))
+          , Rhs([Lex(Sort("PPHChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              Alt(CharClass(Simple(Present(Numeric("\\10")))), Sort("EOF"))
+            )
+          , Rhs(
+              [Lex(
+                 Alt(CharClass(Simple(Present(Numeric("\\10")))), Sort("EOF"))
+               )]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPNL"))
+          , Rhs([Lex(Sort("PPNL"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              IterStar(
+                Alt(
+                  CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                , Sort("Comment")
+                )
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  IterStar(
+                    Alt(
+                      CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))
+                    , Sort("Comment")
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPWS"))
+          , Rhs([Lex(Sort("PPWS"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("PPToken")))
+          , Rhs([Lex(Iter(Sort("PPToken")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPTokenSeq"))
+          , Rhs([Lex(Sort("PPTokenSeq"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("PPToken"))
+          , Rhs([Lex(Sort("PPToken"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ExternalDecl")), Constructor("ExternalDecl-Plhdr"))
+          , Rhs([Lit("\"$ExternalDecl\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("StructDecl")), Constructor("StructDecl-Plhdr"))
+          , Rhs([Lit("\"$StructDecl\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Stm")), Constructor("Stm-Plhdr"))
+          , Rhs([Lit("\"$Stm\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("ControlLine")), Constructor("ControlLine-Plhdr"))
+          , Rhs([Lit("\"$ControlLine\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Lex(Sort("PPTokenSeq"))]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Range(Numeric("\\11"), Numeric("\\255"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lex(Sort("PPWS"))]
+          , List(
+              [CharClass(Simple(Present(Conc(Numeric("\\9"), Numeric("\\32")))))]
+            )
+          )
+        , Follow(
+            [Lit("\"$ExternalDecl\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$StructDecl\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Stm\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$ControlLine\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

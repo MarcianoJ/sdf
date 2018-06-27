@@ -1,0 +1,11 @@
+org/metaborg/sdf2table/benchmark/BenchmarkTestsetReader.class
+org/metaborg/sdf2table/benchmark/MyBenchmark.class
+org/metaborg/sdf2table/benchmark/generated/MyBenchmark_testMethod_jmhTest.class
+META-INF/BenchmarkList
+org/metaborg/sdf2table/benchmark/generated/MyBenchmark_jmhType_B2.class
+org/metaborg/sdf2table/benchmark/generated/MyBenchmark_jmhType_B1.class
+META-INF/CompilerHints
+org/metaborg/sdf2table/benchmark/BaseBenchmark.class
+org/metaborg/sdf2table/benchmark/NormGrammarTestSet.class
+org/metaborg/sdf2table/benchmark/generated/MyBenchmark_jmhType_B3.class
+org/metaborg/sdf2table/benchmark/generated/MyBenchmark_jmhType.class
