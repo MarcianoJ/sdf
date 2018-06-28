@@ -60,7 +60,7 @@ public class JSGLR2Test {
 	
 	public JSGLR2Test() {
 		
-		grammarName = "Pascal"; //helloworld6, helloworld7, jasmin, Calc, Pascal, metaborgc
+		grammarName = "Calc"; //helloworld6, helloworld7, jasmin, Calc, Pascal, metaborgc
 		
 		testSet = new TestSet(grammarName, new TestSetParseTableFromATerm(grammarName), 
 	    		new TestSetSingleInput(grammarName + "/test.txt"));
@@ -91,7 +91,7 @@ public class JSGLR2Test {
 		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, true);
+				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 1, true);
 		
 		ptGen.outputTable(false, true, true);
 		
@@ -122,6 +122,8 @@ public class JSGLR2Test {
 			//parser.parseUnsafe(input.content, input.filename, null);
 			jsglr2.parseUnsafe(input.content, input.filename, null);
         }
+        
+        
 	}
 	
 	
