@@ -47,14 +47,14 @@ public class NaiveTableTest {
 		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 1, false);
+				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
 		
 		ptGen.createParseTable(false, true, true);
 		ParseTable parseTable = ptGen.getParseTable();
 		
 		
 		ParseTableGenerator ptGenNaive = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.LALR, 1, true);
+				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
 		
 		ptGenNaive.createParseTable(false, true, true);
 		ParseTable parseTableNaive = ptGenNaive.getParseTable();
