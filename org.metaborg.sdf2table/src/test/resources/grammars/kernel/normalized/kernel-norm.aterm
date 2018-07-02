@@ -1,0 +1,256 @@
+Module(
+  Unparameterized("normalized/kernel-norm")
+, []
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"\\\"\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\34"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"\\\\\\\"\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\92"))))
+              , CharClass(Simple(Present(Numeric("\\34"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$Start\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\97"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"$String\"")
+          , Rhs(
+              [ CharClass(Simple(Present(Numeric("\\36"))))
+              , CharClass(Simple(Present(Numeric("\\83"))))
+              , CharClass(Simple(Present(Numeric("\\116"))))
+              , CharClass(Simple(Present(Numeric("\\114"))))
+              , CharClass(Simple(Present(Numeric("\\105"))))
+              , CharClass(Simple(Present(Numeric("\\110"))))
+              , CharClass(Simple(Present(Numeric("\\103"))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Opt(Layout()))
+          , Rhs([Cf(Layout())])
+          , NoAttrs()
+          )
+        , SdfProduction(Cf(Opt(Layout())), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(Iter(Sort("StringChar")))
+          , Rhs([Lex(Sort("StringChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Iter(Sort("StringChar")))
+          , Rhs(
+              [Lex(Iter(Sort("StringChar"))), Lex(Sort("StringChar"))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(Lex(IterStar(Sort("StringChar"))), Rhs([]), NoAttrs())
+        , SdfProduction(
+            Lex(IterStar(Sort("StringChar")))
+          , Rhs([Lex(Iter(Sort("StringChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Iter(Sort("StringChar")))
+          , Rhs([Lex(Iter(Sort("StringChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Start"))
+          , Rhs([Cf(Sort("String"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("String"))
+          , Rhs(
+              [Lex(Sort("QMLex")), Lex(Sort("StringLex")), Lex(Sort("QMLex"))]
+            )
+          , Attrs(
+              [Term(
+                 Default(Appl(Unquoted("ast"), [Fun(Quoted("\"String(<2>)\""))]))
+               )]
+            )
+          )
+        , SdfProduction(
+            Lex(Sort("QMLex"))
+          , Rhs([Lit("\"\\\"\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("StringLex"))
+          , Rhs([Lex(IterStar(Sort("StringChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("StringChar"))
+          , Rhs(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\33"))
+                        , Range(Numeric("\\35"), Numeric("\\255"))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("StringChar"))
+          , Rhs([Lit("\"\\\\\\\"\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("StringChar"))
+          , Rhs([Lex(Sort("StringChar"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(IterStar(Sort("StringChar")))
+          , Rhs([Lex(IterStar(Sort("StringChar")))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("StringLex"))
+          , Rhs([Lex(Sort("StringLex"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("QMLex"))
+          , Rhs([Lex(Sort("QMLex"))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("Start")), Constructor("Start-Plhdr"))
+          , Rhs([Lit("\"$Start\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProductionWithCons(
+            SortCons(Cf(Sort("String")), Constructor("String-Plhdr"))
+          , Rhs([Lit("\"$String\"")])
+          , Attrs([Placeholder()])
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(
+            Start()
+          , Rhs(
+              [Cf(Opt(Layout())), Cf(Sort("Start")), Cf(Opt(Layout()))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Restrictions(
+        [ Follow(
+            [Lex(Sort("StringLex"))]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\0"), Numeric("\\9"))
+                      , Conc(
+                          Range(Numeric("\\11"), Numeric("\\33"))
+                        , Range(Numeric("\\35"), Numeric("\\255"))
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$Start\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        , Follow(
+            [Lit("\"$String\"")]
+          , List(
+              [ CharClass(
+                  Simple(
+                    Present(
+                      Conc(
+                        Range(Numeric("\\65"), Numeric("\\90"))
+                      , Range(Numeric("\\97"), Numeric("\\122"))
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

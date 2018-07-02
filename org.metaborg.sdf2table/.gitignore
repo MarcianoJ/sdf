@@ -6,3 +6,5 @@
 /target
 /.idea
 /*.iml
+
+/src/test/resources/generated/persisted_objects/

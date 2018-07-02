@@ -423,19 +423,16 @@ public class SLRParseTable extends ParseTable {
 		    			if(phase == FIRST) {
 		    				CharacterClass union = CharacterClass.union(getFirst(sSuper), getFirst(sSub));
 		    				if(!getFirst(sSuper).equals(union)) {
-		    					System.out.println("a");
 		    					addFirst(sSuper, union);
 			    				allComplete = false;
 		    				}
 		    			} else if(phase == FOLLOWFIRST) {
 		    				CharacterClass union = CharacterClass.union(getFollow(sSuper), getFirst(sSub));
-		    				System.out.println("b");
 		    				if(!getFollow(sSuper).equals(union)) {
 		    					addFollow(sSuper, union);
 			    				allComplete = false;
 		    				}
 		    			} else {
-		    				System.out.println("c");
 		    				CharacterClass union = CharacterClass.union(getFollow(sSuper), getFollow(sSub));
 		    				if(!getFollow(sSuper).equals(union)) {
 		    					addFollow(sSuper, union);

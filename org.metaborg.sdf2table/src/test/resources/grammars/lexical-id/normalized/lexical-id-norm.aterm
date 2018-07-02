@@ -1,0 +1,145 @@
+Module(
+  Unparameterized("normalized/lexical-id-norm")
+, []
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lex(
+              Iter(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs(
+              [CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              Iter(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+                  )
+                )
+              , CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              IterStar(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs([])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(
+              IterStar(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              IterStar(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  IterStar(
+                    CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lex(Sort("Start"))
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(
+              Iter(
+                CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+              )
+            )
+          , Rhs(
+              [ Lex(
+                  Iter(
+                    CharClass(Simple(Present(Range(Numeric("\\97"), Numeric("\\122")))))
+                  )
+                )
+              ]
+            )
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Sort("Start"))
+          , Rhs([Lex(Sort("Start"))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(Start(), Rhs([Lex(Sort("Start"))]), NoAttrs())
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

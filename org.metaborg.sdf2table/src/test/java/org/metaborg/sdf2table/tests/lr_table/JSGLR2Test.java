@@ -59,8 +59,11 @@ public class JSGLR2Test {
 	protected static TestSet testSet;
 	
 	public JSGLR2Test() {
-		
-		grammarName = "helloworld6"; //helloworld6, helloworld7, jasmin, Calc, Pascal, metaborgc
+		//test: helloworld6, intersection, kernel, lexical-id, literals, optionals, reject, start-symbol, sum-ambiguous, sum-nonambiguous
+		//real: Calc, Pascal, metaborgc
+		//passing: helloworld6
+		//failing: intersection, kernel, lexical-id, literals, optionals, reject
+		grammarName = "sum-ambiguous"; 
 		
 		testSet = new TestSet(grammarName, new TestSetParseTableFromATerm(grammarName), 
 	    		new TestSetSingleInput(grammarName + "/test.txt"));
@@ -72,8 +75,6 @@ public class JSGLR2Test {
 		String normGrammarPath = "grammars/";
     	String parseTablePath = "parsetables/";
     	String persistedObjectPath = "persisted_objects/";
-    	
-    	//String basePath = new File(JSGLR2Test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent() + "/classes/";
     	
     	
     	new File(basePath + "grammars/" + grammarName + "/normalized").mkdirs();
@@ -91,7 +92,7 @@ public class JSGLR2Test {
 		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
+				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, true);
 		
 		ptGen.outputTable(false, true, true);
 		

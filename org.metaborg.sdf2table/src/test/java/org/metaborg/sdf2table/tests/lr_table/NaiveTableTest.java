@@ -20,7 +20,7 @@ public class NaiveTableTest {
 	public NaiveTableTest() {
 		basePath = "src/test/resources/";
 		
-		grammarName = "helloworld6";
+		grammarName = "sum-nonambiguous";
 	}
 	
 	@Test
@@ -28,8 +28,6 @@ public class NaiveTableTest {
 		String normGrammarPath = "grammars/";
     	String parseTablePath = "parsetables/";
     	String persistedObjectPath = "persisted_objects/";
-    	
-    	//String basePath = new File(JSGLR2Test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent() + "/classes/";
     	
     	
     	new File(basePath + "grammars/" + grammarName + "/normalized").mkdirs();
@@ -47,51 +45,62 @@ public class NaiveTableTest {
 		files[3] = new File(basePath + "generated/" + grammarName + ".xx");
 		
 		ParseTableGenerator ptGen = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
+				files[2], files[3], dependencyPaths, ParseTableGenType.LR, 1, true);
 		
 		ptGen.createParseTable(false, true, true);
 		ParseTable parseTable = ptGen.getParseTable();
 		
 		
-		ParseTableGenerator ptGenNaive = new ParseTableGenerator(files[0], files[1],
-				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
+//		ParseTableGenerator ptGenNaive = new ParseTableGenerator(files[0], files[1],
+//				files[2], files[3], dependencyPaths, ParseTableGenType.SLR, 1, false);
 		
-		ptGenNaive.createParseTable(false, true, true);
-		ParseTable parseTableNaive = ptGenNaive.getParseTable();
+//		ptGenNaive.createParseTable(false, true, true);
+//		ParseTable parseTableNaive = ptGenNaive.getParseTable();
 		
+		
+		int productions = parseTable.productionsMapping().keySet().size();
+		int symbols = parseTable.normalizedGrammar().getSymbols().size();
 		int states = parseTable.totalStates();
-		int statesNaive = parseTableNaive.totalStates();
 		
-		System.out.println("states: " + states);
-		System.out.println("statesNaive: " + statesNaive);
-		//assert(states == statesNaive);
+		System.out.println("Productions: " + productions);
+		System.out.println("Symbols: " + symbols);
+		System.out.println("States: " + states);
 		
+//		int states = parseTable.totalStates();
+//		int statesNaive = parseTableNaive.totalStates();
+		
+//		System.out.println("states: " + states);
+//		System.out.println("statesNaive: " + statesNaive);
+//		//assert(states == statesNaive);
+//		
 		Map<Map<LRItem, List<ICharacterClass>>, State> augKernelMapping = parseTable.augmentedKernelMap();
-		Map<Map<LRItem, List<ICharacterClass>>, State> augKernelMappingNaive = parseTableNaive.augmentedKernelMap();
-		
+//		Map<Map<LRItem, List<ICharacterClass>>, State> augKernelMappingNaive = parseTableNaive.augmentedKernelMap();
+//		
+//		for(Map<LRItem, List<ICharacterClass>> key : augKernelMapping.keySet()) {
+//			State state = augKernelMapping.get(key);
+//			State stateNaive = augKernelMappingNaive.get(key);
+//			System.out.println(key);
+//			//System.out.println(((State) parseTableNaive.getState(state.getLabel())).getKernel().iterator().next());
+//			System.out.println(state.getLabel());
+//			if(stateNaive != null)
+//				System.out.println(stateNaive.getLabel());
+//			System.out.println();
+//			//assert(state.equals(stateNaive));
+//		}
+//		
 		for(Map<LRItem, List<ICharacterClass>> key : augKernelMapping.keySet()) {
-			State state = augKernelMapping.get(key);
-			State stateNaive = augKernelMappingNaive.get(key);
-			System.out.println(key);
-			//System.out.println(((State) parseTableNaive.getState(state.getLabel())).getKernel().iterator().next());
-			System.out.println(state.getLabel());
-			if(stateNaive != null)
-				System.out.println(stateNaive.getLabel());
+			//System.out.println(key);
+			System.out.println(augKernelMapping.get(key));
 			System.out.println();
-			//assert(state.equals(stateNaive));
 		}
-		
-		for(Map<LRItem, List<ICharacterClass>> key : augKernelMapping.keySet()) {
-			System.out.println(key);
-		}
-		
-		for(Map<LRItem, List<ICharacterClass>> key : augKernelMappingNaive.keySet()) {
-			System.out.println(key);
-			
-			//System.out.println(augKernelMappingNaive.get(key));
-			//System.out.println();
-			
-		}
+//		
+//		for(Map<LRItem, List<ICharacterClass>> key : augKernelMappingNaive.keySet()) {
+//			System.out.println(key);
+//			
+//			//System.out.println(augKernelMappingNaive.get(key));
+//			//System.out.println();
+//			
+//		}
 		
 	}
 }

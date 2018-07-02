@@ -32,18 +32,6 @@ public final class ActionsForCharacterDisjointSorted implements IActionsForChara
             Set<IAction> actionsForCharacter = null;
 
             for(ActionsPerCharacterClass actionsPerCharacterClass : actionsPerCharacterClasses) {
-            	if(actionsPerCharacterClass.characterClass == null) {
-            		System.out.println(character);
-            		System.out.println(actionsPerCharacterClasses.length);
-            		for(ActionsPerCharacterClass a : actionsPerCharacterClasses) {
-            			System.out.println(a.actions.size());
-            			System.out.println(a.actions);
-            			System.out.println(a.characterClass);
-            		}
-            		System.out.println(actionsPerCharacterClasses[1].characterClass.min());
-            		System.out.println(actionsPerCharacterClasses[1].characterClass.max());
-            		
-            	}
                 if(actionsPerCharacterClass.appliesTo(character)) {
                     if(actionsForCharacter == null)
                         actionsForCharacter = new HashSet<>();

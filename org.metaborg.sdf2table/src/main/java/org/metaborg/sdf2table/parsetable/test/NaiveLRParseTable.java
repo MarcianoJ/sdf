@@ -1,5 +1,6 @@
 package org.metaborg.sdf2table.parsetable.test;
 
+import java.util.List;
 import java.util.Map;
 
 import org.metaborg.characterclasses.CharacterClassFactory;
@@ -12,6 +13,8 @@ import org.metaborg.sdf2table.parsetable.LRItem;
 import org.metaborg.sdf2table.parsetable.LRParseTable;
 import org.metaborg.sdf2table.parsetable.ParseTableGenType;
 import org.metaborg.sdf2table.parsetable.State;
+
+import com.google.common.collect.Maps;
 
 
 // ParseTable class for LR(0) and LR(1) with naive first/follow implementation
@@ -38,33 +41,38 @@ public class NaiveLRParseTable extends LRParseTable {
 //    		calculateLRFirstSet(state, s);
 //    	}
     	
-    	calculateSLRFirstFollowSets(state);
+    	calculateLRFirstFollowSets(state);
     	
-    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
-    	for(Symbol s : stateFollowSets.keySet()) {
-    		// LF, VT, FF, CR, Space, BS, DEL
-    		if(s instanceof CharacterClass) {
-    			CharacterClass cc = (CharacterClass) s;
-    			boolean ccContainsWhitespaceChars = cc.contains(10) || cc.contains(11) || cc.contains(12) || cc.contains(32) || cc.contains(8) || cc.contains(127);
-    			if(ccContainsWhitespaceChars) {
-    				stateFollowSets.put(s, CharacterClass.getFullCharacterClass());
-    			}
-    		}
-    		CharacterClass ccFollow = stateFollowSets.get(s);
-    		
-    		if(ccFollow.isEmptyCC()) {
-    			stateFollowSets.put(s, CharacterClass.getFullCharacterClass());
-    		}
-    	}
+//    	Map<Symbol, CharacterClass> stateFollowSets = followSetsLR.get(state);
+//    	for(Symbol s : stateFollowSets.keySet()) {
+//    		// LF, VT, FF, CR, Space, BS, DEL
+//    		if(s instanceof CharacterClass) {
+//    			CharacterClass cc = (CharacterClass) s;
+//    			boolean ccContainsWhitespaceChars = cc.contains(10) || cc.contains(11) || cc.contains(12) || cc.contains(32) || cc.contains(8) || cc.contains(127);
+//    			if(ccContainsWhitespaceChars) {
+//    				stateFollowSets.put(s, CharacterClass.getFullCharacterClass());
+//    			}
+//    		}
+//    		CharacterClass ccFollow = stateFollowSets.get(s);
+//    		
+//    		if(ccFollow.isEmptyCC()) {
+//    			stateFollowSets.put(s, CharacterClass.getFullCharacterClass());
+//    		}
+//    	}
     }
 	
-    public void calculateSLRFirstFollowSets(State state) {
+    public void calculateLRFirstFollowSets(State state) {
     	for(int i = 0; i <= 256; i++) {
 			CharacterClass ccSingle = new CharacterClass(new CharacterClassSingle(i));
 			CharacterClass ccEmpty = (CharacterClass) new CharacterClass(CharacterClassFactory.EMPTY_CHARACTER_CLASS);
 			firstSetsLR.get(state).put(ccSingle, ccSingle);
 			followSetsLR.get(state).put(ccSingle, ccEmpty);
 		}
+    	
+    	Map<Symbol, Boolean> lhsMapping = Maps.newLinkedHashMap();
+    	for(LRItem item : state.getItems()) {
+    		lhsMapping.put(item.getProd().leftHand(), true);
+    	}
     	
     	boolean allComplete = false;
     	
@@ -77,62 +85,94 @@ public class NaiveLRParseTable extends LRParseTable {
 	    		
 	    		// Production X -> Y_0 Y_1...Y_k
 	    		Symbol x = prod.leftHand();
-    			int i = item.getDotPosition();
+    			//int i = item.getDotPosition();
     			
-    			if(i < prod.rightHand().size()) {
-		    		Symbol y_i = prod.rightHand().get(i);
-		    		
-		    		boolean allNullableBeforeI = true;
-	    			for(int a = 0; a < i; a++) {
-	    				Symbol sBefore = prod.rightHand().get(a);
-	    				if(!(sBefore.isNullable() || i == 1)) {
-	    					allNullableBeforeI = false;
-	    				}
+    			for(int i = 0; i <= k; i++) {
+	    			if(i < prod.rightHand().size()) {
+			    		Symbol y_i = prod.rightHand().get(i);
+			    		
+			    		boolean allNullableBeforeI = true;
+		    			for(int a = 0; a < i; a++) {
+		    				Symbol sBefore = prod.rightHand().get(a);
+		    				if(!(sBefore.isNullable() || i == 1)) {
+		    					allNullableBeforeI = false;
+		    				}
+		    			}
+		    			if(allNullableBeforeI) {
+		    				CharacterClass superSet = getFirst(state, x);
+		    				CharacterClass subSet = getFirst(state, y_i);
+		    				
+		    				if(y_i instanceof CharacterClass || lhsMapping.containsKey(y_i)) {
+			    				CharacterClass union = CharacterClass.union(getFirst(state, x), getFirst(state, y_i));
+			    				if(!getFirst(state, x).equals(union)) {
+			    					addFirst(state, x, union);
+				    				allComplete = false;
+			    				}
+		    				} else {
+		    					CharacterClass fullCC = CharacterClass.getFullCharacterClass();
+		        				if(!getFirst(state, x).equals(fullCC)) {
+		        					addFirst(state, x, fullCC);
+			        				allComplete = false;
+		        				}
+		    				}
+		    			}
+		    			
+		    			boolean allNullableAfterI = true;
+		    			for(int b = i+1; b <= k; b++) {
+		    				Symbol sAfter = prod.rightHand().get(b);
+		    				if(!(sAfter.isNullable() || i == k)) {
+		    					allNullableAfterI = false;
+		    				}
+		    			}
+		    			if(allNullableAfterI) {
+		    				CharacterClass superSet = getFollow(state, y_i);
+		    				CharacterClass subSet = getFollow(state, x);
+		    				
+		    				if(x instanceof CharacterClass || lhsMapping.containsKey(x)) {
+			    				CharacterClass union = CharacterClass.union(getFollow(state, y_i), getFollow(state, x));
+			    				if(!getFollow(state, y_i).equals(union)) {
+			    					addFollow(state, y_i, union);
+				    				allComplete = false;
+			    				}
+			    			} else {
+		    					CharacterClass fullCC = CharacterClass.getFullCharacterClass();
+		        				if(!getFollow(state, y_i).equals(fullCC)) {
+		        					addFollow(state, y_i, fullCC);
+			        				allComplete = false;
+		        				}
+		    				}
+		    			}
+		    			
+		    			for(int j = i+1; j <= k; j++) {
+		    				Symbol y_j = prod.rightHand().get(j);
+		    				boolean allNullableBetweenIandJ = true;
+		    				for(int c = i+1; c <= j-1; c++) {
+		        				Symbol sBetween = prod.rightHand().get(c);
+		        				if(!(sBetween.isNullable() || i+1 == j)) {
+		        					allNullableBetweenIandJ = false;
+		        				}
+		        			}
+		        			if(allNullableBetweenIandJ) {
+		        				CharacterClass superSet = getFollow(state, y_i);
+			    				CharacterClass subSet = getFirst(state, y_j);
+			    				
+			    				if(y_j instanceof CharacterClass || lhsMapping.containsKey(y_j)) {
+			        				CharacterClass union = CharacterClass.union(getFollow(state, y_i), getFirst(state, y_j));
+			        				if(!getFollow(state, y_i).equals(union)) {
+			        					addFollow(state, y_i, union);
+				        				allComplete = false;
+			        				}
+			    				} else {
+			    					CharacterClass fullCC = CharacterClass.getFullCharacterClass();
+			        				if(!getFollow(state, y_i).equals(fullCC)) {
+			        					addFollow(state, y_i, fullCC);
+				        				allComplete = false;
+			        				}
+			    				}
+		        			}
+		    			}
 	    			}
-	    			if(allNullableBeforeI) {
-	    				CharacterClass union = CharacterClass.union(getFirst(state, x), getFirst(state, y_i));
-	    				if(!getFirst(state, x).equals(union)) {
-	    					//addFirst(x, getFirst(y_i));
-	    					addFirst(state, x, union);
-		    				allComplete = false;
-	    				}
-	    			}
-	    			
-	    			boolean allNullableAfterI = true;
-	    			for(int b = i+1; b <= k; b++) {
-	    				Symbol sAfter = prod.rightHand().get(b);
-	    				if(!(sAfter.isNullable() || i == k)) {
-	    					allNullableAfterI = false;
-	    				}
-	    			}
-	    			if(allNullableAfterI) {
-	    				CharacterClass union = CharacterClass.union(getFollow(state, y_i), getFollow(state, x));
-	    				if(!getFollow(state, y_i).equals(union)) {
-	    					//addFollow(y_i, getFollow(x));
-	    					addFollow(state, y_i, union);
-		    				allComplete = false;
-	    				}
-	    			}
-	    			
-	    			for(int j = i+1; j <= k; j++) {
-	    				Symbol y_j = prod.rightHand().get(j);
-	    				boolean allNullableBetweenIandJ = true;
-	    				for(int c = i+1; c <= j-1; c++) {
-	        				Symbol sBetween = prod.rightHand().get(c);
-	        				if(!(sBetween.isNullable() || i+1 == j)) {
-	        					allNullableBetweenIandJ = false;
-	        				}
-	        			}
-	        			if(allNullableBetweenIandJ) {
-	        				CharacterClass union = CharacterClass.union(getFollow(state, y_i), getFirst(state, y_j));
-	        				if(!getFollow(state, y_i).equals(union)) {
-	        					//addFollow(y_i, getFirst(y_j));
-	        					addFollow(state, y_i, union);
-		        				allComplete = false;
-	        				}
-	        			}
-	    			}
-    			}
+		    	}
 	    	}
     	}
     }

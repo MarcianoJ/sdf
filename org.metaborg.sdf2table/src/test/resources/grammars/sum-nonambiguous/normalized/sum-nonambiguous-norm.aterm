@@ -1,0 +1,68 @@
+Module(
+  Unparameterized("normalized/sum-nonambiguous-norm")
+, []
+, [ SDFSection(
+      Kernel(
+        [ SdfProduction(
+            Lit("\"+\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\43"))))])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Lit("\"x\"")
+          , Rhs([CharClass(Simple(Present(Numeric("\\120"))))])
+          , NoAttrs()
+          )
+        , SdfProductionWithCons(
+            SortCons(Sort("Start"), Constructor("Add"))
+          , Rhs([Sort("Start"), Lit("\"+\""), Sort("Start")])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProductionWithCons(
+            SortCons(Sort("Start"), Constructor("Term"))
+          , Rhs([Lit("\"x\"")])
+          , NoAttrs()
+          )
+        , SdfProduction(
+            Cf(Layout())
+          , Rhs([Cf(Layout()), Cf(Layout())])
+          , Attrs([Assoc(Left())])
+          )
+        , SdfProduction(Start(), Rhs([Sort("Start")]), NoAttrs())
+        , SdfProduction(
+            FileStart()
+          , Rhs([Start(), CharClass(Simple(Present(Numeric("\\256"))))])
+          , NoAttrs()
+          )
+        ]
+      )
+    )
+  , SDFSection(
+      Priorities(
+        [ Assoc(
+            SimpleRefGroup(SortConsRef(Sort("Start"), Constructor("Add")))
+          , Left()
+          , SimpleRefGroup(SortConsRef(Sort("Start"), Constructor("Add")))
+          )
+        , Assoc(
+            SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          , Left()
+          , SimpleGroup(
+              SdfProduction(
+                Cf(Layout())
+              , Rhs([Cf(Layout()), Cf(Layout())])
+              , NoAttrs()
+              )
+            )
+          )
+        ]
+      )
+    )
+  ]
+)

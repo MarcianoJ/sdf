@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1530117043060
+Bnd-LastModified: 1530461515466
 Build-Jdk: 1.8.0_171
 Built-By: marciano
 Bundle-Description: Maven parent POM for Java projects
@@ -26,13 +26,17 @@ Export-Package: GreenMarl.tbl,boolean.def,generated.parsetables,generate
  rld,samples.helloworld6,samples.helloworld7,samples.jasmin,samples.meta
  borgc,sum-nonambiguous.aterm,sum-nonambiguous.def,sum-nonambiguous.xx
 Import-Package: org.spoofax.interpreter.terms,org.spoofax.jsglr2,org.spo
- ofax.jsglr2.parser,org.spoofax.jsglr2.testset,org.spoofax.terms,org.spo
- ofax.terms.io.binary,org.metaborg.sdf2table.io,org.metaborg.sdf2table.p
- arsetable,org.openjdk.jmh.annotations;provider=metaborg;mandatory:=prov
- ider;version=0,org.openjdk.jmh.infra;provider=metaborg;mandatory:=provi
- der;version=0,org.openjdk.jmh.results;provider=metaborg;mandatory:=prov
- ider;version=0,org.openjdk.jmh.runner;provider=metaborg;mandatory:=prov
- ider;version=0,org.openjdk.jmh.util;provider=metaborg;mandatory:=provid
- er;version=0
+ ofax.jsglr2.actions,org.spoofax.jsglr2.parseforest,org.spoofax.jsglr2.p
+ arser,org.spoofax.jsglr2.parsetable,org.spoofax.jsglr2.reducing,org.spo
+ ofax.jsglr2.stack,org.spoofax.jsglr2.stack.collections,org.spoofax.jsgl
+ r2.states,org.spoofax.jsglr2.testset,org.spoofax.terms,org.spoofax.term
+ s.io.binary,org.metaborg.characterclasses,org.metaborg.parsetable,org.m
+ etaborg.sdf2table.io,org.metaborg.sdf2table.parsetable,org.metaborg.sdf
+ 2table.parsetable.query,org.openjdk.jmh.annotations;provider=metaborg;m
+ andatory:=provider;version=0,org.openjdk.jmh.infra;provider=metaborg;ma
+ ndatory:=provider;version=0,org.openjdk.jmh.results;provider=metaborg;m
+ andatory:=provider;version=0,org.openjdk.jmh.runner;provider=metaborg;m
+ andatory:=provider;version=0,org.openjdk.jmh.util;provider=metaborg;man
+ datory:=provider;version=0
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Tool: Bnd-2.4.1.201501161923
