@@ -88,11 +88,13 @@ public class NaiveTableTest {
 //			//assert(state.equals(stateNaive));
 //		}
 //		
+		
 		for(Map<LRItem, List<ICharacterClass>> key : augKernelMapping.keySet()) {
 			//System.out.println(key);
 			System.out.println(augKernelMapping.get(key));
 			System.out.println();
 		}
+		
 //		
 //		for(Map<LRItem, List<ICharacterClass>> key : augKernelMappingNaive.keySet()) {
 //			System.out.println(key);

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1530461515466
+Bnd-LastModified: 1530600611962
 Build-Jdk: 1.8.0_171
 Built-By: marciano
 Bundle-Description: Maven parent POM for Java projects
@@ -11,20 +11,21 @@ Bundle-Version: 2.4.1
 Created-By: Apache Maven Bundle Plugin
 Eclipse-BuddyPolicy: registered
 Embed-Transitive: true
-Export-Package: GreenMarl.tbl,boolean.def,generated.parsetables,generate
- d.persisted_objects,grammars.Calc.normalized,grammars.Pascal.normalized
- ,grammars.helloworld5.normalized,grammars.helloworld6.normalized,gramma
- rs.helloworld7.normalized,grammars.jasmin.normalized,grammars.metaborgc
- .normalized,helloworld.aterm,helloworld.def,helloworld.xx,helloworld2.d
- ef,helloworld2.xx,helloworld2_in.aterm,helloworld2_out.aterm,helloworld
- 3.xx,helloworld3_in.aterm,helloworld3_out.aterm,helloworld4.xx,hellowor
- ld4_in.aterm,helloworld4_out.aterm,helloworld5.tbl,helloworld5.xx,hello
- world5_in.aterm,helloworld5_out.aterm,helloworld_in.aterm,helloworld_ou
- t.aterm,org.metaborg.sdf2table.benchmark,org.metaborg.sdf2table.benchma
- rk.generated,samples.Calc,samples.Pascal,samples.Remove.CSV,samples.Rem
- ove.GreenMarl,samples.Remove.Java,samples.Remove.WebDSL,samples.hellowo
- rld,samples.helloworld6,samples.helloworld7,samples.jasmin,samples.meta
- borgc,sum-nonambiguous.aterm,sum-nonambiguous.def,sum-nonambiguous.xx
+Export-Package: boolean.def,generated.parsetables,generated.persisted_ob
+ jects,grammars.Calc.normalized,grammars.Pascal.normalized,grammars.hell
+ oworld5.normalized,grammars.helloworld6.normalized,grammars.helloworld7
+ .normalized,grammars.intersection.normalized,grammars.jasmin.normalized
+ ,grammars.kernel.normalized,grammars.lexical-id.normalized,grammars.lit
+ erals.normalized,grammars.metaborgc.normalized,grammars.optionals.norma
+ lized,grammars.reject.normalized,grammars.start-symbol.normalized,gramm
+ ars.sum-ambiguous.normalized,grammars.sum-nonambiguous.normalized,org.m
+ etaborg.sdf2table.benchmark,org.metaborg.sdf2table.benchmark.generated,
+ samples.Calc,samples.Pascal,samples.Remove.CSV,samples.Remove.GreenMarl
+ ,samples.Remove.Java,samples.Remove.WebDSL,samples.demo,samples.hellowo
+ rld,samples.helloworld6,samples.helloworld7,samples.intersection,sample
+ s.jasmin,samples.kernel,samples.lexical-id,samples.literals,samples.met
+ aborgc,samples.optionals,samples.reject,samples.start-symbol,samples.su
+ m-ambiguous,samples.sum-nonambiguous
 Import-Package: org.spoofax.interpreter.terms,org.spoofax.jsglr2,org.spo
  ofax.jsglr2.actions,org.spoofax.jsglr2.parseforest,org.spoofax.jsglr2.p
  arser,org.spoofax.jsglr2.parsetable,org.spoofax.jsglr2.reducing,org.spo

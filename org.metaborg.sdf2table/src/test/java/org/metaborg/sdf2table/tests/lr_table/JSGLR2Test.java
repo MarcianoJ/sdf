@@ -63,7 +63,7 @@ public class JSGLR2Test {
 		//real: Calc, Pascal, metaborgc
 		//passing: helloworld6
 		//failing: intersection, kernel, lexical-id, literals, optionals, reject
-		grammarName = "sum-ambiguous"; 
+		grammarName = "metaborgc"; 
 		
 		testSet = new TestSet(grammarName, new TestSetParseTableFromATerm(grammarName), 
 	    		new TestSetSingleInput(grammarName + "/test.txt"));

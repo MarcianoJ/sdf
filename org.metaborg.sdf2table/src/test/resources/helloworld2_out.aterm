@@ -1,1 +1,0 @@
-parse-table(6,0,[label(prod([lit("world")],sort("Word"),attrs([term(cons("World"))])),259),label(prod([lit("hello")],sort("Word"),attrs([term(cons("Hello"))])),258),label(prod([sort("Word"),sort("Word")],sort("Start"),attrs([term(cons("Program"))])),257)],states([]),priorities([]))
